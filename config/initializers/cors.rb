@@ -11,3 +11,10 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
     resource "*", headers: :any, methods: [:get, :post, :put, :patch, :delete, :options, :head]
    end
 end
+
+Rails.application.config.hosts = [
+    IPAddr.new("0.0.0.0/0"),        # All IPv4 addresses.
+    IPAddr.new("::/0"),             # All IPv6 addresses.
+    "localhost",                    # The localhost reserved domain.
+    ENV["ec2-13-48-129-48.eu-north-1.compute.amazonaws.com"]  # Additional comma-separated hosts for development.
+]
