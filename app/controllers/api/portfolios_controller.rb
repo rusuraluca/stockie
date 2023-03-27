@@ -1,15 +1,18 @@
 class Api::PortfoliosController < ApplicationController
   before_action :set_portfolio, only: [:show, :edit, :update, :destroy]
 
+  # GET api/users/:user_id/portfolios
   def index
     @portfolios = Portfolio.where(user_id: params[:user_id])
     render json: @portfolios
   end
 
+  # GET api/users/:user_id/portfolios/:id
   def show
     render json: { user: @portfolio.user, portfolio: @portfolio, stocks: @portfolio.stocks }
   end
 
+  # POST api/users/:user_id/portfolios
   def create
     @portfolio = Portfolio.create(portfolio_params)
 
@@ -23,6 +26,7 @@ class Api::PortfoliosController < ApplicationController
   def edit
   end
 
+  # UPDATE api/users/:user_id/portfolios/:id
   def update
     if @portfolio.update(portfolio_params)
       render json: @portfolio
@@ -31,6 +35,7 @@ class Api::PortfoliosController < ApplicationController
     end
   end
 
+  # DELETE api/users/:user_id/portfolios/:id
   def destroy
     @portfolio.destroy
     render json: @user

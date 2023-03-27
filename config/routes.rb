@@ -15,6 +15,12 @@ Rails.application.routes.draw do
         end
       end
     end
+    resources :users do
+      resources :stocks do
+        resources :portfolios
+      end
+    end
+
     resources :stocks do
       resources :portfolios do
       end

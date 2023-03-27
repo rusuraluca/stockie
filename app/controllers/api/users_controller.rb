@@ -1,11 +1,13 @@
 class Api::UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
+  # GET api/users
   def index
     @users = User.all
     render json: @users
   end
 
+  # GET api/users/:id
   def show
     @user.portfolios = Portfolio.where(user_id: params[:id])
     render json: @user, include: [:portfolios]
@@ -15,6 +17,7 @@ class Api::UsersController < ApplicationController
     @user = User.new
   end
 
+  # POST api/users
   def create
     @user = User.create(user_params)
 
@@ -28,6 +31,7 @@ class Api::UsersController < ApplicationController
   def edit
   end
 
+  # UPDATE api/users/:id
   def update
     if @user.update(user_params)
       render json: @user
@@ -36,6 +40,7 @@ class Api::UsersController < ApplicationController
     end
   end
 
+  # DELETE api/users/:id
   def destroy
     @user.destroy
     render json: @user
