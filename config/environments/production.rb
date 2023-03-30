@@ -1,9 +1,8 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
-  config.hosts = [
-      "http://ec2-13-50-101-86.eu-north-1.compute.amazonaws.com"
-  ]
+  config.hosts << "ec2-13-50-101-86.eu-north-1.compute.amazonaws.com"
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
