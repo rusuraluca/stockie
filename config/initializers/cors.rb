@@ -7,10 +7,27 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins "http://0.0.0.0:3000"
+    origins "http://0.0.0.0:80"
     resource "*", headers: :any, methods: [:get, :post, :put, :patch, :delete, :options, :head]
    end
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Rails.application.config.hosts = [
     IPAddr.new("0.0.0.0/0"),        # All IPv4 addresses.

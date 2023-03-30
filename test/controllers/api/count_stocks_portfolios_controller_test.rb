@@ -2,7 +2,6 @@ require "test_helper"
 
 class Api::CountStocksPortfoliosControllerTest < ActionDispatch::IntegrationTest
   test 'generate_report should return stocks count for all portfolios' do
-    # Create some test data in the database
     user = User.create!(first_name: 'John', last_name: 'Doe', email: 'johndoe@example.com', password: 'password')
     portfolio1 = Portfolio.create!(name: 'Portfolio 1', industry: 'Tech', user: user)
     portfolio2 = Portfolio.create!(name: 'Portfolio 2', industry: 'Finance', user: user)
@@ -15,13 +14,8 @@ class Api::CountStocksPortfoliosControllerTest < ActionDispatch::IntegrationTest
     PortfolioStock.create!(portfolio: portfolio1, stock: stock2, price: 200, currency: 'USD')
     PortfolioStock.create!(portfolio: portfolio2, stock: stock3, price: 50, currency: 'USD')
 
-    # Call the generate_report function
     result = CountStocksPortfoliosDto.generate_report
-
-    # Check that the result is an array of AveragePricePortfoliosDto objects
     assert_instance_of CountStocksPortfoliosDto, result.first
-
-    # Check that the result contains the correct average prices for each portfolio
     assert_equal 2, result.find { |r| r.portfolio_id == portfolio1.id }.stock_count
     assert_equal 1, result.find { |r| r.portfolio_id == portfolio2.id }.stock_count
   end

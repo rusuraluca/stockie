@@ -1,0 +1,218 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/stocks":
+    get:
+      summary: list stocks
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create stock
+      responses:
+        '200':
+          description: successful
+  "/api/stocks/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show stock
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update stock
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update stock
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete stock
+      responses:
+        '200':
+          description: successful
+  "/api/companies/{company_id}/stocks":
+    parameters:
+    - name: company_id
+      in: path
+      description: company_id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: list stocks
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create stock
+      responses:
+        '200':
+          description: successful
+  "/api/companies/{company_id}/stocks/{id}":
+    parameters:
+    - name: company_id
+      in: path
+      description: company_id
+      required: true
+      schema:
+        type: string
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show stock
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update stock
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update stock
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete stock
+      responses:
+        '200':
+          description: successful
+  "/api/users/{user_id}/portfolios/{portfolio_id}/stocks":
+    parameters:
+    - name: user_id
+      in: path
+      description: user_id
+      required: true
+      schema:
+        type: string
+    - name: portfolio_id
+      in: path
+      description: portfolio_id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: list stocks
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create stock
+      responses:
+        '200':
+          description: successful
+  "/api/users/{user_id}/portfolios/{portfolio_id}/stocks/{id}":
+    parameters:
+    - name: user_id
+      in: path
+      description: user_id
+      required: true
+      schema:
+        type: string
+    - name: portfolio_id
+      in: path
+      description: portfolio_id
+      required: true
+      schema:
+        type: string
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show stock
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update stock
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update stock
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete stock
+      responses:
+        '200':
+          description: successful
+  "/api/users/{user_id}/stocks":
+    parameters:
+    - name: user_id
+      in: path
+      description: user_id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: list stocks
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create stock
+      responses:
+        '200':
+          description: successful
+  "/api/users/{user_id}/stocks/{id}":
+    parameters:
+    - name: user_id
+      in: path
+      description: user_id
+      required: true
+      schema:
+        type: string
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show stock
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update stock
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update stock
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete stock
+      responses:
+        '200':
+          description: successful
+servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com
