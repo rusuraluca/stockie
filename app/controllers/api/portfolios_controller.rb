@@ -1,5 +1,5 @@
 class Api::PortfoliosController < ApplicationController
-  before_action :set_portfolio, only: [:show, :edit, :update, :destroy]
+  before_action :set_portfolio, only: [:show, :create, :edit, :update, :destroy]
 
   # GET api/users/:user_id/portfolios
   def index
@@ -14,13 +14,10 @@ class Api::PortfoliosController < ApplicationController
 
   # POST api/users/:user_id/portfolios
   def create
-    @portfolio = Portfolio.create(portfolio_params)
-
-    if @portfolio.save
-      render json: @portfolio, status: :created, location: @portfolio
-    else
-      render json: @portfolio.errors, status: :unprocessable_entity
+    portfolio_params[:portfolios].each do |portfolio_data|
+      @user.portfolios << Portfolio.create(portfolio_data)
     end
+    render json: @user.portfolios
   end
 
   def edit
@@ -48,6 +45,6 @@ class Api::PortfoliosController < ApplicationController
   end
 
   def portfolio_params
-    params.require(:portfolio).permit(:name, :industry, :public, :active)
+    params.permit(portfolios: [:name, :industry, :public, :active])
   end
 end
