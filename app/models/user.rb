@@ -5,5 +5,4 @@ class User < ApplicationRecord
   validates :email, uniqueness: true
 
   accepts_nested_attributes_for :portfolios
-
 end

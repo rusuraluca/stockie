@@ -30,12 +30,29 @@ class Api::StocksController < ApplicationController
 
   # POST api/stocks
   def create
-    @stock = Stock.create(stock_params)
-
-    if @stock.save
-      render json: @stock, status: :created, location: @stock
+    if params[:user_id] and params[:portfolio_id]
+      @portfolio =  Portfolio.find_by(user_id: params[:user_id], id: params[:portfolio_id])
+      stocks_params[:stocks].each do |stock_data|
+        @stock = Stock.find_by(stock_data)
+        if @stock
+          @portfolio.stocks << @stock
+        else
+          payload = {
+              error: "No such stock",
+              status: 400
+          }
+          render json: payload, status: :bad_request
+          return
+        end
+      end
+      render json: { portfolio: @portfolio, stocks: @portfolio.stocks }
     else
-      render json: @stock.errors, status: :unprocessable_entity
+      @stock = Stock.create(stock_params)
+      if @stock.save
+        render json: @stock, status: :created, location: @stock
+      else
+        render json: error, status: :unprocessable_entity
+      end
     end
   end
 
@@ -66,5 +83,9 @@ class Api::StocksController < ApplicationController
 
   def stock_params
     params.require(:stock).permit(:ticker, :current_price, :min_price, :max_price)
+  end
+
+  def stocks_params
+    params.permit(stocks: [:id])
   end
 end

@@ -14,10 +14,23 @@ class Api::PortfoliosController < ApplicationController
 
   # POST api/users/:user_id/portfolios
   def create
-    portfolio_params[:portfolios].each do |portfolio_data|
-      @user.portfolios << Portfolio.create(portfolio_data)
-    end
-    render json: @user.portfolios
+   if params[:user_id]
+      @user = User.find_by(params[:user_id])
+      portfolios_params[:portfolios].each do |portfolio_data|
+        @portfolio = Portfolio.find_by(portfolio_data)
+        if @portfolio
+          @user.portfolios << @portfolio
+        else
+          payload = {
+              error: "No such portfolio",
+              status: 400
+          }
+          render json: payload, status: :bad_request
+          return
+        end
+      end
+      render json: @user.portfolios
+   end
   end
 
   def edit
@@ -45,6 +58,10 @@ class Api::PortfoliosController < ApplicationController
   end
 
   def portfolio_params
-    params.permit(portfolios: [:name, :industry, :public, :active])
+    params.permit(portfolio: [:name, :industry, :public, :active])
+  end
+
+  def portfolios_params
+    params.permit(portfolios: [:id])
   end
 end

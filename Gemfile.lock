@@ -203,7 +203,9 @@ DEPENDENCIES
   rails (~> 7.0.4, >= 7.0.4.3)
   rspec-rails
   rswag
+  rswag-api
   rswag-specs
+  rswag-ui
   sqlite3 (~> 1.4)
   tzinfo-data
 

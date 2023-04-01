@@ -6,9 +6,21 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
   namespace :api do
-    resources :users, :companies, :stocks
+    resources :users, :companies, :stocks, :portfolios
 
     resources :companies do
+      resources :stocks
+    end
+
+    resources :users do
+      resources :portfolios
+    end
+
+    resources :users do
+      resources :stocks
+    end
+
+    resources :portfolios do
       resources :stocks
     end
 
@@ -17,11 +29,6 @@ Rails.application.routes.draw do
         resources :stocks do
           resources :companies
         end
-      end
-    end
-    resources :users do
-      resources :stocks do
-        resources :portfolios
       end
     end
 
