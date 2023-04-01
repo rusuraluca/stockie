@@ -1,750 +1,644 @@
-{
-  "openapi": "3.0.1",
-  "info": {
-    "title": "API V1",
-    "version": "v1"
-  },
-  "paths": {
-    "/api/companies": {
-      "get": {
-        "summary": "list companies",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "post": {
-        "summary": "create company",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      }
-    },
-    "/api/companies/{id}": {
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "description": "id",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "get": {
-        "summary": "show company",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "patch": {
-        "summary": "update company",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "put": {
-        "summary": "update company",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "delete": {
-        "summary": "delete company",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      }
-    },
-    "/api/users/{user_id}/portfolios/{portfolio_id}/stocks/{stock_id}/companies": {
-      "parameters": [
-        {
-          "name": "user_id",
-          "in": "path",
-          "description": "user_id",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "name": "portfolio_id",
-          "in": "path",
-          "description": "portfolio_id",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "name": "stock_id",
-          "in": "path",
-          "description": "stock_id",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "get": {
-        "summary": "list companies",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "post": {
-        "summary": "create company",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      }
-    },
-    "/api/users/{user_id}/portfolios/{portfolio_id}/stocks/{stock_id}/companies/{id}": {
-      "parameters": [
-        {
-          "name": "user_id",
-          "in": "path",
-          "description": "user_id",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "name": "portfolio_id",
-          "in": "path",
-          "description": "portfolio_id",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "name": "stock_id",
-          "in": "path",
-          "description": "stock_id",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "name": "id",
-          "in": "path",
-          "description": "id",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "get": {
-        "summary": "show company",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "patch": {
-        "summary": "update company",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "put": {
-        "summary": "update company",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "delete": {
-        "summary": "delete company",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      }
-    },
-    "/api/count_stocks_portfolios": {
-      "get": {
-        "summary": "list count_stocks_portfolios",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      }
-    },
-    "/api/users/{user_id}/portfolios": {
-      "parameters": [
-        {
-          "name": "user_id",
-          "in": "path",
-          "description": "user_id",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "get": {
-        "summary": "list portfolios",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "post": {
-        "summary": "create portfolio",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      }
-    },
-    "/api/users/{user_id}/portfolios/{id}": {
-      "parameters": [
-        {
-          "name": "user_id",
-          "in": "path",
-          "description": "user_id",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "name": "id",
-          "in": "path",
-          "description": "id",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "get": {
-        "summary": "show portfolio",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "patch": {
-        "summary": "update portfolio",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "put": {
-        "summary": "update portfolio",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "delete": {
-        "summary": "delete portfolio",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      }
-    },
-    "/api/portfolios": {
-      "get": {
-        "summary": "list portfolios",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "post": {
-        "summary": "create portfolio",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      }
-    },
-    "/api/portfolios/{id}": {
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "description": "id",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "get": {
-        "summary": "show portfolio",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "patch": {
-        "summary": "update portfolio",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "put": {
-        "summary": "update portfolio",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "delete": {
-        "summary": "delete portfolio",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      }
-    },
-    "/api/stocks": {
-      "get": {
-        "summary": "list stocks",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "post": {
-        "summary": "create stock",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      }
-    },
-    "/api/stocks/{id}": {
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "description": "id",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "get": {
-        "summary": "show stock",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "patch": {
-        "summary": "update stock",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "put": {
-        "summary": "update stock",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "delete": {
-        "summary": "delete stock",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      }
-    },
-    "/api/companies/{company_id}/stocks": {
-      "parameters": [
-        {
-          "name": "company_id",
-          "in": "path",
-          "description": "company_id",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "get": {
-        "summary": "list stocks",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "post": {
-        "summary": "create stock",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      }
-    },
-    "/api/companies/{company_id}/stocks/{id}": {
-      "parameters": [
-        {
-          "name": "company_id",
-          "in": "path",
-          "description": "company_id",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "name": "id",
-          "in": "path",
-          "description": "id",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "get": {
-        "summary": "show stock",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "patch": {
-        "summary": "update stock",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "put": {
-        "summary": "update stock",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "delete": {
-        "summary": "delete stock",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      }
-    },
-    "/api/users/{user_id}/portfolios/{portfolio_id}/stocks": {
-      "parameters": [
-        {
-          "name": "user_id",
-          "in": "path",
-          "description": "user_id",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "name": "portfolio_id",
-          "in": "path",
-          "description": "portfolio_id",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "get": {
-        "summary": "list stocks",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "post": {
-        "summary": "create stock",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      }
-    },
-    "/api/users/{user_id}/portfolios/{portfolio_id}/stocks/{id}": {
-      "parameters": [
-        {
-          "name": "user_id",
-          "in": "path",
-          "description": "user_id",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "name": "portfolio_id",
-          "in": "path",
-          "description": "portfolio_id",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "name": "id",
-          "in": "path",
-          "description": "id",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "get": {
-        "summary": "show stock",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "patch": {
-        "summary": "update stock",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "put": {
-        "summary": "update stock",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "delete": {
-        "summary": "delete stock",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      }
-    },
-    "/api/users/{user_id}/stocks": {
-      "parameters": [
-        {
-          "name": "user_id",
-          "in": "path",
-          "description": "user_id",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "get": {
-        "summary": "list stocks",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "post": {
-        "summary": "create stock",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      }
-    },
-    "/api/users/{user_id}/stocks/{id}": {
-      "parameters": [
-        {
-          "name": "user_id",
-          "in": "path",
-          "description": "user_id",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "name": "id",
-          "in": "path",
-          "description": "id",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "get": {
-        "summary": "show stock",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "patch": {
-        "summary": "update stock",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "put": {
-        "summary": "update stock",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "delete": {
-        "summary": "delete stock",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      }
-    },
-    "/api/users": {
-      "get": {
-        "summary": "list users",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "post": {
-        "summary": "create user",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      }
-    },
-    "/api/users/{id}": {
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "description": "id",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "get": {
-        "summary": "show user",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "patch": {
-        "summary": "update user",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "put": {
-        "summary": "update user",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      },
-      "delete": {
-        "summary": "delete user",
-        "responses": {
-          "200": {
-            "description": "successful"
-          }
-        }
-      }
-    }
-  },
-  "servers": [
-    {
-      "url": "http://{defaultHost}",
-      "variables": {
-        "defaultHost": {
-          "default": "127.0.0.1:300"
-        }
-      }
-    }
-  ]
-}
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/companies":
+    get:
+      summary: list companies
+      tags:
+      - Companies
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create company
+      tags:
+      - Companies
+      responses:
+        '200':
+          description: successful
+  "/api/companies/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show company
+      tags:
+      - Companies
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update company
+      tags:
+      - Companies
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update company
+      tags:
+      - Companies
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete company
+      tags:
+      - Companies
+      responses:
+        '200':
+          description: successful
+  "/api/users/{user_id}/portfolios/{portfolio_id}/stocks/{stock_id}/companies":
+    parameters:
+    - name: user_id
+      in: path
+      description: user_id
+      required: true
+      schema:
+        type: string
+    - name: portfolio_id
+      in: path
+      description: portfolio_id
+      required: true
+      schema:
+        type: string
+    - name: stock_id
+      in: path
+      description: stock_id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: list companies
+      tags:
+      - Companies
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create company
+      tags:
+      - Companies
+      responses:
+        '200':
+          description: successful
+  "/api/users/{user_id}/portfolios/{portfolio_id}/stocks/{stock_id}/companies/{id}":
+    parameters:
+    - name: user_id
+      in: path
+      description: user_id
+      required: true
+      schema:
+        type: string
+    - name: portfolio_id
+      in: path
+      description: portfolio_id
+      required: true
+      schema:
+        type: string
+    - name: stock_id
+      in: path
+      description: stock_id
+      required: true
+      schema:
+        type: string
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show company
+      tags:
+      - Companies
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update company
+      tags:
+      - Companies
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update company
+      tags:
+      - Companies
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete company
+      tags:
+      - Companies
+      responses:
+        '200':
+          description: successful
+  "/api/count_stocks_portfolios":
+    get:
+      summary: list count_stocks_portfolios
+      tags:
+      - DTOs
+      responses:
+        '200':
+          description: successful
+  "/api/portfolios":
+    get:
+      summary: list portfolios
+      tags:
+      - Portfolios
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create portfolio
+      tags:
+      - Portfolios
+      responses:
+        '200':
+          description: successful
+  "/api/portfolios/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show portfolio
+      tags:
+      - Portfolios
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update portfolio
+      tags:
+      - Portfolios
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update portfolio
+      tags:
+      - Portfolios
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete portfolio
+      tags:
+      - Portfolios
+      responses:
+        '200':
+          description: successful
+  "/api/users/{user_id}/portfolios":
+    parameters:
+    - name: user_id
+      in: path
+      description: user_id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: list portfolios
+      tags:
+      - Portfolios
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create portfolio
+      tags:
+      - Portfolios
+      responses:
+        '200':
+          description: successful
+  "/api/users/{user_id}/portfolios/{id}":
+    parameters:
+    - name: user_id
+      in: path
+      description: user_id
+      required: true
+      schema:
+        type: string
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show portfolio
+      tags:
+      - Portfolios
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update portfolio
+      tags:
+      - Portfolios
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update portfolio
+      tags:
+      - Portfolios
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete portfolio
+      tags:
+      - Portfolios
+      responses:
+        '200':
+          description: successful
+  "/api/stocks":
+    get:
+      summary: list stocks
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+  "/api/stocks/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+  "/api/companies/{company_id}/stocks":
+    parameters:
+    - name: company_id
+      in: path
+      description: company_id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: list stocks
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+  "/api/companies/{company_id}/stocks/{id}":
+    parameters:
+    - name: company_id
+      in: path
+      description: company_id
+      required: true
+      schema:
+        type: string
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+  "/api/users/{user_id}/stocks":
+    parameters:
+    - name: user_id
+      in: path
+      description: user_id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: list stocks
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+  "/api/users/{user_id}/stocks/{id}":
+    parameters:
+    - name: user_id
+      in: path
+      description: user_id
+      required: true
+      schema:
+        type: string
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+  "/api/portfolios/{portfolio_id}/stocks":
+    parameters:
+    - name: portfolio_id
+      in: path
+      description: portfolio_id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: list stocks
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+  "/api/portfolios/{portfolio_id}/stocks/{id}":
+    parameters:
+    - name: portfolio_id
+      in: path
+      description: portfolio_id
+      required: true
+      schema:
+        type: string
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+  "/api/users/{user_id}/portfolios/{portfolio_id}/stocks":
+    parameters:
+    - name: user_id
+      in: path
+      description: user_id
+      required: true
+      schema:
+        type: string
+    - name: portfolio_id
+      in: path
+      description: portfolio_id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: list stocks
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+  "/api/users/{user_id}/portfolios/{portfolio_id}/stocks/{id}":
+    parameters:
+    - name: user_id
+      in: path
+      description: user_id
+      required: true
+      schema:
+        type: string
+    - name: portfolio_id
+      in: path
+      description: portfolio_id
+      required: true
+      schema:
+        type: string
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+  "/api/users":
+    get:
+      summary: list users
+      tags:
+      - Users
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create user
+      tags:
+      - Users
+      responses:
+        '200':
+          description: successful
+  "/api/users/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show user
+      tags:
+      - Users
+      responses:
+        '200':
+          description: successful
+    patch:
+      summary: update user
+      tags:
+      - Users
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update user
+      tags:
+      - Users
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete user
+      tags:
+      - Users
+      responses:
+        '200':
+          description: successful
+tags: {}
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: ec2-13-50-15-153.eu-north-1.compute.amazonaws.com

@@ -3,8 +3,8 @@ require 'swagger_helper'
 RSpec.describe 'api/users', type: :request do
 
   path '/api/users' do
-
     get('list users') do
+      tags 'Users'
       response(200, 'successful') do
 
         after do |example|
@@ -19,6 +19,7 @@ RSpec.describe 'api/users', type: :request do
     end
 
     post('create user') do
+      tags 'Users'
       response(200, 'successful') do
 
         after do |example|
@@ -38,6 +39,7 @@ RSpec.describe 'api/users', type: :request do
     parameter name: 'id', in: :path, type: :string, description: 'id'
 
     get('show user') do
+      tags 'Users'
       response(200, 'successful') do
         let(:id) { '123' }
 
@@ -53,6 +55,7 @@ RSpec.describe 'api/users', type: :request do
     end
 
     patch('update user') do
+      tags 'Users'
       response(200, 'successful') do
         let(:id) { '123' }
 
@@ -68,6 +71,7 @@ RSpec.describe 'api/users', type: :request do
     end
 
     put('update user') do
+      tags 'Users'
       response(200, 'successful') do
         let(:id) { '123' }
 
@@ -83,6 +87,7 @@ RSpec.describe 'api/users', type: :request do
     end
 
     delete('delete user') do
+      tags 'Users'
       response(200, 'successful') do
         let(:id) { '123' }
 

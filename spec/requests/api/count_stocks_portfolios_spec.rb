@@ -5,6 +5,7 @@ RSpec.describe 'api/count_stocks_portfolios', type: :request do
   path '/api/count_stocks_portfolios' do
 
     get('list count_stocks_portfolios') do
+      tags 'DTOs'
       response(200, 'successful') do
 
         after do |example|

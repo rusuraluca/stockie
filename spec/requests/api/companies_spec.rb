@@ -1,12 +1,11 @@
 require 'swagger_helper'
 
 RSpec.describe 'api/companies', type: :request do
-
   path '/api/companies' do
 
     get('list companies') do
+      tags 'Companies'
       response(200, 'successful') do
-
         after do |example|
           example.metadata[:response][:content] = {
             'application/json' => {
@@ -20,7 +19,7 @@ RSpec.describe 'api/companies', type: :request do
 
     post('create company') do
       response(200, 'successful') do
-
+        tags 'Companies'
         after do |example|
           example.metadata[:response][:content] = {
             'application/json' => {
@@ -38,6 +37,7 @@ RSpec.describe 'api/companies', type: :request do
     parameter name: 'id', in: :path, type: :string, description: 'id'
 
     get('show company') do
+      tags 'Companies'
       response(200, 'successful') do
         let(:id) { '123' }
 
@@ -53,6 +53,7 @@ RSpec.describe 'api/companies', type: :request do
     end
 
     patch('update company') do
+      tags 'Companies'
       response(200, 'successful') do
         let(:id) { '123' }
 
@@ -68,6 +69,7 @@ RSpec.describe 'api/companies', type: :request do
     end
 
     put('update company') do
+      tags 'Companies'
       response(200, 'successful') do
         let(:id) { '123' }
 
@@ -83,6 +85,7 @@ RSpec.describe 'api/companies', type: :request do
     end
 
     delete('delete company') do
+      tags 'Companies'
       response(200, 'successful') do
         let(:id) { '123' }
 
@@ -103,8 +106,8 @@ RSpec.describe 'api/companies', type: :request do
     parameter name: 'user_id', in: :path, type: :string, description: 'user_id'
     parameter name: 'portfolio_id', in: :path, type: :string, description: 'portfolio_id'
     parameter name: 'stock_id', in: :path, type: :string, description: 'stock_id'
-
     get('list companies') do
+      tags 'Companies'
       response(200, 'successful') do
         let(:user_id) { '123' }
         let(:portfolio_id) { '123' }
@@ -122,6 +125,7 @@ RSpec.describe 'api/companies', type: :request do
     end
 
     post('create company') do
+      tags 'Companies'
       response(200, 'successful') do
         let(:user_id) { '123' }
         let(:portfolio_id) { '123' }
@@ -147,6 +151,7 @@ RSpec.describe 'api/companies', type: :request do
     parameter name: 'id', in: :path, type: :string, description: 'id'
 
     get('show company') do
+      tags 'Companies'
       response(200, 'successful') do
         let(:user_id) { '123' }
         let(:portfolio_id) { '123' }
@@ -165,6 +170,7 @@ RSpec.describe 'api/companies', type: :request do
     end
 
     patch('update company') do
+      tags 'Companies'
       response(200, 'successful') do
         let(:user_id) { '123' }
         let(:portfolio_id) { '123' }
@@ -183,6 +189,7 @@ RSpec.describe 'api/companies', type: :request do
     end
 
     put('update company') do
+      tags 'Companies'
       response(200, 'successful') do
         let(:user_id) { '123' }
         let(:portfolio_id) { '123' }
@@ -201,6 +208,7 @@ RSpec.describe 'api/companies', type: :request do
     end
 
     delete('delete company') do
+      tags 'Companies'
       response(200, 'successful') do
         let(:user_id) { '123' }
         let(:portfolio_id) { '123' }

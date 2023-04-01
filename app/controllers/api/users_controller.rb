@@ -9,8 +9,7 @@ class Api::UsersController < ApplicationController
 
   # GET api/users/:id
   def show
-    @user.portfolios = Portfolio.where(user_id: params[:id])
-    render json: @user, include: [:portfolios]
+    render json: @user, include: @user.portfolios
   end
 
   def new

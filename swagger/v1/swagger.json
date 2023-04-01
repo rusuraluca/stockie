@@ -8,6 +8,9 @@
     "/api/companies": {
       "get": {
         "summary": "list companies",
+        "tags": [
+          "Companies"
+        ],
         "responses": {
           "200": {
             "description": "successful"
@@ -16,6 +19,9 @@
       },
       "post": {
         "summary": "create company",
+        "tags": [
+          "Companies"
+        ],
         "responses": {
           "200": {
             "description": "successful"
@@ -37,6 +43,9 @@
       ],
       "get": {
         "summary": "show company",
+        "tags": [
+          "Companies"
+        ],
         "responses": {
           "200": {
             "description": "successful"
@@ -45,6 +54,9 @@
       },
       "patch": {
         "summary": "update company",
+        "tags": [
+          "Companies"
+        ],
         "responses": {
           "200": {
             "description": "successful"
@@ -53,6 +65,9 @@
       },
       "put": {
         "summary": "update company",
+        "tags": [
+          "Companies"
+        ],
         "responses": {
           "200": {
             "description": "successful"
@@ -61,6 +76,9 @@
       },
       "delete": {
         "summary": "delete company",
+        "tags": [
+          "Companies"
+        ],
         "responses": {
           "200": {
             "description": "successful"
@@ -100,6 +118,9 @@
       ],
       "get": {
         "summary": "list companies",
+        "tags": [
+          "Companies"
+        ],
         "responses": {
           "200": {
             "description": "successful"
@@ -108,6 +129,9 @@
       },
       "post": {
         "summary": "create company",
+        "tags": [
+          "Companies"
+        ],
         "responses": {
           "200": {
             "description": "successful"
@@ -156,6 +180,9 @@
       ],
       "get": {
         "summary": "show company",
+        "tags": [
+          "Companies"
+        ],
         "responses": {
           "200": {
             "description": "successful"
@@ -164,6 +191,9 @@
       },
       "patch": {
         "summary": "update company",
+        "tags": [
+          "Companies"
+        ],
         "responses": {
           "200": {
             "description": "successful"
@@ -172,6 +202,9 @@
       },
       "put": {
         "summary": "update company",
+        "tags": [
+          "Companies"
+        ],
         "responses": {
           "200": {
             "description": "successful"
@@ -180,6 +213,9 @@
       },
       "delete": {
         "summary": "delete company",
+        "tags": [
+          "Companies"
+        ],
         "responses": {
           "200": {
             "description": "successful"
@@ -737,12 +773,14 @@
       }
     }
   },
+  "tags": {
+  },
   "servers": [
     {
       "url": "http://{defaultHost}",
       "variables": {
         "defaultHost": {
-          "default": "www.example.com"
+          "default": "ec2-13-50-15-153.eu-north-1.compute.amazonaws.com"
         }
       }
     }

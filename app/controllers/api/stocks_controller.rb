@@ -2,13 +2,22 @@ class Api::StocksController < ApplicationController
   before_action :set_stock, only: [:show, :edit, :update, :destroy]
 
   # GET api/stocks
+  # GET api/stocks/:price
+  # GET api/users/:user_id/stocks
+  # GET api/users/:user_id/portfolios/:portfolio_id/stocks
   def index
     if params[:price]
       @stocks = Stock.where('current_price > ?', params[:price])
       render json: @stocks, include: [:company]
-    elsif params[:user_id]
-      @stocks = Portfolio.where(user_id: params[:user_id]).map(&:stocks)
-      render json: @stocks
+    elsif params[:user_id] and params[:portfolio_id]
+      @user = User.find_by(id: params[:user_id])
+      @portfolio = @user.portfolios.where(id: params[:portfolio_id])
+      @stocks = @portfolio.map(&:stocks)
+      render json: { user: @user, portfolio: @portfolio, stocks: @stocks}
+    elsif params[:portfolio_id]
+      @portfolio = Portfolio.where(id: params[:portfolio_id])
+      @stocks = @portfolio.map(&:stocks)
+      render json: { portfolio: @portfolio, stocks: @stocks}
     else
       @stocks = Stock.all
       render json: @stocks, include: [:company]
@@ -16,6 +25,7 @@ class Api::StocksController < ApplicationController
   end
 
   # GET api/stocks/:id
+  # GET api/users/:user_id/portfolios/:portfolio_id/stocks/:id
   def show
     if params[:user_id]
       render json: { user: @user, stock: @stock, portfolio: @portfolio }
@@ -29,23 +39,45 @@ class Api::StocksController < ApplicationController
   end
 
   # POST api/stocks
+  # POST api/users/:user_id/portfolios/:portfolio_id/stocks
+  # POST api/portfolios/:portfolio_id/stocks
   def create
-    if params[:user_id] and params[:portfolio_id]
-      @portfolio =  Portfolio.find_by(user_id: params[:user_id], id: params[:portfolio_id])
+    if params[:portfolio_id] and stocks_params[:stocks]
+      @portfolio =  Portfolio.find_by(id: params[:portfolio_id])
+      msg = []
       stocks_params[:stocks].each do |stock_data|
         @stock = Stock.find_by(stock_data)
         if @stock
-          @portfolio.stocks << @stock
+          if !(@portfolio.stocks.include? @stock)
+            @portfolio.stocks << @stock
+          else
+            msg << {description: "Portfolio already has this stock", stock_id: stock_data, status: 400}
+          end
         else
-          payload = {
-              error: "No such stock",
-              status: 400
-          }
-          render json: payload, status: :bad_request
-          return
+          msg << {description: "No such stock", stock_id: stock_data, status: 400}
         end
       end
-      render json: { portfolio: @portfolio, stocks: @portfolio.stocks }
+      if msg.any?
+        render json: msg, status: :bad_request
+        return
+      else
+        render json: { portfolio: @portfolio, stocks: @portfolio.stocks }
+        return
+      end
+    elsif params[:user_id] and params[:portfolio_id] and params[:id]
+      @user = User.find_by(id: params[:user_id])
+      @portfolio =  Portfolio.find_by(user_id: params[:user_id], id: params[:portfolio_id])
+      @stock = Stock.find_by(id: params[:id])
+      if @user and @portfolio
+        if !(@portfolio.stocks.include? @stock)
+          @portfolio.stocks << @stock
+          render json: { user: @user, portfolio: @portfolio, stocks: @portfolio.stocks }
+        else
+          render json: error, status: :unprocessable_entity
+        end
+      else
+        render json: error, status: :unprocessable_entity
+      end
     else
       @stock = Stock.create(stock_params)
       if @stock.save
@@ -76,8 +108,8 @@ class Api::StocksController < ApplicationController
 
   private
   def set_stock
-    @stock = Stock.find(params[:id])
-    @user = User.find_by(params[:user_id])
+    @stock = Stock.find_by(id: params[:id])
+    @user = User.find_by(id: params[:user_id])
     @portfolio = Portfolio.joins(:stocks).where(stocks: { id: params[:id] }, user_id: params[:user_id])
   end
 
