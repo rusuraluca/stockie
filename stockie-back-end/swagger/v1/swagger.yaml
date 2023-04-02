@@ -1,0 +1,1287 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/companies":
+    get:
+      summary: Retrieve all companies
+      tags:
+      - Companies
+      responses:
+        '200':
+          description: companies retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    size:
+                      type: integer
+                    country:
+                      type: string
+                    industry:
+                      type: string
+                    created_at:
+                      type: string
+                      format: date_time
+                    updated_at:
+                      type: string
+                      format: date_time
+    post:
+      summary: Create a company
+      tags:
+      - Companies
+      parameters: []
+      responses:
+        '201':
+          description: company created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                size:
+                  type: integer
+                country:
+                  type: string
+                industry:
+                  type: string
+              required:
+              - name
+  "/api/companies/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: Retrieve a company by id
+      tags:
+      - Companies
+      responses:
+        '200':
+          description: company retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  size:
+                    type: integer
+                  country:
+                    type: string
+                  industry:
+                    type: string
+                  created_at:
+                    type: string
+                    format: date_time
+                  updated_at:
+                    type: string
+                    format: date_time
+        '404':
+          description: company not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+    put:
+      summary: Update a company by id
+      tags:
+      - Companies
+      parameters: []
+      responses:
+        '200':
+          description: company updated
+        '422':
+          description: invalid request
+        '404':
+          description: company not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                size:
+                  type: integer
+                country:
+                  type: string
+                industry:
+                  type: string
+              required:
+              - name
+    delete:
+      summary: Delete a company by id
+      tags:
+      - Companies
+      responses:
+        '200':
+          description: company deleted
+        '404':
+          description: company not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+  "/api/count_stocks_portfolios":
+    get:
+      summary: list count_stocks_portfolios
+      tags:
+      - DTOs
+      responses:
+        '200':
+          description: users retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    portfolio_id:
+                      type: integer
+                    stock_count:
+                      type: integer
+  "/api/portfolios":
+    get:
+      summary: Retrieve all portfolios
+      tags:
+      - Portfolios
+      responses:
+        '200':
+          description: portfolios retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    industry:
+                      type: string
+                    public:
+                      type: boolean
+                    active:
+                      type: boolean
+                    user_id:
+                      type: integer
+                    created_at:
+                      type: string
+                      format: date_time
+                    updated_at:
+                      type: string
+                      format: date_time
+    post:
+      summary: Create a portfolio
+      tags:
+      - Portfolios
+      parameters: []
+      responses:
+        '201':
+          description: portfolio created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                user_id:
+                  type: integer
+                industry:
+                  type: string
+                public:
+                  type: boolean
+                active:
+                  type: boolean
+              required:
+              - name
+              - user_id
+  "/api/portfolios/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: Retrieve a portfolio by id
+      tags:
+      - Portfolios
+      responses:
+        '200':
+          description: portfolio retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  user_id:
+                    type: integer
+                  industry:
+                    type: string
+                  public:
+                    type: boolean
+                  active:
+                    type: boolean
+                  created_at:
+                    type: string
+                    format: date_time
+                  updated_at:
+                    type: string
+                    format: date_time
+        '404':
+          description: portfolio not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+    put:
+      summary: Update a portfolio by id
+      tags:
+      - Portfolios
+      parameters: []
+      responses:
+        '200':
+          description: portfolio updated
+        '422':
+          description: invalid request
+        '404':
+          description: portfolio not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                user_id:
+                  type: integer
+                industry:
+                  type: string
+                public:
+                  type: boolean
+                active:
+                  type: boolean
+    delete:
+      summary: Delete a portfolio by id
+      tags:
+      - Portfolios
+      responses:
+        '200':
+          description: portfolio deleted
+        '404':
+          description: portfolio not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+  "/api/users/{user_id}/portfolios":
+    parameters:
+    - name: user_id
+      in: path
+      required: true
+      description: User ID
+      schema:
+        type: integer
+    get:
+      summary: Retrieve all portfolios of a user
+      tags:
+      - Portfolios
+      responses:
+        '200':
+          description: portfolios retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    user_id:
+                      type: integer
+                    industry:
+                      type: string
+                    public:
+                      type: boolean
+                    active:
+                      type: boolean
+                    created_at:
+                      type: string
+                      format: date_time
+                    updated_at:
+                      type: string
+                      format: date_time
+                    stocks:
+                      type: array
+    post:
+      summary: Create a new portfolio for a user
+      tags:
+      - Portfolios
+      parameters: []
+      responses:
+        '201':
+          description: portfolio created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  user_id:
+                    type: integer
+                  industry:
+                    type: string
+                  public:
+                    type: boolean
+                  active:
+                    type: boolean
+                  created_at:
+                    type: string
+                    format: date_time
+                  updated_at:
+                    type: string
+                    format: date_time
+        '400':
+          description: invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                industry:
+                  type: string
+                public:
+                  type: boolean
+                active:
+                  type: boolean
+              required:
+              - name
+  "/api/users/{user_id}/portfolios/{id}":
+    parameters:
+    - name: user_id
+      in: path
+      required: true
+      description: User ID
+      schema:
+        type: integer
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: Retrieves a portfolio of a user
+      tags:
+      - Portfolios
+      responses:
+        '200':
+          description: portfolio retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      email:
+                        type: string
+                      address:
+                        type: string
+                      birthday:
+                        type: string
+                        format: date
+                      created_at:
+                        type: string
+                        format: date_time
+                      updated_at:
+                        type: string
+                        format: date_time
+                  portfolio:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      user_id:
+                        type: integer
+                      industry:
+                        type: string
+                      public:
+                        type: boolean
+                      active:
+                        type: boolean
+                      created_at:
+                        type: string
+                        format: date_time
+                      updated_at:
+                        type: string
+                        format: date_time
+                      stocks:
+                        type: array
+                  stocks:
+                    type: array
+        '404':
+          description: portfolio not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+        '500':
+          description: portfolio not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+    put:
+      summary: Update a portfolio of a user
+      tags:
+      - Portfolios
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: portfolio updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  user_id:
+                    type: integer
+                  industry:
+                    type: string
+                  public:
+                    type: boolean
+                  active:
+                    type: boolean
+                  created_at:
+                    type: string
+                    format: date_time
+                  updated_at:
+                    type: string
+                    format: date_time
+                  stocks:
+                    type: array
+        '400':
+          description: invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+        '404':
+          description: portfolio not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                user_id:
+                  type: integer
+                industry:
+                  type: string
+                public:
+                  type: boolean
+                active:
+                  type: boolean
+              required:
+              - name
+              - user_id
+    delete:
+      summary: Delete a portfolio of a user
+      tags:
+      - Portfolios
+      parameters:
+      - name: user_id
+        in: path
+        description: User ID
+        required: true
+        schema:
+          type: integer
+      - name: id
+        in: path
+        description: Portfolio ID
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: portfolio deleted
+        '500':
+          description: portfolio not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+  "/api/stocks":
+    get:
+      summary: Retrieve all stocks
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    ticker:
+                      type: string
+                    current_price:
+                      type: float
+                    min_price:
+                      type: float
+                    max_price:
+                      type: float
+                    company_id:
+                      type: integer
+                    created_at:
+                      type: string
+                      format: date_time
+                    updated_at:
+                      type: string
+                      format: date_time
+    post:
+      summary: Create a stock
+      tags:
+      - Stocks
+      parameters: []
+      responses:
+        '201':
+          description: portfolio created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ticker:
+                  type: string
+                current_price:
+                  type: float
+                min_price:
+                  type: float
+                max_price:
+                  type: float
+                company_id:
+                  type: integer
+              required:
+              - ticker
+              - current_price
+              - min_price
+              - max_price
+              - company_id
+  "/api/stocks/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: Retrieve a stock by id
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: portfolio retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  ticker:
+                    type: string
+                  current_price:
+                    type: float
+                  min_price:
+                    type: float
+                  max_price:
+                    type: float
+                  company_id:
+                    type: integer
+                  created_at:
+                    type: string
+                    format: date_time
+                  updated_at:
+                    type: string
+                    format: date_time
+        '404':
+          description: stock not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+    put:
+      summary: Update a stock by id
+      tags:
+      - Stocks
+      parameters: []
+      responses:
+        '200':
+          description: stock updated
+        '422':
+          description: invalid request
+        '404':
+          description: stock not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ticker:
+                  type: string
+                current_price:
+                  type: float
+                min_price:
+                  type: float
+                max_price:
+                  type: float
+                company_id:
+                  type: integer
+    delete:
+      summary: Delete a stock by id
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: stock deleted
+        '404':
+          description: stock not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+  "/api/companies/{company_id}/stocks":
+    parameters:
+    - name: company_id
+      in: path
+      required: true
+      description: Company ID
+      schema:
+        type: integer
+    get:
+      summary: Retrieve the stock of a company
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: stock retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  ticker:
+                    type: string
+                  current_price:
+                    type: float
+                  min_price:
+                    type: float
+                  max_price:
+                    type: float
+                  company_id:
+                    type: integer
+                  created_at:
+                    type: string
+                    format: date_time
+                  updated_at:
+                    type: string
+                    format: date_time
+    post:
+      summary: Create the stock of a company
+      tags:
+      - Stocks
+      responses:
+        '201':
+          description: stock created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  user_id:
+                    type: integer
+                  industry:
+                    type: string
+                  public:
+                    type: boolean
+                  active:
+                    type: boolean
+                  created_at:
+                    type: string
+                    format: date_time
+                  updated_at:
+                    type: string
+                    format: date_time
+  "/api/companies/{company_id}/stocks/{id}":
+    parameters:
+    - name: company_id
+      in: path
+      description: company_id
+      required: true
+      schema:
+        type: string
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+  "/api/users/{user_id}/stocks":
+    parameters:
+    - name: user_id
+      in: path
+      description: user_id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: list stocks
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+  "/api/users/{user_id}/stocks/{id}":
+    parameters:
+    - name: user_id
+      in: path
+      description: user_id
+      required: true
+      schema:
+        type: string
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+  "/api/portfolios/{portfolio_id}/stocks":
+    parameters:
+    - name: portfolio_id
+      in: path
+      description: portfolio_id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: list stocks
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+  "/api/portfolios/{portfolio_id}/stocks/{id}":
+    parameters:
+    - name: portfolio_id
+      in: path
+      description: portfolio_id
+      required: true
+      schema:
+        type: string
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+  "/api/users/{user_id}/portfolios/{portfolio_id}/stocks":
+    parameters:
+    - name: user_id
+      in: path
+      description: user_id
+      required: true
+      schema:
+        type: string
+    - name: portfolio_id
+      in: path
+      description: portfolio_id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: list stocks
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+  "/api/users/{user_id}/portfolios/{portfolio_id}/stocks/{id}":
+    parameters:
+    - name: user_id
+      in: path
+      description: user_id
+      required: true
+      schema:
+        type: string
+    - name: portfolio_id
+      in: path
+      description: portfolio_id
+      required: true
+      schema:
+        type: string
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+    delete:
+      summary: delete stock
+      tags:
+      - Stocks
+      responses:
+        '200':
+          description: successful
+  "/api/users":
+    get:
+      summary: Retrieves all users
+      tags:
+      - Users
+      responses:
+        '200':
+          description: users retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
+                    email:
+                      type: string
+                    address:
+                      type: string
+                    birthday:
+                      type: string
+                      format: date
+                    created_at:
+                      type: string
+                      format: date_time
+                    updated_at:
+                      type: string
+                      format: date_time
+    post:
+      summary: Creates a user
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '201':
+          description: user created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                address:
+                  type: string
+                birthday:
+                  type: string
+                  format: date
+              required:
+              - first_name
+              - last_name
+              - email
+              - password
+  "/api/users/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: Retrieves a user
+      tags:
+      - Users
+      responses:
+        '200':
+          description: user retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  first_name:
+                    type: string
+                  last_name:
+                    type: string
+                  email:
+                    type: string
+                  address:
+                    type: string
+                  birthday:
+                    type: string
+                    format: date
+                  created_at:
+                    type: string
+                    format: date_time
+                  updated_at:
+                    type: string
+                    format: date_time
+                  portfolios:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        industry:
+                          type: string
+                        public:
+                          type: boolean
+                        active:
+                          type: boolean
+                        user_id:
+                          type: integer
+                        created_at:
+                          type: string
+                          format: date_time
+                        updated_at:
+                          type: string
+                          format: date_time
+        '404':
+          description: user not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+    put:
+      summary: Updates a user
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '200':
+          description: user updated
+        '422':
+          description: invalid request
+        '404':
+          description: user not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                address:
+                  type: string
+                birthday:
+                  type: string
+                  format: date
+    delete:
+      summary: Deletes a user
+      tags:
+      - Users
+      responses:
+        '200':
+          description: user deleted
+        '404':
+          description: user not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+tags: {}
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: ec2-13-50-15-153.eu-north-1.compute.amazonaws.com
