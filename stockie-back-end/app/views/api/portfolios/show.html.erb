@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @api_portfolio %>
+
+<div>
+  <%= link_to "Edit this portfolio", edit_api_portfolio_path(@api_portfolio) %> |
+  <%= link_to "Back to portfolios", api_portfolios_path %>
+
+  <%= button_to "Destroy this portfolio", @api_portfolio, method: :delete %>
+</div>

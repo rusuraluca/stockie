@@ -20,10 +20,13 @@ import ReadMoreIcon from "@mui/icons-material/ReadMore";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import AddIcon from "@mui/icons-material/Add";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+
 
 export const UserShowAll = () => {
     const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState<User[]>([]);
+    const [sortOrder, setSortOrder] = useState("asc");
 
     useEffect(() => {
         setLoading(true);
@@ -34,6 +37,19 @@ export const UserShowAll = () => {
                 setLoading(false);
             });
     }, []);
+
+    const handleSortByFirstName = () => {
+        const sortedUsers = [...users].sort((a, b) => {
+            if (sortOrder === "asc") {
+                return a.first_name.localeCompare(b.first_name);
+            } else {
+                return b.first_name.localeCompare(a.first_name);
+            }
+        });
+
+        setUsers(sortedUsers);
+        setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    };
 
     return (
         <Container>
@@ -53,8 +69,15 @@ export const UserShowAll = () => {
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
                             <TableRow>
-                                <TableCell>#</TableCell>
-                                <TableCell align="right">First Name</TableCell>
+                                <TableCell>
+                                    #
+                                </TableCell>
+                                <TableCell align="right">
+                                    First Name
+                                    <IconButton onClick={handleSortByFirstName}>
+                                        <ArrowDownwardIcon />
+                                    </IconButton>
+                                </TableCell>
                                 <TableCell align="right">Last Name</TableCell>
                                 <TableCell align="right">Email</TableCell>
                                 <TableCell align="right">Addres</TableCell>
@@ -65,7 +88,7 @@ export const UserShowAll = () => {
                             {users.map((user, index) => (
                                 <TableRow key={user.id}>
                                     <TableCell component="th" scope="row">
-                                        {index + 1}
+                                        {user.id}
                                     </TableCell>
                                     <TableCell component="th" scope="row">
                                         <Link to={`/users/${user.id}/details`} title="View user details">

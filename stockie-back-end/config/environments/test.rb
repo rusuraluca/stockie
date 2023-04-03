@@ -6,7 +6,7 @@ require "active_support/core_ext/integer/time"
 # and recreated between test runs. Don't rely on the data there!
 
 Rails.application.configure do
-  config.hosts << "ec2-13-50-15-153.eu-north-1.compute.amazonaws.com"
+  config.hosts << "ec2-16-170-167-8.eu-north-1.compute.amazonaws.com"
 
   # Settings specified here will take precedence over those in config/application.rb.
 

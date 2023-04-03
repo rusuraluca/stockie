@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Portfolios</h1>
+
+<div id="api_portfolios">
+  <% @api_portfolios.each do |api_portfolio| %>
+    <%= render api_portfolio %>
+    <p>
+      <%= link_to "Show this portfolio", api_portfolio %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New portfolio", new_api_portfolio_path %>

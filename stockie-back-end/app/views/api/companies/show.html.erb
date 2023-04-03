@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @api_company %>
+
+<div>
+  <%= link_to "Edit this company", edit_api_company_path(@api_company) %> |
+  <%= link_to "Back to companies", api_companies_path %>
+
+  <%= button_to "Destroy this company", @api_company, method: :delete %>
+</div>
