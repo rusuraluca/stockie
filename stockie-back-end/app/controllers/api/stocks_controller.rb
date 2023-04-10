@@ -7,7 +7,7 @@ class Api::StocksController < ApplicationController
   # GET api/users/:user_id/portfolios/:portfolio_id/stocks
   def index
     if params[:price]
-      @stocks = Stock.where('current_price > ?', params[:price])
+      @stocks = Stock.where('current_price > ?', params[:price]).order(:ticker).page params[:page]
       render json: @stocks, include: [:company]
     elsif params[:user_id] and params[:portfolio_id]
       @user = User.find_by(id: params[:user_id])
@@ -19,7 +19,7 @@ class Api::StocksController < ApplicationController
       @stocks = @portfolio.map(&:stocks)
       render json: { portfolio: @portfolio, stocks: @stocks}
     else
-      @stocks = Stock.all
+      @stocks = Stock.order(:ticker).page params[:page]
       render json: @stocks, include: [:company]
     end
   end

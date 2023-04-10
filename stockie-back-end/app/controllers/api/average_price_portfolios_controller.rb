@@ -1,5 +1,6 @@
 class Api::AveragePricePortfoliosController < ApplicationController
   def index
-    render json: AveragePricePortfoliosDto.generate_report
+    @raport = AveragePricePortfoliosDto.generate_report params[:page]
+    render json: @raport
   end
 end

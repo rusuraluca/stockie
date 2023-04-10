@@ -3,7 +3,7 @@ class Api::CompaniesController < ApplicationController
 
   # GET api/companies
   def index
-    @companies = Company.all
+    @companies = Company.order(:size).page params[:page]
     render json: @companies
   end
 

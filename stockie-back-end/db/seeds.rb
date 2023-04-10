@@ -1,3 +1,5 @@
+require_relative '../lib/populator_fix.rb'
+
 companies = Company.create([
                                     { name: "Apple Inc.", size: 147000, country: "United States", industry: "Technology"},
                                     { name: "Toyota Motor Corporation", size: 370870, country: "Japan", industry: "Automotive"},
@@ -25,16 +27,16 @@ stocks = Stock.create([
                            ])
 
 users = User.create([
-                             { first_name: "John", last_name: "Doe", email: "john.doe@example.com", password: "password123", address: "123 Main St, Anytown, USA", birthday: 1-1-1990 },
-                             { first_name: "Jane", last_name: "Smith", email: "jane.smith@example.com", password: "password456", address: "456 Oak Ave, Anytown, USA", birthday: 3-15-1995 },
-                             { first_name: "Michael", last_name: "Johnson", email: "michael.johnson@example.com", password: "password789", address: "789 Elm Rd, Anytown, USA", birthday: 7-22-1985 },
-                             { first_name: "Sarah", last_name: "Williams", email: "sarah.williams@example.com", password: "passwordABC", address: "321 Maple Dr, Anytown, USA", birthday: 11-30-2000 },
-                             { first_name: "David", last_name: "Brown", email: "david.brown@example.com", password: "passwordDEF", address: "654 Pine Blvd, Anytown, USA", birthday: 10-05-1999 },
-                             { first_name: "Jessica", last_name: "Taylor", email: "jessica.taylor@example.com", password: "passwordGHI", address: "987 Cedar St, Anytown, USA", birthday: 2002-11-03 },
-                             { first_name: "Matthew", last_name: "Anderson", email: "matthew.anderson@example.com", password: "passwordJKL", address: "246 Birch Ln, Anytown, USA", birthday: 14-02-1982 },
-                             { first_name: "Emily", last_name: "Jackson", email: "emily.jackson@example.com", password: "passwordMNO", address: "135 Walnut Ave, Anytown, USA", birthday: 24-04-1998 },
-                             { first_name: "Christopher", last_name: "Thomas", email: "christopher.thomas@example.com", password: "passwordPQR", address: "864 Oakwood Rd, Anytown, USA", birthday: 8-12-1987 },
-                             { first_name: "Amanda", last_name: "Wilson", email: "amanda.wilson@example.com", password: "passwordSTU", address: "369 Cedar Ave, Anytown, USA", birthday: 20-06-1993 }
+                             { first_name: "John", last_name: "Doe", email: "john.doe@example.com", password: "password123", address: "123 Main St, Anytown, USA", birthday: "1990-1-19" },
+                             { first_name: "Jane", last_name: "Smith", email: "jane.smith@example.com", password: "password456", address: "456 Oak Ave, Anytown, USA", birthday: "1995-3-15" },
+                             { first_name: "Michael", last_name: "Johnson", email: "michael.johnson@example.com", password: "password789", address: "789 Elm Rd, Anytown, USA", birthday: "1985-7-22" },
+                             { first_name: "Sarah", last_name: "Williams", email: "sarah.williams@example.com", password: "passwordABC", address: "321 Maple Dr, Anytown, USA", birthday: "2000-11-29" },
+                             { first_name: "David", last_name: "Brown", email: "david.brown@example.com", password: "passwordDEF", address: "654 Pine Blvd, Anytown, USA", birthday: "1999-5-19" },
+                             { first_name: "Jessica", last_name: "Taylor", email: "jessica.taylor@example.com", password: "passwordGHI", address: "987 Cedar St, Anytown, USA", birthday: "2002-11-03" },
+                             { first_name: "Matthew", last_name: "Anderson", email: "matthew.anderson@example.com", password: "passwordJKL", address: "246 Birch Ln, Anytown, USA", birthday: "1982-1-14" },
+                             { first_name: "Emily", last_name: "Jackson", email: "emily.jackson@example.com", password: "passwordMNO", address: "135 Walnut Ave, Anytown, USA", birthday: "1998-4-24" },
+                             { first_name: "Christopher", last_name: "Thomas", email: "christopher.thomas@example.com", password: "passwordPQR", address: "864 Oakwood Rd, Anytown, USA", birthday: "1987-2-3" },
+                             { first_name: "Amanda", last_name: "Wilson", email: "amanda.wilson@example.com", password: "passwordSTU", address: "369 Cedar Ave, Anytown, USA", birthday: "1993-2-20" }
                          ])
 
 portfolios = Portfolio.create([
@@ -53,22 +55,87 @@ portfolios = Portfolio.create([
 PortfolioStock.create(portfolio_id: 1, stock_id: 1, price: 121, currency: "$")
 PortfolioStock.create(portfolio_id: 1, stock_id: 3, price: 3021, currency: "$")
 PortfolioStock.create(portfolio_id: 1, stock_id: 5, price: 835, currency: "$")
-
 PortfolioStock.create(portfolio_id: 2, stock_id: 8, price: 3826.00, currency: "$")
 PortfolioStock.create(portfolio_id: 2, stock_id: 9, price: 109.94, currency: "$")
-
 PortfolioStock.create(portfolio_id: 3, stock_id: 7, price: 160.30, currency: "$")
 PortfolioStock.create(portfolio_id: 4, stock_id: 7, price: 160.30, currency: "$")
-
 PortfolioStock.create(portfolio_id: 5, stock_id: 3, price: 3021.22, currency: "$")
-
 PortfolioStock.create(portfolio_id: 6, stock_id: 4, price: 25.63, currency: "$")
-
 PortfolioStock.create(portfolio_id: 7, stock_id: 2, price: 120.41, currency: "$")
 PortfolioStock.create(portfolio_id: 7, stock_id: 6, price: 120.41, currency: "$")
-
 PortfolioStock.create(portfolio_id: 8, stock_id: 2, price: 130.41, currency: "$")
-
 PortfolioStock.create(portfolio_id: 9, stock_id: 1, price: 121.21, currency: "$")
-
 PortfolioStock.create(portfolio_id: 10, stock_id: 8, price: 3826.00, currency: "$")
+
+
+companies = []
+(1..1000).each {
+  Company.populate 1000 do |c|
+    c.name = Faker::Company.unique.name
+    c.size = Faker::Number.within(range: 1..100000000)
+    c.country = Faker::Address.country
+    c.industry = Faker::IndustrySegments.industry
+    companies << c
+  end
+}
+
+
+stocks = []
+sid = companies[0].id
+eid = companies[companies.size-1].id
+(1..1000).each {
+  Stock.populate 1000 do |s|
+    s.company_id = Faker::Number.unique.between(from: sid, to: eid)
+    s.ticker = Faker::Alphanumeric.alpha(number: 5).upcase
+    s.min_price = Faker::Number.between(from: 10.0, to: 1000.0).round(2)
+    s.max_price = Faker::Number.between(from: s.min_price, to: 100000.0).round(2)
+    s.current_price = Faker::Number.between(from: s.min_price, to: s.max_price).round(2)
+    stocks << s
+  end
+}
+
+
+users = []
+(1..1000).each {
+  User.populate 1000 do |u|
+    u.first_name = Faker::Name.first_name
+    u.last_name = Faker::Name.last_name
+    u.email = Faker::Internet.free_email
+    u.password = Faker::Internet.password
+    u.address = Faker::Address.full_address
+    u.birthday = Faker::Date.between(from: '1940-01-01', to: '2013-01-01')
+    users << u
+  end
+}
+
+portfolios = []
+sid = users[0].id
+eid = users[users.size-1].id
+(1..1000).each {
+  Portfolio.populate 1000 do |p|
+    p.name = Faker::IndustrySegments.industry + ' Portfolio'
+    p.industry = Faker::IndustrySegments.industry
+    p.public = Faker::Boolean.boolean
+    p.active = Faker::Boolean.boolean
+    p.user_id = Faker::Number.between(from: sid, to: eid)
+    #portfolios << p
+  end
+}
+
+
+spid = portfolios[0].id
+epid = portfolios[portfolios.size-1].id
+ssid = stocks[0].id
+esid = stocks[stocks.size-1].id
+(1..10000).each {
+  PortfolioStock.populate 1000 do |ps|
+    ps.portfolio_id = Faker::Number.between(from: spid, to: epid)
+    ps.stock_id = Faker::Number.between(from: ssid, to: esid)
+    ps.price = Faker::Number.within(range: 10.0..100000.0).round(2)
+    ps.currency = Faker::Currency.symbol
+    while PortfolioStock.where(portfolio_id: ps.portfolio_id, stock_id: ps.stock_id).count > 1 do
+      ps.portfolio_id = Faker::Number.between(from: spid, to: epid)
+      ps.stock_id = Faker::Number.between(from: ssid, to: esid)
+    end
+  end
+}

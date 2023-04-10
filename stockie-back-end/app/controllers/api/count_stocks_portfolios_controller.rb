@@ -1,5 +1,6 @@
 class Api::CountStocksPortfoliosController < ApplicationController
   def index
-    render json: CountStocksPortfoliosDto.generate_report
+    @raport = CountStocksPortfoliosDto.generate_report params[:page]
+    render json: @raport
   end
 end

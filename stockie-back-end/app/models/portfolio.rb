@@ -4,4 +4,6 @@ class Portfolio < ApplicationRecord
   has_many :stocks, through: :portfolio_stocks
 
   accepts_nested_attributes_for :stocks
+
+  paginates_per 25
 end

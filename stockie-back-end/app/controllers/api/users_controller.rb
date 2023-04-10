@@ -3,7 +3,7 @@ class Api::UsersController < ApplicationController
 
   # GET api/users
   def index
-    @users = User.all
+    @users = User.order(:last_name).page params[:page]
     render json: @users
   end
 

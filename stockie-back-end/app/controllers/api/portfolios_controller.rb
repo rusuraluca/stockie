@@ -7,7 +7,7 @@ class Api::PortfoliosController < ApplicationController
     if params[:user_id]
       @portfolios = Portfolio.where(user_id: params[:user_id])
     else
-      @portfolios = Portfolio.all
+      @portfolios = Portfolio.order(:name).page params[:page]
     end
     render json: @portfolios
   end

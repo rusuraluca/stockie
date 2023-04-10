@@ -1,10 +1,10 @@
 class CreateCompanies < ActiveRecord::Migration[7.0]
   def change
     create_table :companies do |t|
-      t.string :name
+      t.text :name
       t.bigint :size
-      t.string :country
-      t.string :industry
+      t.text :country
+      t.text :industry
       t.timestamps
     end
   end
