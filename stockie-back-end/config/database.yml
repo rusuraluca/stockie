@@ -13,7 +13,6 @@ default: &default
 development:
   <<: *default
   database: stockie_development
-  host: localhost
   port: 5432
   user: raluca
   password:
@@ -24,11 +23,16 @@ development:
 test:
   <<: *default
   database: stockie_test
-  host: localhost
   port: 5432
   user: raluca
   password:
 
+
 production:
   <<: *default
-  url: <%= ENV['DATABASE_URL'] %>
+  database: stockie_production
+  port: 5432
+  user: raluca
+  password:
+
+

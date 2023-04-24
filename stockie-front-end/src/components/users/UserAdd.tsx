@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, CardContent, IconButton, TextField } from "@mui/material";
+import { Card, CardActions, CardContent, IconButton, TextField } from "@mui/material";
 import { Container } from "@mui/system";
 import {useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,6 +7,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import axios from "axios";
 import {User} from "../../models/User";
 import React from "react";
+import { Button } from "react-bootstrap";
 
 export const UserAdd = () => {
     const navigate = useNavigate();
@@ -32,11 +33,9 @@ export const UserAdd = () => {
 
     return (
         <Container>
-            <Card>
+        <h1 style={{margin: "24px 0"}}>Add a new user:</h1>
                 <CardContent>
-                    <IconButton component={Link} sx={{ mr: 3 }} to={`/users`}>
-                        <ArrowBackIcon />
-                    </IconButton>{" "}
+
                     <form onSubmit={addUser}>
                         <TextField
                             id="first_name"
@@ -86,11 +85,13 @@ export const UserAdd = () => {
                             sx={{ mb: 2 }}
                             onChange={(event) => setUser({ ...user, birthday: event.target.value })}
                         />
-                        <Button type="submit">Add User</Button>
+                        <Button type="submit" style={{ margin:"24px 24px 0 0" }} variant="primary">Add User</Button>{' '}
+                        <Button style={{ margin:"24px 24px 0 0" }} href={`/users`} variant="danger">Cancel</Button>{' '}
+
+
                     </form>
                 </CardContent>
-                <CardActions></CardActions>
-            </Card>
+
         </Container>
     );
 };

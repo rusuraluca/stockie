@@ -1,13 +1,11 @@
 class Api::UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
-  # GET api/users
   def index
-    @users = User.order(:last_name).page params[:page]
-    render json: @users
+    @users = User.order(:id).page params[:page]
+    render json: { users: @users, totalUsers: @users.total_pages },  include: [:portfolios]
   end
 
-  # GET api/users/:id
   def show
     render json: @user
   end
@@ -16,7 +14,14 @@ class Api::UsersController < ApplicationController
     @user = User.new
   end
 
-  # POST api/users
+  def autocomplete
+    if params[:query]
+      query = params[:query]
+      @users = User.where("first_name ILIKE ?", "%#{query}%").order(:first_name).limit(20)
+      render json: @users
+    end
+  end
+
   def create
     @user = User.create(user_params)
 
@@ -30,7 +35,6 @@ class Api::UsersController < ApplicationController
   def edit
   end
 
-  # UPDATE api/users/:id
   def update
     if @user.update(user_params)
       render json: @user
@@ -39,7 +43,6 @@ class Api::UsersController < ApplicationController
     end
   end
 
-  # DELETE api/users/:id
   def destroy
     @user.destroy
     render json: @user

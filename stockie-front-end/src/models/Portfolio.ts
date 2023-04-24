@@ -2,12 +2,12 @@ import {User} from "./User";
 import {Stock} from "./Stock";
 
 export interface Portfolio {
-    id: number;
+    id?: number;
     name: string;
     industry: string;
     public: boolean;
     active: boolean;
     user_id?: number;
     user?: User;
-    stocks?: Stock[];
+    stocks?: number[];
 }

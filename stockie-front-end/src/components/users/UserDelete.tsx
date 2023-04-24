@@ -1,6 +1,6 @@
-import { Container, Card, CardContent, IconButton, CardActions, Button } from "@mui/material";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { Container, CardContent } from "@mui/material";
+import { Button } from "react-bootstrap";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_API_URL } from "../../constants";
 import React from "react";
@@ -12,30 +12,22 @@ export const UserDelete = () => {
     const handleDelete = async (event: { preventDefault: () => void }) => {
         event.preventDefault();
         await axios.delete(`${BACKEND_API_URL}/users/${userId}`);
-        // go to users list
         navigate("/users");
     };
 
     const handleCancel = (event: { preventDefault: () => void }) => {
         event.preventDefault();
-        // go to users list
         navigate("/users");
     };
 
     return (
         <Container>
-            <Card>
+            <h1 style={{margin: "24px 0"}}>Delete user:</h1>
                 <CardContent>
-                    <IconButton component={Link} sx={{ mr: 3 }} to={`/users`}>
-                        <ArrowBackIcon />
-                    </IconButton>{" "}
-                    Are you sure you want to delete this course? This cannot be undone!
+                    <p><b>Are you sure you want to delete this user? This cannot be undone!</b></p>
+                    <Button style={{ margin:"24px 24px 0 0" }} variant="danger" onClick={handleDelete}>Delete user</Button>{' '}
+                    <Button style={{ margin:"24px 24px 0 0" }} onClick={handleCancel} variant="primary">Cancel</Button>{' '}
                 </CardContent>
-                <CardActions>
-                    <Button onClick={handleDelete}>Delete it</Button>
-                    <Button onClick={handleCancel}>Cancel</Button>
-                </CardActions>
-            </Card>
         </Container>
     );
 };

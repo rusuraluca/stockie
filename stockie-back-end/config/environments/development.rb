@@ -1,7 +1,7 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
-  config.hosts << "ec2-13-51-249-143.eu-north-1.compute.amazonaws.com"
+  config.hosts << ENV["DNS"]
 
   # Settings specified here will take precedence over those in config/application.rb.
 

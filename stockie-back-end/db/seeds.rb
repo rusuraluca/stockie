@@ -68,6 +68,7 @@ PortfolioStock.create(portfolio_id: 9, stock_id: 1, price: 121.21, currency: "$"
 PortfolioStock.create(portfolio_id: 10, stock_id: 8, price: 3826.00, currency: "$")
 
 
+
 companies = []
 (1..1000).each {
   Company.populate 1000 do |c|
@@ -78,7 +79,6 @@ companies = []
     companies << c
   end
 }
-
 
 stocks = []
 sid = companies[0].id
@@ -118,7 +118,7 @@ eid = users[users.size-1].id
     p.public = Faker::Boolean.boolean
     p.active = Faker::Boolean.boolean
     p.user_id = Faker::Number.between(from: sid, to: eid)
-    #portfolios << p
+    portfolios << p
   end
 }
 
@@ -139,3 +139,10 @@ esid = stocks[stocks.size-1].id
     end
   end
 }
+
+Company.all.each do |company|
+  paragraphs = Faker::Lorem.paragraphs(number: 10).join(' ')
+  paragraphs.gsub!("'", "''")
+  paragraphs.gsub!("\n", ' ')
+  company.update(description: paragraphs)
+end

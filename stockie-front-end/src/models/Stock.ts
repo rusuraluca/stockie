@@ -1,7 +1,7 @@
 import {Company} from "./Company";
 
 export interface Stock {
-    id: number;
+    id?: number;
     ticker: string;
     current_price: number;
     min_price: number;
