@@ -1,25 +1,25 @@
 class CountStocksPortfoliosDto
-  attr_accessor :portfolio_name, :stock_count
+  attr_accessor :portfolio_id, :portfolio_name, :stock_count
 
-  def initialize(portfolio_name, stock_count)
+  def initialize(portfolio_id, portfolio_name, stock_count)
+    @portfolio_id = portfolio_id
     @portfolio_name = portfolio_name
     @stock_count = stock_count
   end
 
-  def self.generate_report(page)
-    portfolio_reports = []
+  def self.generate_report(page, per_page = 25)
+    portfolios = Portfolio.select(:id, :name)
+                     .select("(SELECT COUNT(*) FROM portfolio_stocks WHERE portfolio_stocks.portfolio_id = portfolios.id) AS stock_count")
+                     .order("stock_count DESC")
+                     .page(page)
+                     .per(per_page)
 
-    portfolios = Portfolio.order(:name).page page
-
+    raport_portfolios = []
     portfolios.each do |portfolio|
-      count_stocks_portfolio = portfolio.stocks.count || 0
-      portfolio_report = CountStocksPortfoliosDto.new(portfolio.name, count_stocks_portfolio)
-      portfolio_reports << portfolio_report
+      raport_portfolios << CountStocksPortfoliosDto.new(portfolio.id, portfolio.name, portfolio.stock_count)
     end
 
-    portfolio_reports.select! { |report| report.is_a?(CountStocksPortfoliosDto) }
-    sorted_portfolio_reports = portfolio_reports.sort_by { |report| [-report.stock_count, report.portfolio_name] }
-    return sorted_portfolio_reports
+    return raport_portfolios, portfolios.total_pages
   end
 
 end

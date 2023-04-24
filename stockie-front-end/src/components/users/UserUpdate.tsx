@@ -1,12 +1,11 @@
-import { Button, Card, CardActions, CardContent, IconButton, TextField } from "@mui/material";
-import { Container } from "@mui/system";
+import { Container, CardContent, TextField } from "@mui/material";
 import {useEffect, useState} from "react";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import { BACKEND_API_URL } from "../../constants";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import axios from "axios";
-import {User} from "../../models/User";
+import { User } from "../../models/User";
 import React from "react";
+import {Button} from "react-bootstrap";
 
 export const UserUpdate = () => {
     const { userId } = useParams();
@@ -18,7 +17,7 @@ export const UserUpdate = () => {
         email: "",
         password: "",
         address: "",
-        birthday: "",
+        birthday: ""
     });
 
     useEffect(() => {
@@ -34,7 +33,7 @@ export const UserUpdate = () => {
         event.preventDefault();
         try {
             await axios.put(`${BACKEND_API_URL}/users/${userId}`, user);
-            navigate("/users");
+            navigate(`/users/${userId}/details`);
         } catch (error) {
             console.error(error);
         }
@@ -55,18 +54,15 @@ export const UserUpdate = () => {
 
     return (
         <Container>
-            <Card>
+            <h1 style={{margin: "24px 0"}}>Update user:</h1>
                 <CardContent>
-                    <IconButton component={Link} sx={{ mr: 3 }} to={`/users`}>
-                        <ArrowBackIcon />
-                    </IconButton>{" "}
                     <form onSubmit={handleUpdate}>
                         <TextField
                             id="first_name"
                             name="first_name"
                             label="First Name"
                             variant="outlined"
-                            defaultValue={user.first_name}
+                            value={user?.first_name}
                             fullWidth
                             sx={{ mb: 2 }}
                             onChange={handleFieldChange}
@@ -76,7 +72,7 @@ export const UserUpdate = () => {
                             name="last_name"
                             label="Last Name"
                             variant="outlined"
-                            defaultValue={user.last_name}
+                            value={user?.last_name}
                             fullWidth
                             sx={{ mb: 2 }}
                             onChange={handleFieldChange}
@@ -86,7 +82,7 @@ export const UserUpdate = () => {
                             name="email"
                             label="Email"
                             variant="outlined"
-                            defaultValue={user.email}
+                            value={user?.email}
                             fullWidth
                             sx={{ mb: 2 }}
                             onChange={handleFieldChange}
@@ -96,7 +92,7 @@ export const UserUpdate = () => {
                             name="password"
                             label="Password"
                             variant="outlined"
-                            defaultValue={user.password}
+                            value={user?.password}
                             fullWidth
                             sx={{ mb: 2 }}
                             onChange={handleFieldChange}
@@ -106,7 +102,7 @@ export const UserUpdate = () => {
                             name="address"
                             label="Address"
                             variant="outlined"
-                            defaultValue={user.address}
+                            value={user?.address}
                             fullWidth
                             sx={{ mb: 2 }}
                             onChange={handleFieldChange}
@@ -116,18 +112,16 @@ export const UserUpdate = () => {
                             name="birthday"
                             label="Birthday"
                             variant="outlined"
-                            defaultValue={user.birthday}
+                            value={user?.birthday}
                             fullWidth
                             sx={{ mb: 2 }}
                             onChange={handleFieldChange}
                         />
-                        <Button type="submit">Update user</Button>
+                        <Button type="submit"  style={{ margin:"24px 24px 0 0" }} variant="primary">Update user</Button>
+                        <Button onClick={handleCancel} style={{ margin:"24px 24px 0 0" }} href={`/users`} variant="danger">Cancel</Button>
+
                     </form>
                 </CardContent>
-                <CardActions>
-                    <Button onClick={handleCancel}>Cancel</Button>
-                </CardActions>
-            </Card>
         </Container>
     );
 };

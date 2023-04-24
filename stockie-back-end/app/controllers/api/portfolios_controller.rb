@@ -4,12 +4,8 @@ class Api::PortfoliosController < ApplicationController
   # GET api/portfolios
   # GET api/users/:user_id/portfolios
   def index
-    if params[:user_id]
-      @portfolios = Portfolio.where(user_id: params[:user_id])
-    else
-      @portfolios = Portfolio.order(:name).page params[:page]
-    end
-    render json: @portfolios
+    @portfolios = Portfolio.order(:id).page params[:page]
+    render json: { portfolios: @portfolios, totalPortfolios: @portfolios.total_pages },  include: [:user, :stocks]
   end
 
   # GET api/portfolios/:id
@@ -29,18 +25,24 @@ class Api::PortfoliosController < ApplicationController
       end
     else
       @portfolio = Portfolio.find_by(id: params[:id])
-      if @portfolio
-        render json: { portfolio: @portfolio }
-      else
-        msg = { error: "Portfolio doesn't exist" }
-        render json: msg, status: :unprocessable_entity
-      end
+      render json: { portfolio: @portfolio },  include: [:user, :stocks]
     end
   end
 
   # POST api/users/:user_id/portfolios
   def create
-    if params[:name]
+    if params[:user_id] and params[:stocks]
+      @portfolio = Portfolio.create(portfolio_params)
+      if @portfolio.save
+        params[:stocks].each do |stock_id|
+          stock = Stock.find(stock_id)
+          @portfolio.stocks << stock
+        end
+        render json: {user: @portfolio.user, portfolio: @portfolio, stocks: @portfolio.stocks}
+      else
+        render json: @portfolio.errors, status: :unprocessable_entity
+      end
+    elsif params[:name]
       @portfolio = Portfolio.create(portfolio_params)
       if @portfolio.save
         render json: {user: @portfolio.user, portfolio: @portfolio}
@@ -81,10 +83,13 @@ class Api::PortfoliosController < ApplicationController
   # UPDATE api/portfolios/:id
   # UPDATE api/users/:user_id/portfolios/:id
   def update
-    unless @user
-      @portfolio = Portfolio.find_by(id: params[:id])
-    end
-    if @portfolio.update(portfolio_params)
+    if @portfolio.update(portfolio_all_params)
+      stocks = []
+      params[:stocks].each do |stock_id|
+        stock = Stock.find(stock_id)
+        stocks << stock
+      end
+      @portfolio.stocks = stocks
       render json: @portfolio
     else
       render json: @portfolio.errors, status: :unprocessable_entity
@@ -108,12 +113,15 @@ class Api::PortfoliosController < ApplicationController
 
   private
   def set_portfolio
-    @user = User.find_by(id: params[:user_id])
-    @portfolio = Portfolio.find_by(user_id: params[:user_id], id: params[:id])
+    @portfolio = Portfolio.find_by(id: params[:id])
   end
 
   def portfolio_params
     params.permit(:name, :industry, :public, :active, :user_id)
+  end
+
+  def portfolio_all_params
+    params.permit(:name, :industry, :public, :active, :user_id, :stocks)
   end
 
   def portfolios_params

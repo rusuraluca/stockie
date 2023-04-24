@@ -1,31 +1,33 @@
 class Api::StocksController < ApplicationController
   before_action :set_stock, only: [:show, :edit, :update, :destroy]
 
-  # GET api/stocks
-  # GET api/stocks/:price
-  # GET api/users/:user_id/stocks
-  # GET api/users/:user_id/portfolios/:portfolio_id/stocks
   def index
-    if params[:price]
-      @stocks = Stock.where('current_price > ?', params[:price]).order(:ticker).page params[:page]
-      render json: @stocks, include: [:company]
+    if params[:price].present? && params[:price].to_f >= 0
+      stocks = Stock.where('current_price > ?', params[:price].to_f)
+      @stocks = stocks.order(:current_price).page(params[:page]).per(25)
+      render json: { stocks: @stocks, total: @stocks.total_pages }
+
     elsif params[:user_id] and params[:portfolio_id]
       @user = User.find_by(id: params[:user_id])
       @portfolio = @user.portfolios.where(id: params[:portfolio_id])
       @stocks = @portfolio.map(&:stocks)
       render json: { user: @user, portfolio: @portfolio, stocks: @stocks}
+
     elsif params[:portfolio_id]
       @portfolio = Portfolio.where(id: params[:portfolio_id])
       @stocks = @portfolio.map(&:stocks)
       render json: { portfolio: @portfolio, stocks: @stocks}
+
+    elsif params[:company_id]
+      @stock = Stock.find_by(company_id: params[:company_id])
+      render json: @stock
+
     else
-      @stocks = Stock.order(:ticker).page params[:page]
-      render json: @stocks, include: [:company]
+      @stocks = Stock.order(:id).page params[:page]
+      render  json: { stocks: @stocks, totalStocks: @stocks.total_pages },  include: [:company]
     end
   end
 
-  # GET api/stocks/:id
-  # GET api/users/:user_id/portfolios/:portfolio_id/stocks/:id
   def show
     if params[:user_id]
       render json: { user: @user, stock: @stock, portfolio: @portfolio }
@@ -34,13 +36,18 @@ class Api::StocksController < ApplicationController
     end
   end
 
+  def autocomplete
+    if params[:query]
+      query = params[:query]
+      @stocks = Stock.where("ticker ILIKE ?", "%#{query}%").order(:ticker).limit(20)
+      render json: @stocks
+    end
+  end
+
   def new
     @stock = Stock.new
   end
 
-  # POST api/stocks
-  # POST api/users/:user_id/portfolios/:portfolio_id/stocks
-  # POST api/portfolios/:portfolio_id/stocks
   def create
     if params[:portfolio_id] and stocks_params[:stocks]
       @portfolio =  Portfolio.find_by(id: params[:portfolio_id])
@@ -83,7 +90,7 @@ class Api::StocksController < ApplicationController
       if @stock.save
         render json: @stock
       else
-        render json: @stock.error, status: :unprocessable_entity
+        render json: @stock.errors, status: :unprocessable_entity
       end
     end
   end
@@ -91,7 +98,6 @@ class Api::StocksController < ApplicationController
   def edit
   end
 
-  # UPDATE api/stocks/:id
   def update
     if @stock.update(stock_params)
       render json: @stock
@@ -100,7 +106,6 @@ class Api::StocksController < ApplicationController
     end
   end
 
-  # DELETE api/stocks/:id
   def destroy
     @stock.destroy
     render json: @stock
@@ -114,7 +119,7 @@ class Api::StocksController < ApplicationController
   end
 
   def stock_params
-    params.require(:stock).permit(:ticker, :current_price, :min_price, :max_price)
+    params.require(:stock).permit(:ticker, :current_price, :min_price, :max_price, :company_id)
   end
 
   def stocks_params
