@@ -4,8 +4,14 @@ class Api::PortfoliosController < ApplicationController
   # GET api/portfolios
   # GET api/users/:user_id/portfolios
   def index
-    @portfolios = Portfolio.order(:id).page params[:page]
-    render json: { portfolios: @portfolios, totalPortfolios: @portfolios.total_pages },  include: [:user, :stocks]
+    if params[:user_id]
+      @portfolios = Portfolio.where(user_id: params[:user_id])
+      render json: @portfolios
+
+    else
+      @portfolios = Portfolio.order(:id).page params[:page]
+      render json: { portfolios: @portfolios, totalPortfolios: @portfolios.total_pages },  include: [:user, :stocks]
+    end
   end
 
   # GET api/portfolios/:id
