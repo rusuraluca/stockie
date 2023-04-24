@@ -1,4 +1,4 @@
-import {Container, CardContent, TextField, Typography, Box} from "@mui/material";
+import {Container, TextField, Typography, Box} from "@mui/material";
 import {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { BACKEND_API_URL } from "../../constants";
