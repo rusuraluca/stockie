@@ -5,7 +5,7 @@ import {AppMenu} from "./components/AppMenu";
 import {AppHome} from "./components/AppHome";
 import {UserDetails} from "./components/users/UserDetails";
 import {UserDelete} from "./components/users/UserDelete";
-import {UserAdd} from "./components/users/UserAdd";
+import {UserAddd} from "./components/users/UserAddd";
 import {UserShowAll} from "./components/users/UserShowAll";
 import {UserUpdate} from "./components/users/UserUpdate";
 
@@ -39,7 +39,7 @@ function App() {
               <Routes>
                   <Route path="/" element={<AppHome />} />
                   <Route path="/users" element={<UserShowAll />}/>
-                  <Route path="/users/add" element={<UserAdd />} />
+                  <Route path="/users/add" element={<UserAddd />} />
                   <Route path="/users/:userId/details" element={<UserDetails />} />
                   <Route path="/users/:userId/edit" element={<UserUpdate />} />
                   <Route path="/users/:userId/delete" element={<UserDelete />} />

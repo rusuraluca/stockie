@@ -6,6 +6,4 @@ class Portfolio < ApplicationRecord
   validates :name, :user, presence: true
 
   accepts_nested_attributes_for :stocks
-
-  paginates_per 25
 end
