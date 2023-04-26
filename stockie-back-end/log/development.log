@@ -1,0 +1,379 @@
+Started GET "/" for 127.0.0.1 at 2023-04-26 11:02:13 +0300
+  [1m[36mActiveRecord::SchemaMigration Pluck (3.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/raluca/.rvm/rubies/ruby-3.0.0/lib/ruby/gems/3.0.0/gems/railties-7.0.4.3/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/raluca/.rvm/rubies/ruby-3.0.0/lib/ruby/gems/3.0.0/gems/railties-7.0.4.3/lib/rails/templates/rails/welcome/index.html.erb (Duration: 2.7ms | Allocations: 732)
+Completed 200 OK in 22ms (Views: 8.5ms | ActiveRecord: 0.0ms | Allocations: 5887)
+
+
+Started GET "/api/count_stocks_portfolios" for 127.0.0.1 at 2023-04-26 11:02:36 +0300
+Processing by Api::CountStocksPortfoliosController#index as HTML
+  [1m[36mPortfolio Load (13606.3ms)[0m  [1m[34mSELECT "portfolios"."id", "portfolios"."name", (SELECT COUNT(*) FROM portfolio_stocks WHERE portfolio_stocks.portfolio_id = portfolios.id) AS stock_count FROM "portfolios" ORDER BY stock_count DESC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+  ↳ app/dtos/count_stocks_portfolios_dto.rb:18:in `generate_report'
+  [1m[36mPortfolio Count (60.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  ↳ app/dtos/count_stocks_portfolios_dto.rb:22:in `generate_report'
+Completed 200 OK in 13792ms (Views: 1.1ms | ActiveRecord: 13736.5ms | Allocations: 28623)
+
+
+Started GET "/favicon.ico" for 127.0.0.1 at 2023-04-26 11:02:50 +0300
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+Started GET "/api/users" for 127.0.0.1 at 2023-04-26 11:04:11 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mUser Count (221.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mUser Load (2.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (1.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 2]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 3]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 4]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 5]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 6]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 7]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 8]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 9]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 10]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 11]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 12]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 13]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 14]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 15]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 16]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 17]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 18]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.4ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 19]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 20]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 21]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 22]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 23]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 24]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 25]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+Completed 200 OK in 421ms (Views: 171.2ms | ActiveRecord: 238.2ms | Allocations: 50252)
+
+
+Started GET "/" for 127.0.0.1 at 2023-04-26 16:36:44 +0300
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/raluca/.rvm/rubies/ruby-3.0.0/lib/ruby/gems/3.0.0/gems/railties-7.0.4.3/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/raluca/.rvm/rubies/ruby-3.0.0/lib/ruby/gems/3.0.0/gems/railties-7.0.4.3/lib/rails/templates/rails/welcome/index.html.erb (Duration: 2.9ms | Allocations: 459)
+Completed 200 OK in 11ms (Views: 7.6ms | Allocations: 1220)
+
+
+Started GET "/api/users" for 127.0.0.1 at 2023-04-26 16:36:50 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mUser Count (105.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mUser Load (1.4ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (2.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 2]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 3]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 4]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 5]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 6]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 7]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 8]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 9]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 10]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 11]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 12]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 13]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 14]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 15]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 16]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 17]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 18]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 19]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 20]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 21]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 22]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 23]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 24]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 25]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+Completed 200 OK in 278ms (Views: 83.4ms | ActiveRecord: 154.5ms | Allocations: 41523)
+
+
+Started GET "/favicon.ico" for 127.0.0.1 at 2023-04-26 16:36:51 +0300
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+Started GET "/" for 127.0.0.1 at 2023-04-26 16:37:22 +0300
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/raluca/.rvm/rubies/ruby-3.0.0/lib/ruby/gems/3.0.0/gems/railties-7.0.4.3/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/raluca/.rvm/rubies/ruby-3.0.0/lib/ruby/gems/3.0.0/gems/railties-7.0.4.3/lib/rails/templates/rails/welcome/index.html.erb (Duration: 0.3ms | Allocations: 15)
+Completed 200 OK in 2ms (Views: 1.2ms | ActiveRecord: 0.0ms | Allocations: 256)
+
+
+Started GET "/" for 127.0.0.1 at 2023-04-26 16:37:31 +0300
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/raluca/.rvm/rubies/ruby-3.0.0/lib/ruby/gems/3.0.0/gems/railties-7.0.4.3/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/raluca/.rvm/rubies/ruby-3.0.0/lib/ruby/gems/3.0.0/gems/railties-7.0.4.3/lib/rails/templates/rails/welcome/index.html.erb (Duration: 0.2ms | Allocations: 16)
+Completed 200 OK in 1ms (Views: 0.9ms | ActiveRecord: 0.0ms | Allocations: 257)
+
+
+Started GET "/" for 127.0.0.1 at 2023-04-26 17:35:17 +0300
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/raluca/.rvm/rubies/ruby-3.0.0/lib/ruby/gems/3.0.0/gems/railties-7.0.4.3/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/raluca/.rvm/rubies/ruby-3.0.0/lib/ruby/gems/3.0.0/gems/railties-7.0.4.3/lib/rails/templates/rails/welcome/index.html.erb (Duration: 2.1ms | Allocations: 16)
+Completed 200 OK in 13ms (Views: 7.3ms | Allocations: 254)
+
+
+Started GET "/api/users" for 127.0.0.1 at 2023-04-26 17:35:22 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mUser Count (116.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.7ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 2]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 3]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 4]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 5]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 6]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 7]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.4ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 8]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 9]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 10]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 11]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 12]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (10.6ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 13]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 14]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 15]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.4ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 16]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 17]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 18]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 19]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 20]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.4ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 21]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 22]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 23]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 24]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (10.7ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 25]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+Completed 200 OK in 298ms (Views: 74.5ms | ActiveRecord: 158.9ms | Allocations: 29807)
+
+
+Started GET "/" for 127.0.0.1 at 2023-04-26 20:02:09 +0300
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/raluca/.rvm/rubies/ruby-3.0.0/lib/ruby/gems/3.0.0/gems/railties-7.0.4.3/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/raluca/.rvm/rubies/ruby-3.0.0/lib/ruby/gems/3.0.0/gems/railties-7.0.4.3/lib/rails/templates/rails/welcome/index.html.erb (Duration: 3.5ms | Allocations: 15)
+Completed 200 OK in 25ms (Views: 16.0ms | Allocations: 252)
+
+
+Started GET "/api/users" for 127.0.0.1 at 2023-04-26 20:03:21 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mUser Count (181.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.6ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 2]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 3]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 4]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 5]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 6]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.4ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 7]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 8]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 9]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 10]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 11]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.4ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 12]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 13]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 14]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 15]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 16]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (11.6ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 17]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.4ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 18]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 19]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 20]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 21]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.4ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 22]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 23]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 24]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 25]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+Completed 200 OK in 782ms (Views: 490.2ms | ActiveRecord: 225.6ms | Allocations: 29803)
+
+
+Started GET "/" for 127.0.0.1 at 2023-04-26 22:37:45 +0300
+  [1m[36mActiveRecord::SchemaMigration Pluck (27.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/raluca/.rvm/rubies/ruby-3.0.0/lib/ruby/gems/3.0.0/gems/railties-7.0.4.3/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/raluca/.rvm/rubies/ruby-3.0.0/lib/ruby/gems/3.0.0/gems/railties-7.0.4.3/lib/rails/templates/rails/welcome/index.html.erb (Duration: 2.3ms | Allocations: 732)
+Completed 200 OK in 24ms (Views: 7.0ms | ActiveRecord: 0.0ms | Allocations: 5887)
+
+
+Started GET "/api/users" for 127.0.0.1 at 2023-04-26 22:37:49 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mUser Count (173.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.5ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 1]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.4ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 2]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 3]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 4]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 5]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 6]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 7]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 8]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 9]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 10]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 11]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 12]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 13]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 14]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 15]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 16]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 17]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.4ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 18]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 19]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 20]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 21]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 22]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 23]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 24]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" WHERE "portfolios"."user_id" = $1[0m  [["user_id", 25]]
+  ↳ app/controllers/api/users_controller.rb:6:in `index'
+Completed 200 OK in 413ms (Views: 193.7ms | ActiveRecord: 200.3ms | Allocations: 74080)
+
+
+Started GET "/" for 127.0.0.1 at 2023-04-26 23:11:43 +0300
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/raluca/.rvm/rubies/ruby-3.0.0/lib/ruby/gems/3.0.0/gems/railties-7.0.4.3/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/raluca/.rvm/rubies/ruby-3.0.0/lib/ruby/gems/3.0.0/gems/railties-7.0.4.3/lib/rails/templates/rails/welcome/index.html.erb (Duration: 7.2ms | Allocations: 459)
+Completed 200 OK in 32ms (Views: 19.6ms | Allocations: 1269)
+
+
+Started GET "/api/count_stocks_portfolios" for 127.0.0.1 at 2023-04-26 23:11:47 +0300
+Processing by Api::CountStocksPortfoliosController#index as HTML
+  [1m[36mPortfolio Load (19637.8ms)[0m  [1m[34mSELECT "portfolios"."id", "portfolios"."name", (SELECT COUNT(*) FROM portfolio_stocks WHERE portfolio_stocks.portfolio_id = portfolios.id) AS stock_count FROM "portfolios" ORDER BY stock_count DESC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+  ↳ app/dtos/count_stocks_portfolios_dto.rb:18:in `generate_report'
+  [1m[36mPortfolio Count (63.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  ↳ app/dtos/count_stocks_portfolios_dto.rb:22:in `generate_report'
+Completed 200 OK in 19763ms (Views: 2.2ms | ActiveRecord: 19718.1ms | Allocations: 6474)
+
+

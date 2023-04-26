@@ -1,5 +1,5 @@
 require_relative '../lib/populator_fix.rb'
-
+=begin
 companies = Company.create([
                                     { name: "Apple Inc.", size: 147000, country: "United States", industry: "Technology"},
                                     { name: "Toyota Motor Corporation", size: 370870, country: "Japan", industry: "Automotive"},
@@ -66,7 +66,7 @@ PortfolioStock.create(portfolio_id: 7, stock_id: 6, price: 120.41, currency: "$"
 PortfolioStock.create(portfolio_id: 8, stock_id: 2, price: 130.41, currency: "$")
 PortfolioStock.create(portfolio_id: 9, stock_id: 1, price: 121.21, currency: "$")
 PortfolioStock.create(portfolio_id: 10, stock_id: 8, price: 3826.00, currency: "$")
-
+=end
 
 
 companies = []
@@ -93,7 +93,6 @@ eid = companies[companies.size-1].id
     stocks << s
   end
 }
-
 
 users = []
 (1..1000).each {
@@ -140,9 +139,11 @@ esid = stocks[stocks.size-1].id
   end
 }
 
+=begin
 Company.all.each do |company|
   paragraphs = Faker::Lorem.paragraphs(number: 10).join(' ')
   paragraphs.gsub!("'", "''")
   paragraphs.gsub!("\n", ' ')
   company.update(description: paragraphs)
 end
+=end

@@ -6,7 +6,7 @@ class Api::CompaniesController < ApplicationController
       @stock = Stock.find(params[:stock_id])
       render json: @stock.company
     else
-      @companies = Company.order(:id).page params[:page]
+      @companies = Company.where('').order(:id).page params[:page]
       render json: { companies: @companies, totalCompanies: @companies.total_pages },  include: [:stock]
     end
   end

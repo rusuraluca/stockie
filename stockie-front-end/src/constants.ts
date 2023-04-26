@@ -1,4 +1,4 @@
-const PROD_BACKEND_API_URL = "/api";
+const PROD_BACKEND_API_URL = "https://am-o-vaca-face.mooo.com/api";
 const DEV_BACKEND_API_URL = "http://127.0.0.1:3000/api";
 
 export const BACKEND_API_URL =

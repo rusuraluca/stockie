@@ -5,6 +5,4 @@ class Stock < ApplicationRecord
 
   validates :max_price, comparison: { greater_than: :min_price && :current_price }
   validates :min_price, comparison: { less_than: :max_price && :current_price }
-
-  paginates_per 25
 end
