@@ -38,6 +38,8 @@ const Pagination = ({ currentPage, total, limit, onPageChange }: { currentPage: 
     const pagesCount = total;
     const pagesCut = getPagesCut({ pagesCount, pagesCutCount: 5, currentPage });
     const pages = range(pagesCut.start, pagesCut.end);
+    const firstPages = range(1, 5);
+    const lastPages = range(total-5, total);
     const isFirstPage = currentPage === 1;
     const isLastPage = currentPage === pagesCount;
     return (
@@ -48,6 +50,15 @@ const Pagination = ({ currentPage, total, limit, onPageChange }: { currentPage: 
                 onPageChange={() => onPageChange(1)}
                 isDisabled={isFirstPage}
             />
+            {pagesCut.start != 1 && firstPages.map((page) => (
+                <PaginationItem
+                    page={page}
+                    key={page}
+                    currentPage={currentPage}
+                    onPageChange={onPageChange}
+                    isDisabled={false}
+                />
+            ))}
             <PaginationItem
                 page="Prev"
                 currentPage={currentPage}
@@ -69,6 +80,15 @@ const Pagination = ({ currentPage, total, limit, onPageChange }: { currentPage: 
                 onPageChange={() => onPageChange(currentPage + 1)}
                 isDisabled={isLastPage}
             />
+            {pagesCut.end != total && lastPages.map((page) => (
+                <PaginationItem
+                    page={page}
+                    key={page}
+                    currentPage={currentPage}
+                    onPageChange={onPageChange}
+                    isDisabled={false}
+                />
+            ))}
             <PaginationItem
                 page="Last"
                 currentPage={currentPage}
