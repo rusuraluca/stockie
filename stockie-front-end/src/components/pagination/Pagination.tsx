@@ -1,4 +1,4 @@
-import "./Pagination.css";
+import "./pagination.css";
 import classNames from "classnames";
 import React from "react";
 
