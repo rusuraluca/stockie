@@ -11,12 +11,12 @@ const getPagesCut = ({ pagesCount, pagesCutCount, currentPage }: { pagesCount: n
     const floor = Math.floor(pagesCutCount / 2);
 
     if (pagesCount < pagesCutCount) {
-        return { start: 1, end: pagesCount + 1 };
+        return {start: 1, end: pagesCount + 1};
     } else if (currentPage <= ceiling) {
-        return { start: 1, end: pagesCutCount + 1 };
+        return {start: 1, end: pagesCutCount + 1};
     } else if (currentPage + ceiling >= pagesCount) {
-        return { start: pagesCount - pagesCutCount + 1, end: pagesCount + 1 };
-    } else {
+        return {start: pagesCount - pagesCutCount + 1, end: pagesCount + 1};
+    }else {
         return { start: currentPage - ceiling + 1, end: currentPage + floor + 1 };
     }
 };
@@ -36,12 +36,15 @@ const PaginationItem = ({ page, currentPage, onPageChange, isDisabled }: { page:
 
 const Pagination = ({ currentPage, total, limit, onPageChange }: { currentPage: number, total: number, limit: number, onPageChange: (page: number) => void }) => {
     const pagesCount = total;
-    const pagesCut = getPagesCut({ pagesCount, pagesCutCount: 5, currentPage });
+    const firstPages = range(1, 6);
+    const pagesCut = getPagesCut({ pagesCount, pagesCutCount: 10, currentPage });
     const pages = range(pagesCut.start, pagesCut.end);
-    const firstPages = range(1, 5);
-    const lastPages = range(total-5, total);
+    const lastPages = range(total-3, total+1);
     const isFirstPage = currentPage === 1;
     const isLastPage = currentPage === pagesCount;
+    const isFirstPages = firstPages.includes(currentPage);
+    const isLastPages = lastPages.includes(currentPage);
+
     return (
         <ul className="pagination">
             <PaginationItem
@@ -50,7 +53,7 @@ const Pagination = ({ currentPage, total, limit, onPageChange }: { currentPage: 
                 onPageChange={() => onPageChange(1)}
                 isDisabled={isFirstPage}
             />
-            {pagesCut.start != 1 && firstPages.map((page) => (
+            {!isFirstPages && firstPages.map((page) => (
                 <PaginationItem
                     page={page}
                     key={page}
@@ -80,7 +83,7 @@ const Pagination = ({ currentPage, total, limit, onPageChange }: { currentPage: 
                 onPageChange={() => onPageChange(currentPage + 1)}
                 isDisabled={isLastPage}
             />
-            {pagesCut.end != total && lastPages.map((page) => (
+            {!isLastPages && lastPages.map((page) => (
                 <PaginationItem
                     page={page}
                     key={page}
