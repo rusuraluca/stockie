@@ -80,6 +80,8 @@ companies = []
   end
 }
 
+print("companies done")
+
 stocks = []
 sid = companies[0].id
 eid = companies[companies.size-1].id
@@ -94,6 +96,8 @@ eid = companies[companies.size-1].id
   end
 }
 
+print("stocks done")
+
 users = []
 (1..1000).each {
   User.populate 1000 do |u|
@@ -106,6 +110,8 @@ users = []
     users << u
   end
 }
+
+print("users done")
 
 portfolios = []
 sid = users[0].id
@@ -121,6 +127,7 @@ eid = users[users.size-1].id
   end
 }
 
+print("portfolios done")
 
 spid = portfolios[0].id
 epid = portfolios[portfolios.size-1].id
@@ -138,6 +145,8 @@ esid = stocks[stocks.size-1].id
     end
   end
 }
+
+print("portfolios stocks done")
 
 =begin
 Company.all.each do |company|
