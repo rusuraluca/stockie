@@ -14,11 +14,6 @@ class CountPortfoliosStocksDto
                      .page(page)
                      .per(per_page)
 
-    stocks = Stock.find_by_sql("
-        SELECT * FROM stocks
-        INNER JOIN portfolios_stocks ON clients.id = orders.client_id
-        ORDER BY clients.created_at desc")
-
     raport_stocks = []
     stocks.each do |stock|
       raport_stocks << CountPortfoliosStocksDto.new(stock.id, stock.ticker, stock.portfolio_count)
