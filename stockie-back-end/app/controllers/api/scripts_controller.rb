@@ -7,9 +7,14 @@ class Api::ScriptsController < ApplicationController
     case params[:model]
     when 'users'
       count = User.all.count
-      1000.times do
+      usernames = User.pluck(:username)
+      10000.times do
+        username = Faker::Internet.unique.username
+        while usernames.include?(username)
+          username = Faker::Internet.unique.username
+        end
         user = User.create!(
-          username: Faker::Internet.unique.username,
+          username: username,
           password: 'Password12.',
           role: rand(1..3),
           user_id: @current_user.id
