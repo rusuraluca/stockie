@@ -1,4 +1,6 @@
 class Company < ApplicationRecord
   has_one :stock
-  validates :name, :country, presence: true
+  belongs_to :user
+
+  validates :name, :size, :country, :industry, presence: true
 end

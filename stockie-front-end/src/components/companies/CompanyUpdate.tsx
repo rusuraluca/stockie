@@ -1,124 +1,93 @@
-import {Container, CardContent, TextField, Typography, Box} from "@mui/material";
+import {Container, Box} from "@mui/material";
 import {useEffect, useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
-import { BACKEND_API_URL } from "../../constants";
+import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
+import {BACKEND_API_URL} from "../../constants";
 import axios from "axios";
-import {Company, CompanyError, TouchedFields} from "../../models/Company";
+import {Company} from "../../models/Company";
 import React from "react";
-import {Button} from "react-bootstrap";
+import {Button, Modal} from "react-bootstrap";
+import authHeader from "../../services/auth-header";
+import * as AuthService from "../../services/auth.service";
+import * as Yup from "yup";
+import {ErrorMessage, Field, Form, Formik} from "formik";
 
 export const CompanyUpdate = () => {
-    const { companyId } = useParams();
-    const navigate = useNavigate();
+    let navigate: NavigateFunction = useNavigate();
 
-    const [company, setCompany] = useState<Company>({
-        name: "",
-        size: 0,
-        country: "",
-        industry: "",
-    });
+    const [loading, setLoading] = useState<boolean>(false);
+    const [message, setMessage] = useState<string>("");
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
-    const [companyError, setCompanyError] = useState<CompanyError>({
-        generic: "",
-        name: "",
-        country: "",
-    });
+    const {companyId} = useParams();
+    const [company, setCompany] = useState<Company>();
 
-    const [touchedFields, setTouchedFields] = useState<TouchedFields>({
-        name: false,
-        size: false,
-        country: false,
-        industry: false,
-    });
+    const [currentUserRole] = useState<string | undefined>(AuthService.getCurrentUserRole());
+    const [currentUserId] = useState<string | undefined>(AuthService.getCurrentUserId());
 
     useEffect(() => {
-        const fetchCompany = async () => {
-            const response = await fetch(`${BACKEND_API_URL}/companies/${companyId}`);
-            const company = await response.json();
-            setCompany(company);
-        };
-        fetchCompany();
-    }, [companyId]);
+        fetch(`${BACKEND_API_URL}/companies/${companyId}`, {headers: authHeader()})
+            .then((response) => response.json())
+            .then((data) => {
+                setCompany(data);
+            });
+    }, []);
 
-    const validateCompanyData = () => {
-        setCompanyError((prevError) => ({
-            ...prevError,
-            name: "",
-            country: "",
-        }));
+    const validationSchema = Yup.object().shape({
+        name: Yup.string()
+            .typeError("The industry of the company must be a string!")
+            .required("This field is required!"),
+        country: Yup.string()
+            .typeError("The industry of the company must be a string!")
+            .required("This field is required!"),
+        size: Yup.number()
+            .typeError("The size of the company must be a number!")
+            .positive("The size of the company must be greater than zero!")
+            .required("This field is required!"),
+        industry: Yup.string()
+            .typeError("The industry of the company must be a string!")
+            .required("This field is required!"),
+    });
 
-        if (company.name === "") {
-            setCompanyError((prevError) => ({
-                ...prevError,
-                name: "Name is required",
-            }));
-        }
-        if (company.country === "") {
-            setCompanyError((prevError) => ({
-                ...prevError,
-                country: "Country is required",
-            }));
-        };
-    }
+    const handleUpdate = (formValue: { name: string; size: number; country: string; industry: string; }) => {
+        if (currentUserRole === "admin"
+            || currentUserRole === "moderator"
+            || (currentUserRole === "regular" && currentUserId == company?.user_id)) {
+            const {name, size, country, industry} = formValue;
 
-    useEffect(() => {
-        validateCompanyData();
-    }, [company]);
+            setMessage("");
+            setLoading(true);
 
-    const handleUpdate = async () => {
-        setTouchedFields((prevTouched) => ({
-            ...prevTouched,
-            name: true,
-            size: true,
-            country: true,
-            industry: true,
-        }));
+            const updatedCompany = {
+                name: name,
+                size: size,
+                country: country,
+                industry: industry,
+                user_id: currentUserId,
+            };
 
-        validateCompanyData();
+            axios.put(`${BACKEND_API_URL}/companies/${companyId}`, updatedCompany, {headers: authHeader()}).then(
+                () => {
+                    navigate(`/companies/${companyId}/details`);
+                    return;
+                },
+                (error) => {
+                    const resMessage =
+                        (error.response &&
+                            error.response.data &&
+                            error.response.data.message) ||
+                        error.message ||
+                        error.toString();
 
-        if (companyError.name !== "" || companyError.country !== "" ) return;
-
-        const updatedCompany = {
-            name: company.name,
-            size: Number(company.size),
-            country: company.country,
-            industry: company.industry,
-        };
-
-        try {
-            const response = await axios.put(`${BACKEND_API_URL}/companies/${companyId}`, updatedCompany);
-            if (response.status === 200) {
-                navigate("/companies");
-                return;
-            }
-            setCompanyError((prevError) => ({
-                ...prevError,
-                generic: "Something went wrong! Make sure you filled all the fields correctly.",
-            }));
-        } catch (error: any) {
-            if (error.response.data) {
-                if (error.response.data.name) {
-                    setCompanyError((prevError) => ({
-                        ...prevError,
-                        name: error.response.data.name,
-                    }));
-                    setCompany((prevCompany) => ({...prevCompany, name: ""}));
+                    setLoading(false);
+                    setMessage(resMessage);
                 }
-                if (error.response.data.country) {
-                    setCompanyError((prevError) => ({
-                        ...prevError,
-                        country: error.response.data.country,
-                    }));
-                    setCompany((prevCompany) => ({...prevCompany, country: ""}));
-                }
-            } else {
-                setCompanyError((prevError) => ({
-                    ...prevError,
-                    generic: "Something went wrong! Make sure you filled all the fields correctly.",
-                }));
-            }
+            );
+        } else {
+            handleShow()
         }
-    }
+    };
 
     const handleCancel = (event: { preventDefault: () => void }) => {
         event.preventDefault();
@@ -128,70 +97,92 @@ export const CompanyUpdate = () => {
     return (
         <Container>
             <h1 style={{margin: "24px 0"}}>Update company:</h1>
-            {companyError.generic && (
-                <Typography variant="body2" sx={{ color: "#e64545", mb: 4}}>
-                    {companyError.generic}
-                </Typography>
-            )}
             <Box>
-                    <TextField
-                        id="name"
-                        name="name"
-                        label="Name"
-                        variant="outlined"
-                        value={company?.name}
-                        fullWidth
-                        sx={{ mb: 2 }}
-                        onChange={(event) => setCompany((prevCompany) => ({ ...prevCompany, name: event.target.value }))}
-                        error={!!companyError.name && !!touchedFields.name}
-                        helperText={companyError.name}
-                        onBlur={(event) =>
-                            setTouchedFields((prevTouched) => ({
-                                ...prevTouched,
-                                name: true,
-                            }))
-                        }
-                    />
-                    <TextField
-                        id="size"
-                        name="size"
-                        label="Company Size"
-                        variant="outlined"
-                        value={company?.size}
-                        fullWidth
-                        sx={{ mb: 2 }}
-                        onChange={(event) => setCompany((prevCompany) => ({ ...prevCompany, size: Number(event.target.value) }))}
-                    />
-                    <TextField
-                        id="country"
-                        name="country"
-                        label="Country"
-                        variant="outlined"
-                        value={company?.country}
-                        fullWidth
-                        sx={{ mb: 2 }}
-                        onChange={(event) => setCompany((prevCompany) => ({ ...prevCompany, country: event.target.value }))}
-                        error={!!companyError.country && !!touchedFields.country}
-                        helperText={companyError.country}
-                        onBlur={(event) =>
-                            setTouchedFields((prevTouched) => ({
-                                ...prevTouched,
-                                country: true,
-                            }))
-                        }
-                    />
-                    <TextField
-                        id="industry"
-                        name="industry"
-                        label="Industry"
-                        variant="outlined"
-                        value={company?.industry}
-                        fullWidth
-                        sx={{ mb: 2 }}
-                        onChange={(event) => setCompany((prevCompany) => ({ ...prevCompany, industry: event.target.value }))}
-                    />
-                    <Button style={{ margin:"24px 24px 0 0" }} variant="primary"  onClick={() => handleUpdate()}>Update company</Button>
-                    <Button style={{ margin:"24px 24px 0 0" }} variant="danger" onClick={handleCancel}>Cancel</Button>
+                {company && (
+                    <Formik
+                        initialValues={{
+                            name: company.name,
+                            size: company.size,
+                            country: company.country,
+                            industry: company.industry
+                        }}
+                        validationSchema={(currentUserRole === "regular" && currentUserId == company?.user_id) || currentUserRole === "admin" || currentUserRole === "moderator" ? validationSchema : Yup.object()}
+                        onSubmit={handleUpdate}
+                    >
+                        <Form>
+                            <div className="form-group">
+                                <label htmlFor="name">Name</label>
+                                <Field name="name" type="text" className="form-control"/>
+                                <ErrorMessage
+                                    name="name"
+                                    component="div"
+                                    className="alert alert-danger"
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label htmlFor="size">Size</label>
+                                <Field name="size" type="number" className="form-control"/>
+                                <ErrorMessage
+                                    name="size"
+                                    component="div"
+                                    className="alert alert-danger"
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label htmlFor="country">Country</label>
+                                <Field name="country" type="text" className="form-control"/>
+                                <ErrorMessage
+                                    name="country"
+                                    component="div"
+                                    className="alert alert-danger"
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label htmlFor="industry">Industry</label>
+                                <Field name="industry" type="text" className="form-control"/>
+                                <ErrorMessage
+                                    name="industry"
+                                    component="div"
+                                    className="alert alert-danger"
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <button type="submit" className="btn btn-primary btn-block mt-3" disabled={loading}>
+                                    {loading && (
+                                        <span className="spinner-border spinner-border-sm"></span>
+                                    )}
+                                    <span>Update company</span>
+                                </button>
+                            </div>
+
+                            {message && (
+                                <div className="form-group">
+                                    <div className="alert alert-danger" role="alert">
+                                        {message}
+                                    </div>
+                                </div>
+                            )}
+
+                            {show && (
+                                <Modal show={show} onHide={handleClose} centered>
+                                    <Modal.Header closeButton>
+                                        <Modal.Title>Error</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>You must be an <b>authenticated moderator or admin</b> to perform this operation!</Modal.Body>
+                                    <Modal.Footer>
+                                        <Button variant="danger" onClick={handleClose}>Understood</Button>
+                                    </Modal.Footer>
+                                </Modal>
+                            )}
+
+                            <Button style={{margin: "24px 24px 0 0"}} variant="danger" onClick={handleCancel}>Cancel</Button>
+                        </Form>
+                    </Formik>
+                )}
             </Box>
         </Container>
     );

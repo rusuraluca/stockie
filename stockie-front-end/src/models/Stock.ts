@@ -1,4 +1,5 @@
 import {Company} from "./Company";
+import {User} from "./User";
 
 export interface Stock {
     id?: number;
@@ -8,4 +9,6 @@ export interface Stock {
     max_price: number;
     company_id?: number;
     company?: Company;
+    user_id?: number;
+    user?: User;
 }

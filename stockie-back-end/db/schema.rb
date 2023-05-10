@@ -10,9 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_10_074246) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_10_094538) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "admin_settings", force: :cascade do |t|
+    t.integer "per_page"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "companies", force: :cascade do |t|
     t.text "name"
@@ -22,6 +28,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_10_074246) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "description"
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_companies_on_user_id"
   end
 
   create_table "portfolio_stocks", force: :cascade do |t|
@@ -54,22 +62,43 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_10_074246) do
     t.bigint "company_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
     t.index ["company_id"], name: "index_stocks_on_company_id"
+    t.index ["user_id"], name: "index_stocks_on_user_id"
+  end
+
+  create_table "user_accounts", force: :cascade do |t|
+    t.string "name"
+    t.string "bio"
+    t.date "birthday"
+    t.string "gender"
+    t.text "address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_user_accounts_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
-    t.text "first_name"
-    t.text "last_name"
-    t.text "email"
-    t.text "password"
-    t.text "address"
-    t.date "birthday"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "username"
+    t.string "password"
+    t.string "confirmation_code"
+    t.datetime "confirmation_code_expires_at"
+    t.datetime "confirmed_at"
+    t.string "password_digest"
+    t.integer "role", default: 0
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_users_on_user_id"
   end
 
+  add_foreign_key "companies", "users"
   add_foreign_key "portfolio_stocks", "portfolios"
   add_foreign_key "portfolio_stocks", "stocks"
   add_foreign_key "portfolios", "users"
   add_foreign_key "stocks", "companies"
+  add_foreign_key "stocks", "users"
+  add_foreign_key "user_accounts", "users"
+  add_foreign_key "users", "users"
 end

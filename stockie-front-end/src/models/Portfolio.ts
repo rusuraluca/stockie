@@ -1,5 +1,4 @@
 import {User} from "./User";
-import {Stock} from "./Stock";
 
 export interface Portfolio {
     id?: number;
@@ -7,7 +6,7 @@ export interface Portfolio {
     industry: string;
     public: boolean;
     active: boolean;
+    stocks?: number[];
     user_id?: number;
     user?: User;
-    stocks?: number[];
 }

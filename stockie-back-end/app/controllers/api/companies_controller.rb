@@ -1,18 +1,27 @@
 class Api::CompaniesController < ApplicationController
-  before_action :set_company, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, only: [:create, :update, :destroy]
+
+  before_action :require_admin, only: [:create, :update, :destroy]
+  before_action :require_moderator, only: [:create, :update, :destroy]
+  before_action :require_regular, only: [:create, :update, :destroy]
+
+  before_action :set_company, only: [:show, :update, :destroy]
 
   def index
-    if params[:stock_id]
+    if params[:user_id]
+      @companies = Company.where(user_id: params[:user_id]).order(:id).page(params[:page]).per(AdminSetting.per_page)
+      render json: { companies: @companies, totalCompanies: @companies.total_pages }, include: [:user], status: :ok
+    elsif params[:stock_id]
       @stock = Stock.find(params[:stock_id])
-      render json: @stock.company
+      render json: @stock.company, status: :ok
     else
-      @companies = Company.where('').order(:id).page params[:page]
-      render json: { companies: @companies, totalCompanies: @companies.total_pages },  include: [:stock]
+      @companies = Company.where('').order(:id).page(params[:page]).per(AdminSetting.per_page)
+      render json: { companies: @companies, totalCompanies: @companies.total_pages }, include: [:stock, :user], status: :ok
     end
   end
 
   def show
-    render json: @company
+    render json: @company, include: [:stock, :user], status: :ok
   end
 
   def autocomplete
@@ -23,36 +32,46 @@ class Api::CompaniesController < ApplicationController
     end
   end
 
-  def new
-    @company = Company.new
-  end
-
   def create
     @company = Company.create(company_params)
-
     if @company.save
-      render json: @company
+      render json: @company, status: :ok
     else
-      render json: @company.errors, status: :unprocessable_entity
+      render json: { errors: ['Can not create'] }, status: :unprocessable_entity
     end
   end
 
-  def edit
-  end
-
   def update
-    if @company.update(company_params)
-      render json: @company
+    if @current_user.role == "regular"
+      if @current_user == @company.user && @company.update(company_params)
+        render json: @company, status: :ok
+      else
+        render json: { errors: ['Can not update'] }, status: :unprocessable_entity
+      end
     else
-      render json: @company.errors, status: :unprocessable_entity
+      if @company.update(company_params)
+        render json: @company, status: :ok
+      else
+        render json: { errors: ['Can not update'] }, status: :unprocessable_entity
+      end
     end
   end
 
   def destroy
-    @company.destroy
-    render json: @company
+    if @current_user.role == "regular"
+      if @current_user == @company.user && @company.destroy
+        render json: @company, status: :ok
+      else
+        render json: { errors: ['Can not delete'] }, status: :unprocessable_entity
+      end
+    else
+      if @company.destroy
+        render json: @company, status: :ok
+      else
+        render json: { errors: ['Can not delete'] }, status: :unprocessable_entity
+      end
+    end
   end
-
 
   private
   def set_company
@@ -60,6 +79,6 @@ class Api::CompaniesController < ApplicationController
   end
 
   def company_params
-    params.require(:company).permit(:name, :size, :country, :industry, :description)
+    params.require(:company).permit(:name, :size, :country, :industry, :user_id)
   end
 end

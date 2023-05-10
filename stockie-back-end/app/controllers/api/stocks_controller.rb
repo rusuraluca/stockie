@@ -1,39 +1,45 @@
 class Api::StocksController < ApplicationController
-  before_action :set_stock, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, only: [:create, :update, :destroy]
+
+  before_action :require_regular, only: [:create, :update, :destroy]
+  before_action :require_moderator, only: [:create, :update, :destroy]
+  before_action :require_admin, only: [:create, :update, :destroy]
+
+  before_action :set_stock, only: [:show, :update, :destroy]
 
   def index
-    if params[:price].present? && params[:price].to_f >= 0
+    if params[:user_id]
+      @stocks = Stock.where(user_id: params[:user_id])
+      render json: @stocks
+
+    elsif params[:price].present? && params[:price].to_f >= 0
       stocks = Stock.where('current_price > ?', params[:price].to_f)
-      @stocks = stocks.order(:current_price).page(params[:page]).per(25)
-      render json: { stocks: @stocks, total: @stocks.total_pages }
+      @stocks = stocks.order(:current_price).page(params[:page]).per(AdminSetting.per_page)
+      render json: { stocks: @stocks, totalStocks: @stocks.total_pages }, status: :ok
 
     elsif params[:user_id] and params[:portfolio_id]
       @user = User.find_by(id: params[:user_id])
       @portfolio = @user.portfolios.where(id: params[:portfolio_id])
       @stocks = @portfolio.map(&:stocks)
-      render json: { user: @user, portfolio: @portfolio, stocks: @stocks}
+      render json: { user: @user, portfolio: @portfolio, stocks: @stocks}, status: :ok
 
     elsif params[:portfolio_id]
       @portfolio = Portfolio.where(id: params[:portfolio_id])
       @stocks = @portfolio.map(&:stocks)
-      render json: { portfolio: @portfolio, stocks: @stocks}
+      render json: { portfolio: @portfolio, stocks: @stocks}, status: :ok
 
     elsif params[:company_id]
       @stock = Stock.find_by(company_id: params[:company_id])
-      render json: @stock
+      render json: @stock, include: [:user], status: :ok
 
     else
-      @stocks = Stock.order(:id).page params[:page]
-      render  json: { stocks: @stocks, totalStocks: @stocks.total_pages },  include: [:company]
+      @stocks = Stock.order(:id).page(params[:page]).per(AdminSetting.per_page)
+      render  json: { stocks: @stocks, totalStocks: @stocks.total_pages }, include: [:company, :user], status: :ok
     end
   end
 
   def show
-    if params[:user_id]
-      render json: { user: @user, stock: @stock, portfolio: @portfolio }
-    else
-      render json: @stock, include: [:company]
-    end
+    render json: @stock, include: [:user, :company], status: :ok
   end
 
   def autocomplete
@@ -44,11 +50,8 @@ class Api::StocksController < ApplicationController
     end
   end
 
-  def new
-    @stock = Stock.new
-  end
-
   def create
+=begin
     if params[:portfolio_id] and stocks_params[:stocks]
       @portfolio =  Portfolio.find_by(id: params[:portfolio_id])
       msg = []
@@ -86,43 +89,54 @@ class Api::StocksController < ApplicationController
         render json: @stock.error, status: :unprocessable_entity
       end
     else
-      @stock = Stock.create(stock_params)
-      if @stock.save
-        render json: @stock
+=end
+    @stock = Stock.create(stock_params)
+    if @stock.save
+      render json: @stock, status: :ok
+    else
+      render json: { error: "Can not create" }, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    if @current_user.role == "regular"
+      if @current_user == @stock.user && @stock.update(stock_params)
+        render json: @stock, status: :ok
       else
-        render json: @stock.errors, status: :unprocessable_entity
+        render json: { errors: ['Can not update'] }, status: :unprocessable_entity
+      end
+    else
+      if @stock.update(stock_params)
+        render json: @stock, status: :ok
+      else
+        render json: { errors: ['Can not update'] }, status: :unprocessable_entity
       end
     end
   end
 
-  def edit
-  end
-
-  def update
-    if @stock.update(stock_params)
-      render json: @stock
-    else
-      render json: @stock.errors, status: :unprocessable_entity
-    end
-  end
-
   def destroy
-    @stock.destroy
-    render json: @stock
+    if @current_user.role == "regular"
+      if @current_user == @stock.user
+        @stock.destroy
+        render json: @stock, status: :ok
+      else
+        render json: { errors: ['Can not delete'] }, status: :unprocessable_entity
+      end
+    else
+      if @stock.destroy
+        render json: @stock, status: :ok
+      else
+        render json: { errors: ['Can not delete'] }, status: :unprocessable_entity
+      end
+    end
   end
 
   private
   def set_stock
     @stock = Stock.find_by(id: params[:id])
-    @user = User.find_by(id: params[:user_id])
-    @portfolio = Portfolio.joins(:stocks).where(stocks: { id: params[:id] }, user_id: params[:user_id])
   end
 
   def stock_params
-    params.require(:stock).permit(:ticker, :current_price, :min_price, :max_price, :company_id)
-  end
-
-  def stocks_params
-    params.permit(stocks: [:id])
+    params.require(:stock).permit(:ticker, :current_price, :min_price, :max_price, :company_id, :user_id)
   end
 end

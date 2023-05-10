@@ -1,15 +1,14 @@
-import { CssBaseline, Container, Typography } from "@mui/material";
+import {Typography} from "@mui/material";
 import React from "react";
 
 export const AppHome = () => {
     return (
-        <React.Fragment>
-            <CssBaseline />
-            <Container maxWidth="xl">
-                <Typography variant="h1" component="h1" gutterBottom>
+        <div className="container">
+            <header className="jumbotron">
+                <Typography variant="h3">
                     Welcome!
                 </Typography>
-            </Container>
-        </React.Fragment>
+            </header>
+        </div>
     );
 };
