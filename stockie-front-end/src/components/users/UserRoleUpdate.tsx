@@ -38,15 +38,9 @@ export const UserRoleUpdate = () => {
         role: Yup.string()
             .typeError("The role of the user must be a string!")
             .required("This field is required!")
-            .test(
-                "number",
-                "The role must be a number between 1 and 3.",
-                (val: any) =>
-                    val
-            ),
     });
 
-    const handleUpdate = (formValue: { role: number; }) => {
+    const handleUpdate = (formValue: { role: string; }) => {
         if (currentUserRole === "admin" && user){
             const {role} = formValue;
 
@@ -92,7 +86,7 @@ export const UserRoleUpdate = () => {
                 {user && (
                     <Formik
                         initialValues={{
-                            role: user.role,
+                            role: user?.role || "",
                         }}
                         validationSchema={currentUserRole === "admin" ? validationSchema : Yup.object()}
                         onSubmit={handleUpdate}

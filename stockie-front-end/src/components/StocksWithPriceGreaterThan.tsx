@@ -78,7 +78,6 @@ export const StocksWithPriceGreaterThan = () => {
                     <Pagination
                     currentPage={currentPage}
                     total={totalInstances}
-                    limit={25}
                     onPageChange={handlePageChange}
                     />
                 </div>
