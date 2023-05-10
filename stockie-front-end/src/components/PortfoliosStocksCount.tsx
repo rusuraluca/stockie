@@ -54,7 +54,6 @@ export const PortfoliosStocksCount = () => {
                     <Pagination
                         currentPage={currentPage}
                         total={totalInstances}
-                        limit={25}
                         onPageChange={(page) => setCurrentPage(page)}
                     />
                 </div>

@@ -134,7 +134,7 @@ export const UserUpdate = () => {
         <Container>
             <h1 style={{margin: "24px 0"}}>Update user:</h1>
             <Box>
-                { user && (
+                { user && userAccount && (
                 <Formik
                     initialValues={{
                         username: user?.username,
