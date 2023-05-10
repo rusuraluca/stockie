@@ -3,7 +3,7 @@ class Portfolio < ApplicationRecord
   has_many :portfolio_stocks
   has_many :stocks, through: :portfolio_stocks
 
-  validates :name, :user, presence: true
+  validates :name, :industry, :user, presence: true
 
   accepts_nested_attributes_for :stocks
 end

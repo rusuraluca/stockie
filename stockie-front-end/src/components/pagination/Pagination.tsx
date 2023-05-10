@@ -1,6 +1,6 @@
 import "./Pagination.css";
 import classNames from "classnames";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const range = (start: number, end: number) => {
     return [...Array(end - start).keys()].map((el) => el + start);
@@ -34,7 +34,7 @@ const PaginationItem = ({ page, currentPage, onPageChange, isDisabled }: { page:
     );
 };
 
-const Pagination = ({ currentPage, total, limit, onPageChange }: { currentPage: number, total: number, limit: number, onPageChange: (page: number) => void }) => {
+const Pagination = ({ currentPage, total, onPageChange }: { currentPage: number, total: number, onPageChange: (page: number) => void }) => {
     const pagesCount = total;
     const firstPages = range(1, 6);
     const pagesCut = getPagesCut({ pagesCount, pagesCutCount: 10, currentPage });

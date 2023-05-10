@@ -1,18 +1,46 @@
-import { Container, CardContent } from "@mui/material";
-import { Button } from "react-bootstrap";
-import { useNavigate, useParams } from "react-router-dom";
+import {Container, Box} from "@mui/material";
+import {Button, Modal} from "react-bootstrap";
+import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 import { BACKEND_API_URL } from "../../constants";
-import React from "react";
+import React, {useEffect, useState} from "react";
+import authHeader from "../../services/auth-header";
+import * as AuthService from "../../services/auth.service";
+import {Stock} from "../../models/Stock";
 
 export const StocksDelete = () => {
-    const { stockId } = useParams();
-    const navigate = useNavigate();
+    let navigate: NavigateFunction = useNavigate();
 
-    const handleDelete = async (event: { preventDefault: () => void }) => {
-        event.preventDefault();
-        await axios.delete(`${BACKEND_API_URL}/stocks/${stockId}`);
-        navigate("/stocks");
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    const {stockId} = useParams();
+    const [stock, setStock] = useState<Stock>();
+
+    const [currentUserRole] = useState<string | undefined>(AuthService.getCurrentUserRole());
+    const [currentUserId] = useState<string | undefined>(AuthService.getCurrentUserId());
+
+    useEffect(() => {
+        fetch(`${BACKEND_API_URL}/stocks/${stockId}`, {headers: authHeader()})
+            .then((response) => response.json())
+            .then((data) => {
+                setStock(data);
+            });
+    }, []);
+
+    const handleDelete = () => {
+        if (currentUserRole === "admin"
+            || currentUserRole === "moderator"
+            || (currentUserRole === "regular" && currentUserId == stock?.user_id)) {
+            axios.delete(`${BACKEND_API_URL}/stocks/${stockId}`, {headers: authHeader()}).then(
+                () => {
+                    navigate("/stocks");
+                    return;
+                });
+        } else {
+            handleShow()
+        }
     };
 
     const handleCancel = (event: { preventDefault: () => void }) => {
@@ -23,11 +51,24 @@ export const StocksDelete = () => {
     return (
         <Container>
             <h1 style={{margin: "24px 0"}}>Delete stock:</h1>
-            <CardContent>
-                <p><b>Are you sure you want to delete this stock? This cannot be undone!</b></p>
-                <Button style={{ margin:"24px 24px 0 0" }} variant="danger" onClick={handleDelete}>Delete stock</Button>{' '}
-                <Button style={{ margin:"24px 24px 0 0" }} onClick={handleCancel} variant="primary">Cancel</Button>{' '}
-            </CardContent>
+            <Box>
+                {show && (
+                    <Modal show={show} onHide={handleClose} centered>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Error</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>You must be an <b>authenticated admin/moderator</b> to perform this
+                            operation!</Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="danger" onClick={handleClose}>
+                                Understood
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+                )}
+                <Button style={{margin: "24px 24px 0 0"}} variant="danger" onClick={handleDelete}>Delete stock</Button>
+                <Button style={{margin: "24px 24px 0 0"}} variant="primary" onClick={handleCancel}>Cancel</Button>
+            </Box>
         </Container>
     );
 };

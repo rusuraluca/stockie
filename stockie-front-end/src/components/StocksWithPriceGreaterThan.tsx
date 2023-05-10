@@ -4,6 +4,7 @@ import { Stock } from "../models/Stock";
 import Pagination from "./pagination/Pagination";
 import {CircularProgress, Container} from "@mui/material";
 import Table from "react-bootstrap/Table";
+import authHeader from "../services/auth-header";
 
 export const StocksWithPriceGreaterThan = () => {
     const [loading, setLoading] = useState(false);
@@ -27,7 +28,7 @@ export const StocksWithPriceGreaterThan = () => {
             .then((response) => response.json())
             .then((data) => {
                 setStocks(data.stocks);
-                setTotalInstances(data.total);
+                setTotalInstances(data.totalStocks);
                 setLoading(false);
             })
             .catch((error) => {

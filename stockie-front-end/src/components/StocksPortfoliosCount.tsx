@@ -5,6 +5,7 @@ import { BACKEND_API_URL } from "../constants";
 import { PortfoliosCountStocks } from "../models/PortfoliosCountStocks";
 import {CircularProgress, Container} from "@mui/material";
 import Pagination from './pagination/Pagination';
+import authHeader from "../services/auth-header";
 
 export const StocksPortfoliosCount = () => {
     const [loading, setLoading] = useState(false);
@@ -14,7 +15,7 @@ export const StocksPortfoliosCount = () => {
 
     useEffect(() => {
         setLoading(true);
-        fetch(`${BACKEND_API_URL}/count_portfolios_stocks/page/${currentPage}`)
+        fetch(`${BACKEND_API_URL}/count_portfolios_stocks/page/${currentPage}`, { headers: authHeader() })
             .then((response) => response.json())
             .then((data) => {
                 setStocks(data.raport);

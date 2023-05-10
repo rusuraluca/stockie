@@ -1,4 +1,5 @@
 import {Stock} from "./Stock";
+import {User} from "./User";
 
 export interface Company {
     id?: number;
@@ -7,17 +8,6 @@ export interface Company {
     country: string;
     industry: string;
     stock?: Stock;
-}
-
-export interface CompanyError {
-    generic: string,
-    name: string;
-    country: string;
-}
-
-export interface TouchedFields {
-    name: boolean;
-    size: boolean;
-    country: boolean;
-    industry: boolean;
+    user_id?: number;
+    user?: User;
 }
