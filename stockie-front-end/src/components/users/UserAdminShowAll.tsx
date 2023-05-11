@@ -34,9 +34,6 @@ export const UserAdminShowAll = () => {
     return (
         <Container>
             <h1 style={{margin: "24px 0"}}>All users</h1>
-            <div>
-                <Button style={{margin: "24px 0"}} variant="primary" href={`/users/add`}>Add a new user</Button>
-            </div>
             {loading && <CircularProgress/>}
             {!loading && users.length === 0 && <p>No users found</p>}
             {!loading && users.length > 0 && (
