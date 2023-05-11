@@ -55,6 +55,7 @@ export const UserAdminShowAll = () => {
                                 <td align="left">
                                         <Button style={{margin: "5px 5px 5px 5px"}} variant="success" href={`/users/${user.id}/edit_role`}>
                                             <EditIcon style={{color: "white"}}/>
+                                            Change role
                                         </Button>
                                 </td>
                             </tr>
