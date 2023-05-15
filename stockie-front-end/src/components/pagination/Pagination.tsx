@@ -1,4 +1,4 @@
-import "./pagination.css";
+import "./Pagination.css";
 import classNames from "classnames";
 import React from "react";
 
@@ -34,7 +34,7 @@ const PaginationItem = ({ page, currentPage, onPageChange, isDisabled }: { page:
     );
 };
 
-const Pagination = ({ currentPage, total, limit, onPageChange }: { currentPage: number, total: number, limit: number, onPageChange: (page: number) => void }) => {
+const Pagination = ({ currentPage, total, onPageChange }: { currentPage: number, total: number, onPageChange: (page: number) => void }) => {
     const pagesCount = total;
     const pagesCut = getPagesCut({ pagesCount, pagesCutCount: 5, currentPage });
     const pages = range(pagesCut.start, pagesCut.end);
