@@ -54,11 +54,13 @@ export const PortfoliosShowAll = () => {
                             <tr key={portfolio.id}>
                                 <td align="left">{portfolio.name}</td>
                                 <td align="left">{portfolio.stocks?.length}</td>
-                                <Link href={`/users/${portfolio.user?.id}/details`}>
-                                    <td align="left">{portfolio.user?.username}</td>
-                                </Link>
                                 <td align="left">
-                                    <Button style={{margin: "5px 5px 5px 5px"}} variant="dark" href={`/portfolios/${portfolio.id}/details`}>
+                                    <Link href={`/users/${portfolio.user?.id}/details`}>
+                                        {portfolio.user?.username}
+                                    </Link>
+                                </td>
+                                <td align="left">
+                                    <Button className="btn" style={{margin: "5px 5px 5px 5px"}} variant="dark" href={`/portfolios/${portfolio.id}/details`}>
                                         <ReadMoreIcon style={{color: "white"}}/>
                                         View portfolio details
                                     </Button>
