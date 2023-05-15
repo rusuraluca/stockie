@@ -1,0 +1,505 @@
+Started GET "/api/portfolios/page/1" for 127.0.0.1 at 2023-05-15 19:05:40 +0300
+  [1m[36mActiveRecord::SchemaMigration Pluck (7.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::PortfoliosController#index as */*
+  Parameters: {"page"=>"1"}
+  [1m[36mAdminSetting Load (6.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/models/admin_setting.rb:3:in `per_page'
+  [1m[36mPortfolio Count (524.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mPortfolio Load (1.6ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 15], ["OFFSET", 0]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (16.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1013224], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (37.0ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000036]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (2.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1016482], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.5ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000037]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (1.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1016197], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.5ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000038]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (1.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1018283], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.7ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000039]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (1.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1019147], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.7ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000040]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (4.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1010666], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.6ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000041]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (1.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1019451], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.5ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000042]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (3.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1020233], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (11.4ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000043]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (3.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1014903], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.4ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000044]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (5.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1011959], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000045]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (2.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1014954], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.4ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000046]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (2.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1011713], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (5.8ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000047]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (45.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1012051], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (2.1ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000048]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (1.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1012919], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000049]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (5.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1015840], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.4ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000050]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+Completed 200 OK in 1018ms (Views: 203.1ms | ActiveRecord: 772.1ms | Allocations: 70076)
+
+
+Started GET "/api/portfolios/page/1" for 127.0.0.1 at 2023-05-15 19:05:41 +0300
+Processing by Api::PortfoliosController#index as */*
+  Parameters: {"page"=>"1"}
+  [1m[36mAdminSetting Load (0.9ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/models/admin_setting.rb:3:in `per_page'
+  [1m[36mPortfolio Count (76.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mPortfolio Load (0.9ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 15], ["OFFSET", 0]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1013224], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000036]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1016482], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000037]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1016197], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.4ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000038]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1018283], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000039]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1019147], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.4ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000040]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1010666], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000041]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1019451], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000042]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1020233], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000043]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1014903], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000044]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1011959], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.4ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000045]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1014954], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000046]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1011713], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.7ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000047]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1012051], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.6ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000048]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1012919], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (21.5ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000049]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1015840], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.6ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000050]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+Completed 200 OK in 258ms (Views: 128.8ms | ActiveRecord: 110.3ms | Allocations: 37556)
+
+
+Started GET "/api/portfolios/page/5" for 127.0.0.1 at 2023-05-15 19:05:43 +0300
+Processing by Api::PortfoliosController#index as */*
+  Parameters: {"page"=>"5"}
+  [1m[36mAdminSetting Load (0.8ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/models/admin_setting.rb:3:in `per_page'
+  [1m[36mPortfolio Count (53.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 15], ["OFFSET", 60]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (2.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1012117], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (1.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000096]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (2.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1015011], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000097]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (1.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1013006], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000098]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (2.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1017378], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000099]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (3.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1010508], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.4ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000100]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (4.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1015148], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000101]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (1.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1013675], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000102]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1015939], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.5ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000103]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (4.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1018527], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000104]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1013815], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000105]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1013087], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000106]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (1.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1012971], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000107]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1019305], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.5ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000108]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (2.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1019297], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000109]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1015814], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.5ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000110]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+Completed 200 OK in 186ms (Views: 89.9ms | ActiveRecord: 91.6ms | Allocations: 37442)
+
+
+Started GET "/api/portfolios/page/7" for 127.0.0.1 at 2023-05-15 19:05:45 +0300
+Processing by Api::PortfoliosController#index as */*
+  Parameters: {"page"=>"7"}
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/models/admin_setting.rb:3:in `per_page'
+  [1m[36mPortfolio Count (52.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mPortfolio Load (0.5ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 15], ["OFFSET", 90]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1012026], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000126]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (2.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1014089], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.4ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000127]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1012306], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000128]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (2.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1019861], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000129]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (11.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1014044], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.7ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000130]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (5.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1016777], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.4ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000131]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1016494], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (2.7ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000132]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1013099], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.6ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000133]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1015798], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000134]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (20.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1019816], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.4ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000135]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1013244], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.5ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000136]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (36.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1017655], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (2.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000137]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1012994], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.7ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000138]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (3.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1010484], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000139]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (10.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1017955], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.4ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000140]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+Completed 200 OK in 308ms (Views: 144.3ms | ActiveRecord: 160.0ms | Allocations: 37432)
+
+
+Started GET "/api/portfolios/page/9" for 127.0.0.1 at 2023-05-15 19:05:46 +0300
+Processing by Api::PortfoliosController#index as */*
+  Parameters: {"page"=>"9"}
+  [1m[36mAdminSetting Load (0.4ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/models/admin_setting.rb:3:in `per_page'
+  [1m[36mPortfolio Count (75.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mPortfolio Load (2.7ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 15], ["OFFSET", 120]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1010971], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (12.1ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000156]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1012857], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.4ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000157]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1014005], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.5ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000158]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (35.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1014736], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.5ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000159]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (37.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1016666], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.7ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000160]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (7.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1014336], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (1.1ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000161]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1019893], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000162]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1012491], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (1.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000163]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (1.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1015416], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000164]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1015171], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.6ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000165]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (3.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1011406], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (7.0ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000166]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (3.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1016962], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (1.1ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000167]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1010406], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (1.8ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000168]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (3.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1016907], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (2.9ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000169]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1016259], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000170]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+Completed 200 OK in 362ms (Views: 148.9ms | ActiveRecord: 206.3ms | Allocations: 37432)
+
+
+Started GET "/api/portfolios/page/10" for 127.0.0.1 at 2023-05-15 19:05:47 +0300
+Processing by Api::PortfoliosController#index as */*
+  Parameters: {"page"=>"10"}
+  [1m[36mAdminSetting Load (0.4ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/models/admin_setting.rb:3:in `per_page'
+  [1m[36mPortfolio Count (43.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mPortfolio Load (0.6ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 15], ["OFFSET", 135]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1018651], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000171]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1016647], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000172]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1013857], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.4ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000173]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1014975], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.4ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000174]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1019248], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000175]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1017021], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000176]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1017728], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000177]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (1.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1014511], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.6ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000178]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1014970], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.5ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000179]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1017717], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000180]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1011887], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000181]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (1.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1015573], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.8ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000182]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (1.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1020185], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000183]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1012710], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000184]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1015398], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000185]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+Completed 200 OK in 160ms (Views: 94.3ms | ActiveRecord: 61.9ms | Allocations: 37419)
+
+
+Started GET "/api/portfolios/page/1" for 127.0.0.1 at 2023-05-15 19:05:50 +0300
+Processing by Api::PortfoliosController#index as */*
+  Parameters: {"page"=>"1"}
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/models/admin_setting.rb:3:in `per_page'
+  [1m[36mPortfolio Count (53.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mPortfolio Load (0.5ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 15], ["OFFSET", 0]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1013224], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000036]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1016482], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000037]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1016197], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000038]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1018283], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.5ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000039]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1019147], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000040]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1010666], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000041]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1019451], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000042]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1020233], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000043]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1014903], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (2.5ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000044]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1011959], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000045]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1014954], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000046]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1011713], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000047]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1012051], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000048]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1012919], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.6ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000049]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1015840], ["LIMIT", 1]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" INNER JOIN "portfolio_stocks" ON "stocks"."id" = "portfolio_stocks"."stock_id" WHERE "portfolio_stocks"."portfolio_id" = $1[0m  [["portfolio_id", 1000050]]
+  ↳ app/controllers/api/portfolios_controller.rb:16:in `index'
+Completed 200 OK in 156ms (Views: 85.3ms | ActiveRecord: 65.9ms | Allocations: 37426)
+
+

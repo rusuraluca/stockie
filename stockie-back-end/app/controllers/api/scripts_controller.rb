@@ -8,7 +8,7 @@ class Api::ScriptsController < ApplicationController
     when 'users'
       count = User.all.count
       usernames = User.pluck(:username)
-      100.times do
+      1000.times do
         username = Faker::Internet.unique.username
         while usernames.include?(username)
           username = Faker::Internet.unique.username
@@ -36,7 +36,7 @@ class Api::ScriptsController < ApplicationController
       end
     when 'companies'
       count = Company.all.count
-      users = User.pluck(:id)
+      users = User.limit(1000).pluck(:id)
       companies = []
       100000.times do
         companies << {
@@ -57,7 +57,7 @@ class Api::ScriptsController < ApplicationController
     when 'stocks'
       count = Stock.all.count
       companies = Company.pluck(:id)
-      users = User.pluck(:id)
+      users = User.limit(1000).pluck(:id)
       stocks = []
       100000.times do
         stocks << {
