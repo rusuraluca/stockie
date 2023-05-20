@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+// @ts-ignore
 import { ActionCableProvider, ActionCableConsumer } from 'react-actioncable-provider';
 import ActionCable from 'actioncable';
 import { Box, Container, TextField, Button } from '@mui/material';
