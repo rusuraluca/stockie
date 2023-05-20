@@ -1,0 +1,1918 @@
+  [1m[35m (215.4ms)[0m  [1m[35mDROP DATABASE IF EXISTS "stockie_test"[0m
+  [1m[35m (399.4ms)[0m  [1m[35mCREATE DATABASE "stockie_test" ENCODING = 'unicode'[0m
+  [1m[35mSQL (5.0ms)[0m  [1m[35mCREATE EXTENSION IF NOT EXISTS "plpgsql"[0m
+  [1m[35m (1.3ms)[0m  [1m[35mDROP TABLE IF EXISTS "admin_settings" CASCADE[0m
+  [1m[35m (70.4ms)[0m  [1m[35mCREATE TABLE "admin_settings" ("id" bigserial primary key, "per_page" integer, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (0.5ms)[0m  [1m[35mDROP TABLE IF EXISTS "companies" CASCADE[0m
+  [1m[35m (9.0ms)[0m  [1m[35mCREATE TABLE "companies" ("id" bigserial primary key, "name" text, "size" bigint, "country" text, "industry" text, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, "description" text, "user_id" bigint)[0m
+  [1m[35m (5.1ms)[0m  [1m[35mCREATE INDEX "index_companies_on_user_id" ON "companies" ("user_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "portfolio_stocks" CASCADE[0m
+  [1m[35m (5.6ms)[0m  [1m[35mCREATE TABLE "portfolio_stocks" ("id" bigserial primary key, "price" float, "currency" text, "portfolio_id" bigint NOT NULL, "stock_id" bigint NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (1.9ms)[0m  [1m[35mCREATE INDEX "index_portfolio_stocks_on_portfolio_id" ON "portfolio_stocks" ("portfolio_id")[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE INDEX "index_portfolio_stocks_on_stock_id" ON "portfolio_stocks" ("stock_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "portfolios" CASCADE[0m
+  [1m[35m (7.1ms)[0m  [1m[35mCREATE TABLE "portfolios" ("id" bigserial primary key, "name" text, "industry" text, "public" boolean DEFAULT TRUE, "active" boolean DEFAULT TRUE, "user_id" bigint NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE INDEX "index_portfolios_on_user_id" ON "portfolios" ("user_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "stocks" CASCADE[0m
+  [1m[35m (10.6ms)[0m  [1m[35mCREATE TABLE "stocks" ("id" bigserial primary key, "ticker" text, "current_price" float, "min_price" float, "max_price" float, "company_id" bigint NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, "user_id" bigint)[0m
+  [1m[35m (2.8ms)[0m  [1m[35mCREATE INDEX "index_stocks_on_company_id" ON "stocks" ("company_id")[0m
+  [1m[35m (2.2ms)[0m  [1m[35mCREATE INDEX "index_stocks_on_user_id" ON "stocks" ("user_id")[0m
+  [1m[35m (0.3ms)[0m  [1m[35mDROP TABLE IF EXISTS "user_accounts" CASCADE[0m
+  [1m[35m (6.3ms)[0m  [1m[35mCREATE TABLE "user_accounts" ("id" bigserial primary key, "name" character varying, "bio" character varying, "birthday" date, "gender" character varying, "address" text, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, "user_id" bigint NOT NULL)[0m
+  [1m[35m (2.8ms)[0m  [1m[35mCREATE INDEX "index_user_accounts_on_user_id" ON "user_accounts" ("user_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "users" CASCADE[0m
+  [1m[35m (6.0ms)[0m  [1m[35mCREATE TABLE "users" ("id" bigserial primary key, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, "username" character varying, "password" character varying, "confirmation_code" character varying, "confirmation_code_expires_at" timestamp(6), "confirmed_at" timestamp(6), "password_digest" character varying, "role" integer DEFAULT 0, "user_id" bigint)[0m
+  [1m[35m (2.1ms)[0m  [1m[35mCREATE INDEX "index_users_on_user_id" ON "users" ("user_id")[0m
+  [1m[35m (15.9ms)[0m  [1m[35mALTER TABLE "companies" ADD CONSTRAINT "fk_rails_e57cb42012"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+[0m
+  [1m[35m (5.8ms)[0m  [1m[35mALTER TABLE "portfolio_stocks" ADD CONSTRAINT "fk_rails_85430d9c28"
+FOREIGN KEY ("portfolio_id")
+  REFERENCES "portfolios" ("id")
+[0m
+  [1m[35m (1.7ms)[0m  [1m[35mALTER TABLE "portfolio_stocks" ADD CONSTRAINT "fk_rails_2680e576ec"
+FOREIGN KEY ("stock_id")
+  REFERENCES "stocks" ("id")
+[0m
+  [1m[35m (4.7ms)[0m  [1m[35mALTER TABLE "portfolios" ADD CONSTRAINT "fk_rails_2abc71c887"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+[0m
+  [1m[35m (3.0ms)[0m  [1m[35mALTER TABLE "stocks" ADD CONSTRAINT "fk_rails_9b1632ba27"
+FOREIGN KEY ("company_id")
+  REFERENCES "companies" ("id")
+[0m
+  [1m[35m (2.1ms)[0m  [1m[35mALTER TABLE "stocks" ADD CONSTRAINT "fk_rails_f4b3894c0d"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+[0m
+  [1m[35m (2.8ms)[0m  [1m[35mALTER TABLE "user_accounts" ADD CONSTRAINT "fk_rails_d64ac9bcc2"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+[0m
+  [1m[35m (3.4ms)[0m  [1m[35mALTER TABLE "users" ADD CONSTRAINT "fk_rails_6d0b8b3c2f"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+[0m
+  [1m[35m (5.1ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (2.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (2.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20230510094538)[0m
+  [1m[35m (0.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20230326220419),
+(20230326220513),
+(20230326220540),
+(20230326220552),
+(20230326220626),
+(20230410074246),
+(20230429164741),
+(20230429170050),
+(20230501082045),
+(20230501082447),
+(20230501082743),
+(20230501083356),
+(20230501084239),
+(20230501084346),
+(20230503053446),
+(20230503104912),
+(20230505233459);
+
+[0m
+  [1m[35m (5.3ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.5ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mActiveRecord::InternalMetadata Create (2.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "test"], ["created_at", "2023-05-15 16:59:03.832290"], ["updated_at", "2023-05-15 16:59:03.832290"]]
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.2ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "schema_sha1"], ["value", "9a573434cd958a2d0ed444837f41ecbcdae1378a"], ["created_at", "2023-05-15 16:59:03.839689"], ["updated_at", "2023-05-15 16:59:03.839689"]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (1.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (1.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (1.9ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (1.7ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (1.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (3.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (1.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.5ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.7ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "test"], ["LIMIT", 1]]
+  [1m[36mUser Create (6.8ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "username", "password", "confirmation_code", "confirmation_code_expires_at", "confirmed_at", "password_digest", "role", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["created_at", "2023-05-15 17:03:25.292063"], ["updated_at", "2023-05-15 17:03:25.292063"], ["username", "test"], ["password", nil], ["confirmation_code", nil], ["confirmation_code_expires_at", nil], ["confirmed_at", nil], ["password_digest", "$2a$04$sSOjLScBbskPOMGlFQNAd.pQUYnXNAu9AT4Rqf0XGE7vaxw150c7y"], ["role", 0], ["user_id", nil]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.8ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.7ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "test1"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.7ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "username", "password", "confirmation_code", "confirmation_code_expires_at", "confirmed_at", "password_digest", "role", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["created_at", "2023-05-15 17:03:38.915216"], ["updated_at", "2023-05-15 17:03:38.915216"], ["username", "test1"], ["password", nil], ["confirmation_code", nil], ["confirmation_code_expires_at", nil], ["confirmed_at", nil], ["password_digest", "$2a$04$NpuXbwEXAO/SuogpTUoW7eoh062Y.6m2na55B6vR67h8IU4gimJ2C"], ["role", 0], ["user_id", nil]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.7ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "test1"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.7ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "username", "password", "confirmation_code", "confirmation_code_expires_at", "confirmed_at", "password_digest", "role", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["created_at", "2023-05-15 17:03:59.032342"], ["updated_at", "2023-05-15 17:03:59.032342"], ["username", "test1"], ["password", nil], ["confirmation_code", nil], ["confirmation_code_expires_at", nil], ["confirmed_at", nil], ["password_digest", "$2a$04$gI/76Lebg32Z0aEVz5XZrubGPyzPOi2RmshRLmmIVi1aAESuZjSja"], ["role", 0], ["user_id", nil]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 /* loading for inspect */ LIMIT $2[0m  [["username", "admin"], ["LIMIT", 11]]
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 /* loading for inspect */ LIMIT $2[0m  [["username", "admin"], ["LIMIT", 11]]
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "admin"], ["LIMIT", 1]]
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.5ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "admin"], ["LIMIT", 1]]
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (11.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "admin"], ["LIMIT", 1]]
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "admin"], ["LIMIT", 1]]
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "admin"], ["LIMIT", 1]]
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "test"], ["LIMIT", 1]]
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (1.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "test"], ["LIMIT", 1]]
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.9ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "test"], ["LIMIT", 1]]
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.5ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.6ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.7ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (53.5ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.5ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.9ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.5ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.5ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: 127.0.0.1
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: 127.0.0.1
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.5ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: 127.0.0.1
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: 127.0.0.1
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-15 20:26:13 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (1.4ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (20.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 79ms (Views: 1.1ms | ActiveRecord: 49.5ms | Allocations: 9498)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-15 20:26:29 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 29ms (Views: 1.0ms | ActiveRecord: 7.6ms | Allocations: 9498)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.7ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started POST "/api/login" for 127.0.0.1 at 2023-05-15 20:27:21 +0300
+Processing by Api::SessionsController#create as HTML
+  Parameters: {"username"=>"admin", "password"=>"[FILTERED]"}
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "admin"], ["LIMIT", 1]]
+Completed 401 Unauthorized in 24ms (Views: 0.3ms | ActiveRecord: 3.3ms | Allocations: 7910)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-15 20:27:21 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.4ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (4.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 24ms (Views: 1.3ms | ActiveRecord: 9.5ms | Allocations: 4764)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-15 20:27:21 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 4ms (Views: 1.2ms | ActiveRecord: 0.9ms | Allocations: 1221)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (1.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-15 20:27:51 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.4ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 43ms (Views: 1.2ms | ActiveRecord: 6.9ms | Allocations: 8412)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-15 20:27:51 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 12ms (Views: 1.2ms | ActiveRecord: 2.1ms | Allocations: 4803)
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-15 20:28:33 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.5ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (2.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 30ms (Views: 1.3ms | ActiveRecord: 9.2ms | Allocations: 8046)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-15 20:28:33 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (1.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.4ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 13ms (Views: 1.0ms | ActiveRecord: 3.5ms | Allocations: 3503)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-15 20:28:33 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.4ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 24ms (Views: 0.8ms | ActiveRecord: 3.0ms | Allocations: 4781)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.5ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-15 20:28:40 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 23ms (Views: 1.0ms | ActiveRecord: 5.9ms | Allocations: 8048)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-15 20:28:40 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.4ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 10ms (Views: 1.5ms | ActiveRecord: 2.6ms | Allocations: 3503)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-15 20:28:45 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.5ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 24ms (Views: 1.0ms | ActiveRecord: 6.3ms | Allocations: 8048)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-15 20:28:45 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 8ms (Views: 0.9ms | ActiveRecord: 2.4ms | Allocations: 3503)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-15 20:30:34 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.4ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 33ms (Views: 1.1ms | ActiveRecord: 6.0ms | Allocations: 8048)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-15 20:30:34 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.4ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (1.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.4ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 12ms (Views: 1.3ms | ActiveRecord: 3.4ms | Allocations: 3503)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: localhost
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (1.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-15 20:31:24 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.4ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 31ms (Views: 1.0ms | ActiveRecord: 6.1ms | Allocations: 8046)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-15 20:31:24 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (1.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.5ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 16ms (Views: 1.5ms | ActiveRecord: 4.2ms | Allocations: 3503)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-15 20:31:24 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.5ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (1.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 18ms (Views: 1.3ms | ActiveRecord: 4.3ms | Allocations: 4781)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-15 20:31:37 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 31ms (Views: 1.1ms | ActiveRecord: 5.9ms | Allocations: 8047)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-15 20:31:37 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.6ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 12ms (Views: 0.8ms | ActiveRecord: 2.7ms | Allocations: 3503)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-15 20:31:37 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 18ms (Views: 1.1ms | ActiveRecord: 3.5ms | Allocations: 4781)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.6ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (1.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-15 20:39:04 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.4ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 37ms (Views: 1.2ms | ActiveRecord: 10.6ms | Allocations: 8042)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-15 20:39:04 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 11ms (Views: 0.7ms | ActiveRecord: 2.9ms | Allocations: 3503)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-15 20:39:04 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (1.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 21ms (Views: 1.8ms | ActiveRecord: 2.9ms | Allocations: 4781)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (1.9ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (2.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-17 13:50:43 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (1.5ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (3.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 49ms (Views: 1.0ms | ActiveRecord: 18.6ms | Allocations: 8047)
+  [1m[36mTRANSACTION (1.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started POST "/api/login" for 127.0.0.1 at 2023-05-17 13:50:43 +0300
+Processing by Api::SessionsController#create as HTML
+  [1m[36mUser Load (1.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+Completed 401 Unauthorized in 13ms (Views: 0.4ms | ActiveRecord: 3.1ms | Allocations: 4191)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-17 13:50:43 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (1.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 11ms (Views: 1.2ms | ActiveRecord: 3.6ms | Allocations: 3480)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-17 13:50:43 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 4ms (Views: 0.8ms | ActiveRecord: 1.3ms | Allocations: 1221)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-17 13:50:59 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 22ms (Views: 0.8ms | ActiveRecord: 5.4ms | Allocations: 8047)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/login" for 127.0.0.1 at 2023-05-17 13:50:59 +0300
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-17 13:50:59 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 8ms (Views: 0.7ms | ActiveRecord: 2.1ms | Allocations: 3503)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-17 13:50:59 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 13ms (Views: 1.1ms | ActiveRecord: 2.7ms | Allocations: 4781)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (1.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-17 14:37:15 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.8ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 49ms (Views: 0.9ms | ActiveRecord: 18.1ms | Allocations: 8048)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/login" for 127.0.0.1 at 2023-05-17 14:37:15 +0300
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-17 14:37:15 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (1.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.4ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 12ms (Views: 1.4ms | ActiveRecord: 2.9ms | Allocations: 3503)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-17 14:37:15 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (1.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 16ms (Views: 1.2ms | ActiveRecord: 3.3ms | Allocations: 4781)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-17 14:37:28 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.4ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (1.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 27ms (Views: 1.0ms | ActiveRecord: 6.5ms | Allocations: 8048)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started POST "/api/login" for 127.0.0.1 at 2023-05-17 14:37:28 +0300
+Processing by Api::SessionsController#create as HTML
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+Completed 401 Unauthorized in 10ms (Views: 0.2ms | ActiveRecord: 1.9ms | Allocations: 4191)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-17 14:37:28 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.4ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 10ms (Views: 0.7ms | ActiveRecord: 2.8ms | Allocations: 3480)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-17 14:37:28 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 4ms (Views: 0.8ms | ActiveRecord: 0.8ms | Allocations: 1221)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.9ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-17 15:53:49 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.9ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (1.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 35ms (Views: 1.7ms | ActiveRecord: 9.6ms | Allocations: 8048)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started POST "/api/login" for 127.0.0.1 at 2023-05-17 15:53:50 +0300
+Processing by Api::SessionsController#create as HTML
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+Completed 401 Unauthorized in 12ms (Views: 0.2ms | ActiveRecord: 2.4ms | Allocations: 4191)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-17 15:53:50 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (1.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 11ms (Views: 1.0ms | ActiveRecord: 2.7ms | Allocations: 3480)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-17 15:53:50 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 3ms (Views: 0.8ms | ActiveRecord: 0.8ms | Allocations: 1221)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (1.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-17 15:54:44 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 30ms (Views: 1.2ms | ActiveRecord: 5.8ms | Allocations: 8047)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started POST "/api/login" for 127.0.0.1 at 2023-05-17 15:54:44 +0300
+Processing by Api::SessionsController#create as HTML
+  Parameters: {"username"=>"admin", "password"=>"[FILTERED]"}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "admin"], ["LIMIT", 1]]
+Completed 401 Unauthorized in 14ms (Views: 0.2ms | ActiveRecord: 2.4ms | Allocations: 4278)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-17 15:54:44 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 10ms (Views: 0.8ms | ActiveRecord: 2.4ms | Allocations: 3480)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-17 15:54:44 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 3ms (Views: 0.9ms | ActiveRecord: 0.6ms | Allocations: 1221)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-17 15:56:06 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 34ms (Views: 1.3ms | ActiveRecord: 6.9ms | Allocations: 8047)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started POST "/api/login" for 127.0.0.1 at 2023-05-17 15:56:06 +0300
+Processing by Api::SessionsController#create as HTML
+  Parameters: {"username"=>"admin", "password"=>"[FILTERED]"}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "admin"], ["LIMIT", 1]]
+Completed 401 Unauthorized in 11ms (Views: 0.4ms | ActiveRecord: 1.7ms | Allocations: 4278)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-17 15:56:06 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 10ms (Views: 0.9ms | ActiveRecord: 2.1ms | Allocations: 3480)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-17 15:56:06 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 4ms (Views: 0.8ms | ActiveRecord: 0.8ms | Allocations: 1221)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.7ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-17 15:59:03 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.4ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 26ms (Views: 2.1ms | ActiveRecord: 7.0ms | Allocations: 5863)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-17 15:59:03 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 12ms (Views: 0.8ms | ActiveRecord: 2.5ms | Allocations: 3501)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-17 15:59:03 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 14ms (Views: 0.8ms | ActiveRecord: 2.3ms | Allocations: 4780)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-17 15:59:21 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 20ms (Views: 0.9ms | ActiveRecord: 6.0ms | Allocations: 5862)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-17 15:59:21 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 8ms (Views: 0.7ms | ActiveRecord: 2.1ms | Allocations: 3501)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-17 15:59:21 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 12ms (Views: 0.9ms | ActiveRecord: 2.9ms | Allocations: 4780)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-17 15:59:56 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 25ms (Views: 1.2ms | ActiveRecord: 5.9ms | Allocations: 5862)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-17 15:59:56 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 10ms (Views: 1.0ms | ActiveRecord: 2.7ms | Allocations: 3501)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-17 15:59:56 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.4ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 15ms (Views: 1.7ms | ActiveRecord: 2.6ms | Allocations: 4780)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-17 16:01:19 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 45ms (Views: 1.3ms | ActiveRecord: 6.8ms | Allocations: 8045)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-17 16:01:19 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 9ms (Views: 0.7ms | ActiveRecord: 2.2ms | Allocations: 3508)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-17 16:01:19 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 15ms (Views: 0.7ms | ActiveRecord: 2.9ms | Allocations: 4786)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.5ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-17 16:01:31 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 19ms (Views: 1.1ms | ActiveRecord: 6.1ms | Allocations: 5862)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-17 16:01:31 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 9ms (Views: 0.8ms | ActiveRecord: 2.2ms | Allocations: 3501)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-17 16:01:31 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 13ms (Views: 0.8ms | ActiveRecord: 2.4ms | Allocations: 4780)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.5ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (1.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: www.example.com
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-17 16:02:22 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 18ms (Views: 0.9ms | ActiveRecord: 6.7ms | Allocations: 5862)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-17 16:02:23 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 9ms (Views: 0.9ms | ActiveRecord: 2.6ms | Allocations: 3501)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-17 16:02:23 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.4ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (1.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 13ms (Views: 1.1ms | ActiveRecord: 3.5ms | Allocations: 4780)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started POST "/api/register" for 127.0.0.1 at 2023-05-17 16:03:27 +0300
+Processing by Api::RegistrationController#create as HTML
+  Parameters: {"username"=>"newuser", "password"=>"[FILTERED]"}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.7ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "newuser"], ["LIMIT", 1]]
+  [1m[36mUser Create (28.2ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "username", "password", "confirmation_code", "confirmation_code_expires_at", "confirmed_at", "password_digest", "role", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["created_at", "2023-05-17 13:03:27.365186"], ["updated_at", "2023-05-17 13:03:27.365186"], ["username", "newuser"], ["password", nil], ["confirmation_code", nil], ["confirmation_code_expires_at", nil], ["confirmed_at", nil], ["password_digest", "$2a$04$EkQWgCYoZiHR4LuG9KLvgeadMOaL2WZfi1cD88EmxJTSHxzoXI0GC"], ["role", 0], ["user_id", nil]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Update (3.6ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmation_code" = $2, "confirmation_code_expires_at" = $3 WHERE "users"."id" = $4[0m  [["updated_at", "2023-05-17 13:03:27.395559"], ["confirmation_code", "a2613eaac8bc7964f28f7b2f12509d4a"], ["confirmation_code_expires_at", "2023-05-17 13:13:27.395170"], ["id", 4]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 200 OK in 72ms (Views: 0.3ms | ActiveRecord: 37.4ms | Allocations: 15719)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started POST "/api/login" for 127.0.0.1 at 2023-05-17 16:03:27 +0300
+Processing by Api::SessionsController#create as HTML
+  Parameters: {"username"=>"admin", "password"=>"[FILTERED]"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "admin"], ["LIMIT", 1]]
+Completed 401 Unauthorized in 2ms (Views: 0.2ms | ActiveRecord: 0.3ms | Allocations: 710)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-17 16:03:27 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 13ms (Views: 1.1ms | ActiveRecord: 3.9ms | Allocations: 4321)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-17 16:03:27 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 10ms (Views: 0.7ms | ActiveRecord: 2.7ms | Allocations: 3479)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-17 16:03:27 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 3ms (Views: 0.8ms | ActiveRecord: 0.7ms | Allocations: 1213)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started POST "/api/register" for 127.0.0.1 at 2023-05-17 16:03:39 +0300
+Processing by Api::RegistrationController#create as HTML
+  Parameters: {"username"=>"newuser", "password"=>"[FILTERED]"}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.7ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "newuser"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.7ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "username", "password", "confirmation_code", "confirmation_code_expires_at", "confirmed_at", "password_digest", "role", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["created_at", "2023-05-17 13:03:39.443845"], ["updated_at", "2023-05-17 13:03:39.443845"], ["username", "newuser"], ["password", nil], ["confirmation_code", nil], ["confirmation_code_expires_at", nil], ["confirmed_at", nil], ["password_digest", "$2a$04$a7rNcHGiA2sYDoyUB.Iumeiu3dqMeqTnJ7SCOKcHAFkp4tWUvLtCC"], ["role", 0], ["user_id", nil]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Update (0.4ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmation_code" = $2, "confirmation_code_expires_at" = $3 WHERE "users"."id" = $4[0m  [["updated_at", "2023-05-17 13:03:39.447304"], ["confirmation_code", "3a5a6a09d5b70213c6f383f7edc0cb6a"], ["confirmation_code_expires_at", "2023-05-17 13:13:39.446620"], ["id", 5]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 200 OK in 39ms (Views: 0.3ms | ActiveRecord: 7.6ms | Allocations: 15718)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started POST "/api/login" for 127.0.0.1 at 2023-05-17 16:03:39 +0300
+Processing by Api::SessionsController#create as HTML
+  Parameters: {"username"=>"admin", "password"=>"[FILTERED]"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "admin"], ["LIMIT", 1]]
+Completed 401 Unauthorized in 2ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 710)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-17 16:03:39 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.7ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 16ms (Views: 0.9ms | ActiveRecord: 5.3ms | Allocations: 4321)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-17 16:03:39 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.5ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 11ms (Views: 1.7ms | ActiveRecord: 2.4ms | Allocations: 3479)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-17 16:03:39 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.4ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 5ms (Views: 0.8ms | ActiveRecord: 1.0ms | Allocations: 1213)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started POST "/api/register" for 127.0.0.1 at 2023-05-17 16:03:50 +0300
+Processing by Api::RegistrationController#create as HTML
+  Parameters: {"username"=>"newuser", "password"=>"[FILTERED]"}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "newuser"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "username", "password", "confirmation_code", "confirmation_code_expires_at", "confirmed_at", "password_digest", "role", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["created_at", "2023-05-17 13:03:50.227858"], ["updated_at", "2023-05-17 13:03:50.227858"], ["username", "newuser"], ["password", nil], ["confirmation_code", nil], ["confirmation_code_expires_at", nil], ["confirmed_at", nil], ["password_digest", "$2a$04$Tyk2qYpriRjOFFpthUXoheVexqAop5rTgdkhvPNXbmJXU.WnAoPDS"], ["role", 0], ["user_id", nil]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Update (0.4ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmation_code" = $2, "confirmation_code_expires_at" = $3 WHERE "users"."id" = $4[0m  [["updated_at", "2023-05-17 13:03:50.230163"], ["confirmation_code", "c5cf3edf10313b0cd8a19e2b25e2bc1c"], ["confirmation_code_expires_at", "2023-05-17 13:13:50.229868"], ["id", 6]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 200 OK in 33ms (Views: 0.3ms | ActiveRecord: 6.3ms | Allocations: 15719)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started POST "/api/login" for 127.0.0.1 at 2023-05-17 16:03:50 +0300
+Processing by Api::SessionsController#create as HTML
+  Parameters: {"username"=>"admin", "password"=>"[FILTERED]"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "admin"], ["LIMIT", 1]]
+Completed 401 Unauthorized in 2ms (Views: 0.2ms | ActiveRecord: 0.3ms | Allocations: 710)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-17 16:03:50 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.5ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 14ms (Views: 0.9ms | ActiveRecord: 4.8ms | Allocations: 4321)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-17 16:03:50 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 9ms (Views: 0.9ms | ActiveRecord: 2.1ms | Allocations: 3479)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-17 16:03:50 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 4ms (Views: 0.7ms | ActiveRecord: 0.8ms | Allocations: 1213)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started POST "/api/register" for 127.0.0.1 at 2023-05-17 16:04:18 +0300
+Processing by Api::RegistrationController#create as HTML
+  Parameters: {"username"=>"newuser", "password"=>"[FILTERED]"}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "newuser"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "username", "password", "confirmation_code", "confirmation_code_expires_at", "confirmed_at", "password_digest", "role", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["created_at", "2023-05-17 13:04:18.585832"], ["updated_at", "2023-05-17 13:04:18.585832"], ["username", "newuser"], ["password", nil], ["confirmation_code", nil], ["confirmation_code_expires_at", nil], ["confirmed_at", nil], ["password_digest", "$2a$04$v/g.WQ49jJJRkbFx3P7l6OzV0X4BMu/p2w8DqrWPWTxDOz8Fj9ofm"], ["role", 0], ["user_id", nil]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Update (0.4ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmation_code" = $2, "confirmation_code_expires_at" = $3 WHERE "users"."id" = $4[0m  [["updated_at", "2023-05-17 13:04:18.588315"], ["confirmation_code", "b847b95b516caec3a0d9395ecfbd2997"], ["confirmation_code_expires_at", "2023-05-17 13:14:18.588008"], ["id", 7]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 200 OK in 33ms (Views: 0.3ms | ActiveRecord: 6.3ms | Allocations: 15717)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started POST "/api/login" for 127.0.0.1 at 2023-05-17 16:04:18 +0300
+Processing by Api::SessionsController#create as HTML
+  Parameters: {"username"=>"admin", "password"=>"[FILTERED]"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "admin"], ["LIMIT", 1]]
+Completed 401 Unauthorized in 2ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 710)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-17 16:04:18 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.4ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 14ms (Views: 1.3ms | ActiveRecord: 4.1ms | Allocations: 4321)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-17 16:04:18 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 8ms (Views: 0.7ms | ActiveRecord: 2.1ms | Allocations: 3479)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-17 16:04:18 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.4ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 5ms (Views: 1.5ms | ActiveRecord: 1.2ms | Allocations: 1213)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started POST "/api/register" for 127.0.0.1 at 2023-05-17 16:04:38 +0300
+Processing by Api::RegistrationController#create as HTML
+  Parameters: {"username"=>"newuser", "password"=>"[FILTERED]"}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "newuser"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.6ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "username", "password", "confirmation_code", "confirmation_code_expires_at", "confirmed_at", "password_digest", "role", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["created_at", "2023-05-17 13:04:38.837038"], ["updated_at", "2023-05-17 13:04:38.837038"], ["username", "newuser"], ["password", nil], ["confirmation_code", nil], ["confirmation_code_expires_at", nil], ["confirmed_at", nil], ["password_digest", "$2a$04$sldAlbHMI84MzTFW4J/z2.AOfz3RAofI46U.hZnQvQvT6YVPQ6KbS"], ["role", 0], ["user_id", nil]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Update (0.4ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmation_code" = $2, "confirmation_code_expires_at" = $3 WHERE "users"."id" = $4[0m  [["updated_at", "2023-05-17 13:04:38.839674"], ["confirmation_code", "583fdb01213341e57bb2d42298688268"], ["confirmation_code_expires_at", "2023-05-17 13:14:38.839361"], ["id", 8]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 200 OK in 34ms (Views: 0.3ms | ActiveRecord: 6.4ms | Allocations: 15720)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started POST "/api/login" for 127.0.0.1 at 2023-05-17 16:04:38 +0300
+Processing by Api::SessionsController#create as HTML
+  Parameters: {"username"=>"admin", "password"=>"[FILTERED]"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "admin"], ["LIMIT", 1]]
+Completed 401 Unauthorized in 2ms (Views: 0.2ms | ActiveRecord: 0.3ms | Allocations: 710)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-17 16:04:38 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 13ms (Views: 0.8ms | ActiveRecord: 4.1ms | Allocations: 4321)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-17 16:04:38 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 10ms (Views: 0.7ms | ActiveRecord: 2.0ms | Allocations: 3479)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-17 16:04:38 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 3ms (Views: 0.7ms | ActiveRecord: 0.6ms | Allocations: 1213)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.6ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started POST "/api/register" for 127.0.0.1 at 2023-05-17 16:06:33 +0300
+Processing by Api::RegistrationController#create as HTML
+  Parameters: {"username"=>"newuser", "password"=>"[FILTERED]"}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "newuser"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "username", "password", "confirmation_code", "confirmation_code_expires_at", "confirmed_at", "password_digest", "role", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["created_at", "2023-05-17 13:06:33.460200"], ["updated_at", "2023-05-17 13:06:33.460200"], ["username", "newuser"], ["password", nil], ["confirmation_code", nil], ["confirmation_code_expires_at", nil], ["confirmed_at", nil], ["password_digest", "$2a$04$/o451euYd0F3jOOmxZ2DbeC3x/5NGLnRT/g6Y0RBBjs16xEsxxfl2"], ["role", 0], ["user_id", nil]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Update (0.4ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmation_code" = $2, "confirmation_code_expires_at" = $3 WHERE "users"."id" = $4[0m  [["updated_at", "2023-05-17 13:06:33.462553"], ["confirmation_code", "42b746c0c123a17bc7036e601bf3f2aa"], ["confirmation_code_expires_at", "2023-05-17 13:16:33.462246"], ["id", 9]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 200 OK in 42ms (Views: 0.3ms | ActiveRecord: 6.5ms | Allocations: 15717)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-17 16:06:33 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.3ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 16ms (Views: 1.0ms | ActiveRecord: 4.1ms | Allocations: 4374)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-17 16:06:33 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 9ms (Views: 0.7ms | ActiveRecord: 2.0ms | Allocations: 3479)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-17 16:06:33 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 4ms (Views: 0.8ms | ActiveRecord: 0.8ms | Allocations: 1232)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.5ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started POST "/api/register" for 127.0.0.1 at 2023-05-17 16:09:13 +0300
+Processing by Api::RegistrationController#create as HTML
+  Parameters: {"username"=>"newuser", "password"=>"[FILTERED]"}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.7ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "newuser"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "username", "password", "confirmation_code", "confirmation_code_expires_at", "confirmed_at", "password_digest", "role", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["created_at", "2023-05-17 13:09:13.278772"], ["updated_at", "2023-05-17 13:09:13.278772"], ["username", "newuser"], ["password", nil], ["confirmation_code", nil], ["confirmation_code_expires_at", nil], ["confirmed_at", nil], ["password_digest", "$2a$04$quSBFP9xQG6z0JEhQJmhsu.ZuIR3PbMYYqjb7Xqt5FxgVCZ5IGMwu"], ["role", 0], ["user_id", nil]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Update (0.4ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmation_code" = $2, "confirmation_code_expires_at" = $3 WHERE "users"."id" = $4[0m  [["updated_at", "2023-05-17 13:09:13.281136"], ["confirmation_code", "ed16926f76dddb0987f642523e187f56"], ["confirmation_code_expires_at", "2023-05-17 13:19:13.280827"], ["id", 10]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 200 OK in 42ms (Views: 0.3ms | ActiveRecord: 6.3ms | Allocations: 15717)
+Started GET "/api/register/confirm/ed16926f76dddb0987f642523e187f56" for 127.0.0.1 at 2023-05-17 16:09:13 +0300
+Processing by Api::RegistrationController#confirm as HTML
+  Parameters: {"confirmation_code"=>"ed16926f76dddb0987f642523e187f56"}
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."confirmation_code" = $1 LIMIT $2[0m  [["confirmation_code", "ed16926f76dddb0987f642523e187f56"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Update (0.3ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmed_at" = $2 WHERE "users"."id" = $3[0m  [["updated_at", "2023-05-17 13:09:13.294078"], ["confirmed_at", "2023-05-17 13:09:13.293665"], ["id", 10]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 200 OK in 5ms (Views: 0.2ms | ActiveRecord: 1.6ms | Allocations: 1229)
+Started POST "/api/login" for 127.0.0.1 at 2023-05-17 16:09:13 +0300
+Processing by Api::SessionsController#create as HTML
+  Parameters: {"username"=>"newuser", "password"=>"[FILTERED]"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "newuser"], ["LIMIT", 1]]
+Completed 401 Unauthorized in 3ms (Views: 0.2ms | ActiveRecord: 0.2ms | Allocations: 623)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-17 16:09:13 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 15ms (Views: 0.9ms | ActiveRecord: 3.9ms | Allocations: 4321)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-17 16:09:13 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 11ms (Views: 0.8ms | ActiveRecord: 2.2ms | Allocations: 3479)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-17 16:09:13 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 3ms (Views: 0.7ms | ActiveRecord: 0.6ms | Allocations: 1213)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started POST "/api/register" for 127.0.0.1 at 2023-05-17 16:09:22 +0300
+Processing by Api::RegistrationController#create as HTML
+  Parameters: {"username"=>"newuser", "password"=>"[FILTERED]"}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "newuser"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "username", "password", "confirmation_code", "confirmation_code_expires_at", "confirmed_at", "password_digest", "role", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["created_at", "2023-05-17 13:09:22.873158"], ["updated_at", "2023-05-17 13:09:22.873158"], ["username", "newuser"], ["password", nil], ["confirmation_code", nil], ["confirmation_code_expires_at", nil], ["confirmed_at", nil], ["password_digest", "$2a$04$nCxY05rjL8r0cBgKvcek8.Vr4zP1I2s8MlYR2Ou2.2EPfJNT67Y8."], ["role", 0], ["user_id", nil]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Update (0.3ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmation_code" = $2, "confirmation_code_expires_at" = $3 WHERE "users"."id" = $4[0m  [["updated_at", "2023-05-17 13:09:22.875492"], ["confirmation_code", "16f08aa8033818c7faab7b1fa064bdd0"], ["confirmation_code_expires_at", "2023-05-17 13:19:22.875198"], ["id", 11]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 200 OK in 33ms (Views: 0.3ms | ActiveRecord: 6.2ms | Allocations: 15719)
+Started GET "/api/register/confirm/16f08aa8033818c7faab7b1fa064bdd0" for 127.0.0.1 at 2023-05-17 16:09:22 +0300
+Processing by Api::RegistrationController#confirm as HTML
+  Parameters: {"confirmation_code"=>"16f08aa8033818c7faab7b1fa064bdd0"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."confirmation_code" = $1 LIMIT $2[0m  [["confirmation_code", "16f08aa8033818c7faab7b1fa064bdd0"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Update (0.2ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmed_at" = $2 WHERE "users"."id" = $3[0m  [["updated_at", "2023-05-17 13:09:22.883882"], ["confirmed_at", "2023-05-17 13:09:22.883538"], ["id", 11]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.8ms | Allocations: 1229)
+Started POST "/api/login" for 127.0.0.1 at 2023-05-17 16:09:22 +0300
+Processing by Api::SessionsController#create as HTML
+  Parameters: {"username"=>"newuser", "password"=>"[FILTERED]"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "newuser"], ["LIMIT", 1]]
+Completed 401 Unauthorized in 3ms (Views: 0.2ms | ActiveRecord: 0.2ms | Allocations: 623)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-17 16:09:22 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 12ms (Views: 1.0ms | ActiveRecord: 3.7ms | Allocations: 4321)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-17 16:09:22 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 9ms (Views: 1.2ms | ActiveRecord: 2.4ms | Allocations: 3479)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-17 16:09:22 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 3ms (Views: 0.7ms | ActiveRecord: 0.7ms | Allocations: 1213)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.7ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (1.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started POST "/api/register" for 127.0.0.1 at 2023-05-17 16:11:06 +0300
+Processing by Api::RegistrationController#create as HTML
+  Parameters: {"username"=>"newuser", "password"=>"[FILTERED]"}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.7ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "newuser"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.6ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "username", "password", "confirmation_code", "confirmation_code_expires_at", "confirmed_at", "password_digest", "role", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["created_at", "2023-05-17 13:11:06.590952"], ["updated_at", "2023-05-17 13:11:06.590952"], ["username", "newuser"], ["password", nil], ["confirmation_code", nil], ["confirmation_code_expires_at", nil], ["confirmed_at", nil], ["password_digest", "$2a$04$SeuCCXnDbIQi5DrVosXQ1.6tJKRDGcQ9jpYtgl4oY/vWfEjZFg8Iu"], ["role", 0], ["user_id", nil]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Update (0.8ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmation_code" = $2, "confirmation_code_expires_at" = $3 WHERE "users"."id" = $4[0m  [["updated_at", "2023-05-17 13:11:06.594092"], ["confirmation_code", "b0a7368a21a58a7f9a5af2425d3647bb"], ["confirmation_code_expires_at", "2023-05-17 13:21:06.593407"], ["id", 12]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 200 OK in 51ms (Views: 0.4ms | ActiveRecord: 8.8ms | Allocations: 15719)
+Started GET "/api/register/confirm/b0a7368a21a58a7f9a5af2425d3647bb" for 127.0.0.1 at 2023-05-17 16:11:06 +0300
+Processing by Api::RegistrationController#confirm as HTML
+  Parameters: {"confirmation_code"=>"b0a7368a21a58a7f9a5af2425d3647bb"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."confirmation_code" = $1 LIMIT $2[0m  [["confirmation_code", "b0a7368a21a58a7f9a5af2425d3647bb"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Update (0.3ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmed_at" = $2 WHERE "users"."id" = $3[0m  [["updated_at", "2023-05-17 13:11:06.612726"], ["confirmed_at", "2023-05-17 13:11:06.612188"], ["id", 12]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 200 OK in 5ms (Views: 0.2ms | ActiveRecord: 1.3ms | Allocations: 1229)
+Started POST "/api/login" for 127.0.0.1 at 2023-05-17 16:11:06 +0300
+Processing by Api::SessionsController#create as HTML
+  Parameters: {"username"=>"newuser", "password"=>"[FILTERED]"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "newuser"], ["LIMIT", 1]]
+Completed 401 Unauthorized in 3ms (Views: 0.2ms | ActiveRecord: 0.3ms | Allocations: 623)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-17 16:11:06 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.4ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 18ms (Views: 1.0ms | ActiveRecord: 5.0ms | Allocations: 4321)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-17 16:11:06 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 9ms (Views: 0.8ms | ActiveRecord: 2.2ms | Allocations: 3479)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-17 16:11:06 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 5ms (Views: 1.1ms | ActiveRecord: 1.0ms | Allocations: 1213)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started POST "/api/register" for 127.0.0.1 at 2023-05-17 16:12:18 +0300
+Processing by Api::RegistrationController#create as HTML
+  Parameters: {"username"=>"newuser", "password"=>"[FILTERED]"}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "newuser"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "username", "password", "confirmation_code", "confirmation_code_expires_at", "confirmed_at", "password_digest", "role", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["created_at", "2023-05-17 13:12:18.212988"], ["updated_at", "2023-05-17 13:12:18.212988"], ["username", "newuser"], ["password", nil], ["confirmation_code", nil], ["confirmation_code_expires_at", nil], ["confirmed_at", nil], ["password_digest", "$2a$04$OWLN3NJETxqqoQwMr8PAr.8mV7kWvv/K0Hte/R5XJWtmRulX.4waq"], ["role", 0], ["user_id", nil]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Update (0.4ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmation_code" = $2, "confirmation_code_expires_at" = $3 WHERE "users"."id" = $4[0m  [["updated_at", "2023-05-17 13:12:18.215346"], ["confirmation_code", "60bf591002dd5716941805eed1cfb843"], ["confirmation_code_expires_at", "2023-05-17 13:22:18.215058"], ["id", 13]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 200 OK in 33ms (Views: 0.3ms | ActiveRecord: 6.4ms | Allocations: 15717)
+Started GET "/api/register/confirm/60bf591002dd5716941805eed1cfb843" for 127.0.0.1 at 2023-05-17 16:12:18 +0300
+Processing by Api::RegistrationController#confirm as HTML
+  Parameters: {"confirmation_code"=>"60bf591002dd5716941805eed1cfb843"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."confirmation_code" = $1 LIMIT $2[0m  [["confirmation_code", "60bf591002dd5716941805eed1cfb843"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Update (0.2ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmed_at" = $2 WHERE "users"."id" = $3[0m  [["updated_at", "2023-05-17 13:12:18.223754"], ["confirmed_at", "2023-05-17 13:12:18.223413"], ["id", 13]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 200 OK in 4ms (Views: 0.2ms | ActiveRecord: 0.8ms | Allocations: 1229)
+Started POST "/api/login" for 127.0.0.1 at 2023-05-17 16:12:18 +0300
+Processing by Api::SessionsController#create as HTML
+  Parameters: {"username"=>"newuser"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "newuser"], ["LIMIT", 1]]
+Completed 401 Unauthorized in 3ms (Views: 0.2ms | ActiveRecord: 0.2ms | Allocations: 625)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-17 16:12:18 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 12ms (Views: 0.8ms | ActiveRecord: 3.9ms | Allocations: 4320)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-17 16:12:18 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.4ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 10ms (Views: 0.9ms | ActiveRecord: 2.3ms | Allocations: 3479)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-17 16:12:18 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 3ms (Views: 0.7ms | ActiveRecord: 0.6ms | Allocations: 1213)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started POST "/api/register" for 127.0.0.1 at 2023-05-17 16:12:48 +0300
+Processing by Api::RegistrationController#create as HTML
+  Parameters: {"username"=>"newuser", "password"=>"[FILTERED]"}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.7ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "newuser"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "username", "password", "confirmation_code", "confirmation_code_expires_at", "confirmed_at", "password_digest", "role", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["created_at", "2023-05-17 13:12:49.043231"], ["updated_at", "2023-05-17 13:12:49.043231"], ["username", "newuser"], ["password", nil], ["confirmation_code", nil], ["confirmation_code_expires_at", nil], ["confirmed_at", nil], ["password_digest", "$2a$04$v0cVhoRdDTd.15.StT0lDOv8x9QZfe7fYWoMcwGf6SQ5ABbPMRwdO"], ["role", 0], ["user_id", nil]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Update (0.4ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmation_code" = $2, "confirmation_code_expires_at" = $3 WHERE "users"."id" = $4[0m  [["updated_at", "2023-05-17 13:12:49.045660"], ["confirmation_code", "6e73a0a131d3d1d2df118b21878ae001"], ["confirmation_code_expires_at", "2023-05-17 13:22:49.045297"], ["id", 14]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 200 OK in 35ms (Views: 0.3ms | ActiveRecord: 7.3ms | Allocations: 15719)
+Started GET "/api/register/confirm/6e73a0a131d3d1d2df118b21878ae001" for 127.0.0.1 at 2023-05-17 16:12:49 +0300
+Processing by Api::RegistrationController#confirm as HTML
+  Parameters: {"confirmation_code"=>"6e73a0a131d3d1d2df118b21878ae001"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."confirmation_code" = $1 LIMIT $2[0m  [["confirmation_code", "6e73a0a131d3d1d2df118b21878ae001"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Update (0.2ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmed_at" = $2 WHERE "users"."id" = $3[0m  [["updated_at", "2023-05-17 13:12:49.053961"], ["confirmed_at", "2023-05-17 13:12:49.053611"], ["id", 14]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.8ms | Allocations: 1229)
+Started POST "/api/login" for 127.0.0.1 at 2023-05-17 16:12:49 +0300
+Processing by Api::SessionsController#create as HTML
+  Parameters: {"username"=>"newuser", "password"=>"[FILTERED]"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "newuser"], ["LIMIT", 1]]
+Completed 401 Unauthorized in 3ms (Views: 0.2ms | ActiveRecord: 0.2ms | Allocations: 623)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-17 16:12:49 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 12ms (Views: 0.9ms | ActiveRecord: 3.6ms | Allocations: 4321)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-17 16:12:49 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 10ms (Views: 1.6ms | ActiveRecord: 2.5ms | Allocations: 3479)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-17 16:12:49 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 3ms (Views: 0.7ms | ActiveRecord: 0.6ms | Allocations: 1213)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started POST "/api/register" for 127.0.0.1 at 2023-05-17 16:12:57 +0300
+Processing by Api::RegistrationController#create as HTML
+  Parameters: {"username"=>"newuser", "password"=>"[FILTERED]"}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.7ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "newuser"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.6ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "username", "password", "confirmation_code", "confirmation_code_expires_at", "confirmed_at", "password_digest", "role", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["created_at", "2023-05-17 13:12:57.804151"], ["updated_at", "2023-05-17 13:12:57.804151"], ["username", "newuser"], ["password", nil], ["confirmation_code", nil], ["confirmation_code_expires_at", nil], ["confirmed_at", nil], ["password_digest", "$2a$04$ZodFfSpZFbwGooJJEPBfs.0Ls5Cka.OC2X7TLN.6gDoDtN8K7TS0K"], ["role", 0], ["user_id", nil]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Update (0.4ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmation_code" = $2, "confirmation_code_expires_at" = $3 WHERE "users"."id" = $4[0m  [["updated_at", "2023-05-17 13:12:57.806959"], ["confirmation_code", "8ed91ce518712215ff5cb8a7319ecd31"], ["confirmation_code_expires_at", "2023-05-17 13:22:57.806630"], ["id", 15]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 200 OK in 47ms (Views: 0.3ms | ActiveRecord: 6.9ms | Allocations: 15716)
+Started GET "/api/register/confirm/8ed91ce518712215ff5cb8a7319ecd31" for 127.0.0.1 at 2023-05-17 16:12:57 +0300
+Processing by Api::RegistrationController#confirm as HTML
+  Parameters: {"confirmation_code"=>"8ed91ce518712215ff5cb8a7319ecd31"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."confirmation_code" = $1 LIMIT $2[0m  [["confirmation_code", "8ed91ce518712215ff5cb8a7319ecd31"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Update (0.3ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmed_at" = $2 WHERE "users"."id" = $3[0m  [["updated_at", "2023-05-17 13:12:57.815599"], ["confirmed_at", "2023-05-17 13:12:57.815131"], ["id", 15]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 0.8ms | Allocations: 1229)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-17 16:12:57 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 13ms (Views: 0.8ms | ActiveRecord: 3.8ms | Allocations: 4327)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-17 16:12:57 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.5ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 10ms (Views: 0.8ms | ActiveRecord: 2.7ms | Allocations: 3483)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-17 16:12:57 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 3ms (Views: 0.6ms | ActiveRecord: 0.6ms | Allocations: 1213)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started POST "/api/register" for 127.0.0.1 at 2023-05-17 16:13:53 +0300
+Processing by Api::RegistrationController#create as HTML
+  Parameters: {"username"=>"newuser", "password"=>"[FILTERED]"}
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.7ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "newuser"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.6ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "username", "password", "confirmation_code", "confirmation_code_expires_at", "confirmed_at", "password_digest", "role", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["created_at", "2023-05-17 13:13:53.615084"], ["updated_at", "2023-05-17 13:13:53.615084"], ["username", "newuser"], ["password", nil], ["confirmation_code", nil], ["confirmation_code_expires_at", nil], ["confirmed_at", nil], ["password_digest", "$2a$04$9MwFLdFKtDtbX7PKEUVpIuiMecUxiPcR0X/ClS2LQw6UoFKeD0o/2"], ["role", 0], ["user_id", nil]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Update (0.4ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmation_code" = $2, "confirmation_code_expires_at" = $3 WHERE "users"."id" = $4[0m  [["updated_at", "2023-05-17 13:13:53.617541"], ["confirmation_code", "b6af25b8df1c8a722f1b1dc9775a189d"], ["confirmation_code_expires_at", "2023-05-17 13:23:53.617230"], ["id", 16]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 200 OK in 44ms (Views: 0.3ms | ActiveRecord: 6.6ms | Allocations: 15719)
+Started GET "/api/register/confirm/b6af25b8df1c8a722f1b1dc9775a189d" for 127.0.0.1 at 2023-05-17 16:13:53 +0300
+Processing by Api::RegistrationController#confirm as HTML
+  Parameters: {"confirmation_code"=>"b6af25b8df1c8a722f1b1dc9775a189d"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."confirmation_code" = $1 LIMIT $2[0m  [["confirmation_code", "b6af25b8df1c8a722f1b1dc9775a189d"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Update (0.2ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmed_at" = $2 WHERE "users"."id" = $3[0m  [["updated_at", "2023-05-17 13:13:53.629924"], ["confirmed_at", "2023-05-17 13:13:53.629564"], ["id", 16]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 0.8ms | Allocations: 1229)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-17 16:13:53 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 14ms (Views: 0.8ms | ActiveRecord: 3.7ms | Allocations: 4322)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-17 16:13:53 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 10ms (Views: 0.7ms | ActiveRecord: 2.2ms | Allocations: 3479)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-17 16:13:53 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 5ms (Views: 1.3ms | ActiveRecord: 1.1ms | Allocations: 1213)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.5ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started POST "/api/register" for 127.0.0.1 at 2023-05-17 16:16:23 +0300
+Processing by Api::RegistrationController#create as HTML
+  Parameters: {"username"=>"newuser", "password"=>"[FILTERED]"}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (1.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "newuser"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.8ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "username", "password", "confirmation_code", "confirmation_code_expires_at", "confirmed_at", "password_digest", "role", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["created_at", "2023-05-17 13:16:23.722491"], ["updated_at", "2023-05-17 13:16:23.722491"], ["username", "newuser"], ["password", nil], ["confirmation_code", nil], ["confirmation_code_expires_at", nil], ["confirmed_at", nil], ["password_digest", "$2a$04$0JQe9EeN0PEgX1HChfmoFuCFS6oAzYyFDYhXBrbFd.tz9CQuS.R/6"], ["role", 0], ["user_id", nil]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Update (0.6ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmation_code" = $2, "confirmation_code_expires_at" = $3 WHERE "users"."id" = $4[0m  [["updated_at", "2023-05-17 13:16:23.725494"], ["confirmation_code", "dc01e68bd525f23ae6da1106f8847415"], ["confirmation_code_expires_at", "2023-05-17 13:26:23.725144"], ["id", 17]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 200 OK in 43ms (Views: 0.3ms | ActiveRecord: 7.8ms | Allocations: 15719)
+Started GET "/api/register/confirm/dc01e68bd525f23ae6da1106f8847415" for 127.0.0.1 at 2023-05-17 16:16:23 +0300
+Processing by Api::RegistrationController#confirm as HTML
+  Parameters: {"confirmation_code"=>"dc01e68bd525f23ae6da1106f8847415"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."confirmation_code" = $1 LIMIT $2[0m  [["confirmation_code", "dc01e68bd525f23ae6da1106f8847415"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Update (0.3ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmed_at" = $2 WHERE "users"."id" = $3[0m  [["updated_at", "2023-05-17 13:16:23.738128"], ["confirmed_at", "2023-05-17 13:16:23.737760"], ["id", 17]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 200 OK in 4ms (Views: 0.2ms | ActiveRecord: 0.9ms | Allocations: 1229)
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-17 16:16:23 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.4ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 15ms (Views: 1.0ms | ActiveRecord: 4.0ms | Allocations: 4322)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-17 16:16:23 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (1.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.3ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 10ms (Views: 1.2ms | ActiveRecord: 2.7ms | Allocations: 3479)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-17 16:16:23 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 3ms (Views: 0.7ms | ActiveRecord: 0.6ms | Allocations: 1213)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (1.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mBEGIN[0m
+Started POST "/api/register" for 127.0.0.1 at 2023-05-18 16:06:41 +0300
+Processing by Api::RegistrationController#create as HTML
+  Parameters: {"username"=>"newuser", "password"=>"[FILTERED]"}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (1.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "newuser"], ["LIMIT", 1]]
+  [1m[36mUser Create (3.7ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "username", "password", "confirmation_code", "confirmation_code_expires_at", "confirmed_at", "password_digest", "role", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["created_at", "2023-05-18 13:06:41.882875"], ["updated_at", "2023-05-18 13:06:41.882875"], ["username", "newuser"], ["password", nil], ["confirmation_code", nil], ["confirmation_code_expires_at", nil], ["confirmed_at", nil], ["password_digest", "$2a$04$FJa2CvWrDF3OV5n/9M6Oduy5pPEf4W.2p6xoKLfv43WzjCrCa6ryW"], ["role", 0], ["user_id", nil]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Update (0.4ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmation_code" = $2, "confirmation_code_expires_at" = $3 WHERE "users"."id" = $4[0m  [["updated_at", "2023-05-18 13:06:41.889708"], ["confirmation_code", "df5ed0c034b562fd1034ee98cbc1cd84"], ["confirmation_code_expires_at", "2023-05-18 13:16:41.889339"], ["id", 18]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 200 OK in 53ms (Views: 0.3ms | ActiveRecord: 12.3ms | Allocations: 15719)
+Started GET "/api/register/confirm/df5ed0c034b562fd1034ee98cbc1cd84" for 127.0.0.1 at 2023-05-18 16:06:41 +0300
+Processing by Api::RegistrationController#confirm as HTML
+  Parameters: {"confirmation_code"=>"df5ed0c034b562fd1034ee98cbc1cd84"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."confirmation_code" = $1 LIMIT $2[0m  [["confirmation_code", "df5ed0c034b562fd1034ee98cbc1cd84"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Update (0.3ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmed_at" = $2 WHERE "users"."id" = $3[0m  [["updated_at", "2023-05-18 13:06:41.902829"], ["confirmed_at", "2023-05-18 13:06:41.902442"], ["id", 18]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 200 OK in 4ms (Views: 0.2ms | ActiveRecord: 0.9ms | Allocations: 1229)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-18 16:06:41 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (1.0ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (1.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 26ms (Views: 1.2ms | ActiveRecord: 5.4ms | Allocations: 4322)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-18 16:06:41 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 11ms (Views: 1.0ms | ActiveRecord: 2.7ms | Allocations: 3479)
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-18 16:06:41 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.5ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 10ms (Views: 1.4ms | ActiveRecord: 1.1ms | Allocations: 1213)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.5ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (1.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started POST "/api/register" for 127.0.0.1 at 2023-05-18 16:11:34 +0300
+Processing by Api::RegistrationController#create as HTML
+  Parameters: {"username"=>"newuser", "password"=>"[FILTERED]"}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.7ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "newuser"], ["LIMIT", 1]]
+  [1m[36mUser Create (1.6ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "username", "password", "confirmation_code", "confirmation_code_expires_at", "confirmed_at", "password_digest", "role", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["created_at", "2023-05-18 13:11:34.810855"], ["updated_at", "2023-05-18 13:11:34.810855"], ["username", "newuser"], ["password", nil], ["confirmation_code", nil], ["confirmation_code_expires_at", nil], ["confirmed_at", nil], ["password_digest", "$2a$04$9Y3vqhoP/2Opf16QEkzXdOeweJq5scdHarpJKkazPYGnPvl8KjKc."], ["role", 0], ["user_id", nil]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Update (0.4ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmation_code" = $2, "confirmation_code_expires_at" = $3 WHERE "users"."id" = $4[0m  [["updated_at", "2023-05-18 13:11:34.814591"], ["confirmation_code", "369bf93b7f6101f59d35f3e50a95c42e"], ["confirmation_code_expires_at", "2023-05-18 13:21:34.814238"], ["id", 19]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 200 OK in 48ms (Views: 0.3ms | ActiveRecord: 8.1ms | Allocations: 15719)
+Started GET "/api/register/confirm/369bf93b7f6101f59d35f3e50a95c42e" for 127.0.0.1 at 2023-05-18 16:11:34 +0300
+Processing by Api::RegistrationController#confirm as HTML
+  Parameters: {"confirmation_code"=>"369bf93b7f6101f59d35f3e50a95c42e"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."confirmation_code" = $1 LIMIT $2[0m  [["confirmation_code", "369bf93b7f6101f59d35f3e50a95c42e"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Update (0.3ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmed_at" = $2 WHERE "users"."id" = $3[0m  [["updated_at", "2023-05-18 13:11:34.827270"], ["confirmed_at", "2023-05-18 13:11:34.826904"], ["id", 19]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 0.9ms | Allocations: 1229)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-18 16:11:34 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.4ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.2ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 16ms (Views: 0.9ms | ActiveRecord: 3.9ms | Allocations: 4322)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-18 16:11:34 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 11ms (Views: 0.8ms | ActiveRecord: 2.3ms | Allocations: 3479)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-18 16:11:34 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 3ms (Views: 0.8ms | ActiveRecord: 0.7ms | Allocations: 1213)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+Started POST "/api/register" for 127.0.0.1 at 2023-05-18 16:12:07 +0300
+Processing by Api::RegistrationController#create as HTML
+  Parameters: {"username"=>"newuser", "password"=>"[FILTERED]"}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (1.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."username" = $1 LIMIT $2[0m  [["username", "newuser"], ["LIMIT", 1]]
+  [1m[36mUser Create (0.8ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "username", "password", "confirmation_code", "confirmation_code_expires_at", "confirmed_at", "password_digest", "role", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["created_at", "2023-05-18 13:12:07.697503"], ["updated_at", "2023-05-18 13:12:07.697503"], ["username", "newuser"], ["password", nil], ["confirmation_code", nil], ["confirmation_code_expires_at", nil], ["confirmed_at", nil], ["password_digest", "$2a$04$pWDk02rtQImZqQnM95ZakeAgLIdwLXQ.QhDZCt9U0zw3rjtnG./OO"], ["role", 0], ["user_id", nil]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Update (0.7ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmation_code" = $2, "confirmation_code_expires_at" = $3 WHERE "users"."id" = $4[0m  [["updated_at", "2023-05-18 13:12:07.701267"], ["confirmation_code", "da2aeb1bc5e6438ad054bf8f444380bc"], ["confirmation_code_expires_at", "2023-05-18 13:22:07.700826"], ["id", 20]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 200 OK in 63ms (Views: 0.4ms | ActiveRecord: 8.9ms | Allocations: 15716)
+Started GET "/api/register/confirm/da2aeb1bc5e6438ad054bf8f444380bc" for 127.0.0.1 at 2023-05-18 16:12:07 +0300
+Processing by Api::RegistrationController#confirm as HTML
+  Parameters: {"confirmation_code"=>"da2aeb1bc5e6438ad054bf8f444380bc"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."confirmation_code" = $1 LIMIT $2[0m  [["confirmation_code", "da2aeb1bc5e6438ad054bf8f444380bc"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Update (0.4ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "confirmed_at" = $2 WHERE "users"."id" = $3[0m  [["updated_at", "2023-05-18 13:12:07.719537"], ["confirmed_at", "2023-05-18 13:12:07.718921"], ["id", 20]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 200 OK in 6ms (Views: 0.2ms | ActiveRecord: 1.3ms | Allocations: 1229)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/portfolios" for 127.0.0.1 at 2023-05-18 16:12:07 +0300
+Processing by Api::PortfoliosController#index as HTML
+  [1m[36mAdminSetting Load (0.7ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mPortfolio Count (33.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "portfolios"[0m
+  [1m[36mPortfolio Load (0.4ms)[0m  [1m[34mSELECT "portfolios".* FROM "portfolios" ORDER BY "portfolios"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 53ms (Views: 1.6ms | ActiveRecord: 38.0ms | Allocations: 4322)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/stocks" for 127.0.0.1 at 2023-05-18 16:12:07 +0300
+Processing by Api::StocksController#index as HTML
+  [1m[36mAdminSetting Load (0.2ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mStock Count (0.8ms)[0m  [1m[34mSELECT COUNT(*) FROM "stocks"[0m
+  [1m[36mStock Load (0.2ms)[0m  [1m[34mSELECT "stocks".* FROM "stocks" ORDER BY "stocks"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 11ms (Views: 1.2ms | ActiveRecord: 2.4ms | Allocations: 3479)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+Started GET "/api/users" for 127.0.0.1 at 2023-05-18 16:12:07 +0300
+Processing by Api::UsersController#index as HTML
+  [1m[36mAdminSetting Load (16.3ms)[0m  [1m[34mSELECT "admin_settings".* FROM "admin_settings" ORDER BY "admin_settings"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Count (1.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1 OFFSET $2[0m  [["LIMIT", 25], ["OFFSET", 0]]
+Completed 200 OK in 42ms (Views: 13.2ms | ActiveRecord: 18.0ms | Allocations: 1213)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m

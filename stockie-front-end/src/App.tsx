@@ -32,6 +32,7 @@ import React from 'react';
 import {UserAdminShowAll} from "./components/users/UserAdminShowAll";
 import {Scripts} from "./components/scripts/Scripts";
 import {AdminSettings} from "./components/pagination/AdminSettings";
+import ChatPage from "./components/chat/ChatPage";
 
 
 
@@ -41,6 +42,7 @@ const App: React.FC = () => {
             <div className="container mt-3">
                   <AppMenu />
                   <Routes>
+                      <Route path="/chat" element={<ChatPage />} />
                       <Route path="/login" element={<LoginForm />} />
                       <Route path="/register" element={<RegisterForm />} />
                       <Route path="/manage_users" element={<UserAdminShowAll />} />
