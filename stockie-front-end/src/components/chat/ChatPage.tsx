@@ -70,7 +70,7 @@ const Chat: React.FC = () => {
 
     return (
         <Container>
-            <ActionCableProvider url={`${BACKEND_API_URL}/cable`}>
+            <ActionCableProvider url={`${BACKEND_URL}/cable`}>
                 <h1 style={{ margin: '24px 0' }}>Chat</h1>
                 <Box>
                     <Formik
