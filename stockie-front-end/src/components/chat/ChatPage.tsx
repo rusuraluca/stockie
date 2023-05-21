@@ -5,7 +5,7 @@ import ActionCable from 'actioncable';
 import { Box, Container, TextField, Button } from '@mui/material';
 import {Formik, Form, FormikHelpers, Field, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
-import { BACKEND_API_URL } from '../../constants';
+import { BACKEND_URL } from '../../constants';
 
 interface Message {
     sender: string;
@@ -37,7 +37,7 @@ const Chat: React.FC = () => {
     };
 
     useEffect(() => {
-        const cable = ActionCable.createConsumer(`${BACKEND_API_URL}/cable`);
+        const cable = ActionCable.createConsumer(`${BACKEND_URL}/cable`);
         const sub = cable.subscriptions.create(
             {
                 channel: 'ChatChannel',
