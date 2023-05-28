@@ -31,6 +31,7 @@ export const StocksAdd = () => {
 
     const [company, setCompany] = useState<number>();
     const [companies, setCompanies] = useState<Company[]>([]);
+    const [prediction, setPrediction] = useState<number>();
 
     const fetchSuggestions = async (query: string) => {
         try {
@@ -152,6 +153,11 @@ export const StocksAdd = () => {
                                 onChange={(event, value) => {
                                     if (value) {
                                         setCompany(value.id);
+                                        fetch(`${BACKEND_API_URL}/price_predictions/predict?company_id=${value.id}`, {headers: authHeader()})
+                                            .then((response) => response.json())
+                                            .then((data) => {
+                                                setPrediction(data.predicted);
+                                            });
                                     }
                                 }}
                             />
@@ -167,7 +173,12 @@ export const StocksAdd = () => {
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="current_price">Current Price</label>
+                            <label htmlFor="current_price">Price</label>
+                            { prediction && (
+                                <div className="form-group">
+                                    <label htmlFor="predicted_price">Predicted stock price: {prediction}$</label>
+                                </div>
+                            )}
                             <Field name="current_price" type="text" className="form-control"/>
                             <ErrorMessage
                                 name="current_price"

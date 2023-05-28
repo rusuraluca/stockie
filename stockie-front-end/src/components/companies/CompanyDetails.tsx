@@ -14,6 +14,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 export const CompanyDetails = () => {
     const {companyId} = useParams();
     const [company, setCompany] = useState<Company>();
+    const [prediction, setPrediction] = useState<0>();
 
     useEffect(() => {
         fetch(`${BACKEND_API_URL}/companies/${companyId}`, {headers: authHeader()})
@@ -23,11 +24,21 @@ export const CompanyDetails = () => {
             });
     }, []);
 
+    useEffect(() => {
+        fetch(`${BACKEND_API_URL}/growth_predictions/predict?company_id=${companyId}`, {headers: authHeader()})
+            .then((response) => response.json())
+            .then((data) => {
+                setPrediction(data.predicted);
+            });
+    }, []);
+
+
     return (
         <Container>
             <h1 style={{margin: "24px 0"}}>About the company:</h1>
             <CardContent>
                 <p><b>Name:</b> {company?.name} </p>
+                <p><b>Growth prediction:</b> {prediction}%</p>
                 <p><b>Added by: </b><a href={`/users/${company?.user?.id}/details`}>{company?.user?.username}</a></p>
                 <p><b>Size:</b> {company?.size} </p>
                 <p><b>Country:</b> {company?.country} </p>
